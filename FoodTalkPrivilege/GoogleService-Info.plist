@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>AD_UNIT_ID_FOR_BANNER_TEST</key>
+	<string>ca-app-pub-3940256099942544/2934735716</string>
+	<key>AD_UNIT_ID_FOR_INTERSTITIAL_TEST</key>
+	<string>ca-app-pub-3940256099942544/4411468910</string>
+	<key>CLIENT_ID</key>
+	<string>913949871369-140m62a8idi1ap2tgm8rog26fh75ljfu.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.913949871369-140m62a8idi1ap2tgm8rog26fh75ljfu</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBw8ZBrPLiCydWh7-xA1QmD3VY5ZiCrDls</string>
+	<key>GCM_SENDER_ID</key>
+	<string>913949871369</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.FoodtalkIndia.FoodTalkPrivilege</string>
+	<key>PROJECT_ID</key>
+	<string>foodtalk-privilege</string>
+	<key>STORAGE_BUCKET</key>
+	<string>foodtalk-privilege.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false/>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<true/>
+	<key>IS_APPINVITE_ENABLED</key>
+	<false/>
+	<key>IS_GCM_ENABLED</key>
+	<false/>
+	<key>IS_SIGNIN_ENABLED</key>
+	<false/>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:913949871369:ios:6be62b217022260b</string>
+	<key>FirebaseAppDelegateProxyEnabled</key>
+	<false/>
+	<key>DATABASE_URL</key>
+	<string>https://foodtalk-privilege.firebaseio.com</string>
+</dict>
+</plist>

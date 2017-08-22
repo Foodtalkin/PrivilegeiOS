@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12120" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" restorationIdentifier="DescriptionCell" selectionStyle="default" indentationWidth="10" rowHeight="125" id="KGk-i7-Jjw" customClass="DescriptionTableViewCell" customModule="FoodTalkPrivilege" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="348" height="125"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="348" height="124.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Description" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vha-Ii-kxC">
+                        <rect key="frame" x="19" y="12" width="123" height="21"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="21" id="0TV-AS-HQA"/>
+                            <constraint firstAttribute="width" constant="123" id="3Uj-9Q-UFx"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <color key="textColor" red="0.54901960780000003" green="0.54901960780000003" blue="0.54901960780000003" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="you can purchase any dish with minimum bill amount of 500. there are 3 ways to …" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KZy-ld-Nx8">
+                        <rect key="frame" x="19" y="41" width="309" height="42"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                        <color key="textColor" red="0.20392156859999999" green="0.20784313730000001" blue="0.20784313730000001" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5gO-sV-6G3">
+                        <rect key="frame" x="19" y="88" width="111" height="32"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="111" id="ViL-dJ-ndU"/>
+                            <constraint firstAttribute="height" constant="32" id="wKW-Gj-K5G"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                        <state key="normal" title="Read More">
+                            <color key="titleColor" red="0.1215686275" green="0.71372549019999998" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                        </state>
+                    </button>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="KZy-ld-Nx8" firstAttribute="top" secondItem="vha-Ii-kxC" secondAttribute="bottom" constant="8" id="1ZG-WB-08A"/>
+                    <constraint firstItem="KZy-ld-Nx8" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="11" id="1ZM-y2-g0T"/>
+                    <constraint firstAttribute="bottom" secondItem="5gO-sV-6G3" secondAttribute="bottom" constant="4.5" id="3o6-uh-p4p"/>
+                    <constraint firstItem="5gO-sV-6G3" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="19" id="Fzj-fn-bSa"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="KZy-ld-Nx8" secondAttribute="trailing" constant="12" id="Lgr-bX-dkG"/>
+                    <constraint firstItem="5gO-sV-6G3" firstAttribute="top" secondItem="KZy-ld-Nx8" secondAttribute="bottom" constant="5" id="Vly-qy-3sm"/>
+                    <constraint firstItem="vha-Ii-kxC" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="4" id="eVQ-y1-a2l"/>
+                    <constraint firstItem="vha-Ii-kxC" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="11" id="nkg-62-v2l"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="btnReadMore" destination="5gO-sV-6G3" id="BIo-zw-wKg"/>
+                <outlet property="lblDescribe" destination="KZy-ld-Nx8" id="rP5-Bh-aJd"/>
+            </connections>
+            <point key="canvasLocation" x="35" y="94.5"/>
+        </tableViewCell>
+    </objects>
+</document>

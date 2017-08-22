@@ -1112,6 +1112,7 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
             callWebNextUrl()
         }
         }
+        
     }
     
     //MARK:- contactUS

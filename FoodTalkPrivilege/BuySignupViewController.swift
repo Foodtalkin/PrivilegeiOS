@@ -29,6 +29,8 @@ class BuySignupViewController: UIViewController, WebServiceCallingDelegate, Orde
     @IBOutlet var lblYear : UILabel?
     @IBOutlet var viewHr : UIView?
     
+    @IBOutlet var lblPay : UILabel?
+    
     var accessToken: String!
     var dictParaPayTm = NSDictionary()
     var isPurchased : Bool = false
@@ -118,6 +120,8 @@ class BuySignupViewController: UIViewController, WebServiceCallingDelegate, Orde
         viewHr?.frame = CGRect(x: 0, y : (viewPrivilage?.frame.size.height)! - 1, width : (viewPrivilage?.frame.size.width)!, height : 1)
         
         btnBuy?.frame = CGRect(x: self.view.frame.size.width/2 - 80, y : self.view.frame.size.height - 80, width : 160, height : 60)
+        
+        lblPay?.frame = CGRect(x : self.view.frame.size.width/2 - 80, y : self.view.frame.size.height - 50, width : 160, height : 30)
     }
     
     func addNotificationToRecievePaymentCompletion(){
@@ -156,8 +160,7 @@ class BuySignupViewController: UIViewController, WebServiceCallingDelegate, Orde
             let url = String(format: "%@%@?sessionid=%@", baseUrl,"subscribe", session)
             let dict = NSMutableDictionary()
             dict.setObject(transactionID, forKey: "order_id" as NSCopying)
-            print(url)
-            print(dict)
+            
             webServiceCallingPost(url, parameters: dict)
             delegate = self
         }
@@ -213,8 +216,8 @@ class BuySignupViewController: UIViewController, WebServiceCallingDelegate, Orde
     func serviceFailedWitherror(_ error : NSError){
         stopAnimation()
         self.view.isUserInteractionEnabled = true
-        var counter = UserDefaults.standard.value(forKey: "counterSessionExpire") as! Int
-        if(counter > 0){
+//        var counter = UserDefaults.standard.value(forKey: "counterSessionExpire") as! Int
+//        if(counter > 0){
             let viewControllers: [UIViewController] = self.navigationController!.viewControllers as [UIViewController];
             var ind = 0
             var isFind = false
@@ -224,7 +227,7 @@ class BuySignupViewController: UIViewController, WebServiceCallingDelegate, Orde
                     UserDefaults.standard.setValue(nil, forKey: "userDetails")
                     UserDefaults.standard.setValue(nil, forKey: "session")
                     UserDefaults.standard.setValue(nil, forKey: "expiry")
-                    UserDefaults.standard.setValue(0, forKey: "counterSessionExpire")
+                    
                     self.navigationController!.popToViewController(viewControllers[ind], animated: true);
                     isFind = true
                     break
@@ -236,15 +239,15 @@ class BuySignupViewController: UIViewController, WebServiceCallingDelegate, Orde
                     UserDefaults.standard.setValue(nil, forKey: "userDetails")
                     UserDefaults.standard.setValue(nil, forKey: "session")
                     UserDefaults.standard.setValue(nil, forKey: "expiry")
-                    UserDefaults.standard.setValue(0, forKey: "counterSessionExpire")
+                    
                     let openPost = self.storyboard!.instantiateViewController(withIdentifier: "ViewController") as! ViewController;
                     self.navigationController!.visibleViewController!.navigationController!.pushViewController(openPost, animated:true);
                 }
             }
-            
-            counter = 0
-            UserDefaults.standard.set(counter, forKey: "counterSessionExpire")
-        }
+//
+//            counter = 0
+//            UserDefaults.standard.set(counter, forKey: "counterSessionExpire")
+//        }
     }
     
     func serviceUploadProgress(_ myprogress : float_t){
@@ -308,7 +311,7 @@ class BuySignupViewController: UIViewController, WebServiceCallingDelegate, Orde
         let session = dictSessionInfo.object(forKey: "session_id") as! String
         let url = String(format: "%@%@?sessionid=%@", baseUrl,"paytm_order", session)
         let dict = NSMutableDictionary()
-        dict.setObject("2", forKey: "subscription_type_id" as NSCopying)
+        dict.setObject("1", forKey: "subscription_type_id" as NSCopying)
         webServiceCallingPost(url, parameters: dict)
         delegate = self
 

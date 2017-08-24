@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import Instamojo
+//import Instamojo
 import Parse
 import Bolts
 import FBSDKCoreKit
@@ -64,10 +64,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
         FBSDKAppEvents.activateApp()
-        Crashlytics.start(withAPIKey: "1dd9b3a281340dc23f1c672a7330fa1119c5a7b8")
-        Fabric.with([Crashlytics.self])
         
-        self.logUser()
+        Fabric.with([Crashlytics.self])
 
         return true
     }
@@ -123,8 +121,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationDidBecomeActive(_ application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-        Instamojo.initialize()
-        Instamojo.enableLog(option: true)
+       // Instamojo.initialize()
+      //  Instamojo.enableLog(option: true)
     }
 
     func applicationWillTerminate(_ application: UIApplication) {

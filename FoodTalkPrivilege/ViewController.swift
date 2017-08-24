@@ -12,7 +12,7 @@ var loginAs = ""
 var strOtp = ""
 var dictUserDetails = NSDictionary()
 var otpFrom = ""
-var counterSessionExpire = 0
+//var counterSessionExpire = 0
 //var isPaymentComplete : Bool = false
 
 class ViewController: UIViewController, UIScrollViewDelegate {
@@ -31,7 +31,7 @@ class ViewController: UIViewController, UIScrollViewDelegate {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         setUp(viewDetails!)
-        
+
     }
     
     func setUp(_ viewDeatils : UIView){

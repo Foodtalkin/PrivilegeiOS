@@ -28,7 +28,7 @@ func webServiceCallingPost (_ url : String, parameters : NSDictionary){
     Alamofire.request(url, method: .post, parameters: parameters as? Parameters, encoding: JSONEncoding.default, headers: headers as? HTTPHeaders).responseJSON { response in
         if(response.result.isFailure){
             print(response.description);
-            delegate?.serviceFailedWitherror(response.result.error! as NSError)
+         //   delegate?.serviceFailedWitherror(response.result.error! as NSError)
         }else{
             if let JSON = response.result.value {
                 
@@ -79,16 +79,16 @@ func webServiceCallingPut (_ url : String, parameters : NSDictionary){
 }
 
 func webServiceForRefreshToken(_ url : String, parameters : NSDictionary){
-    if((UserDefaults.standard.value(forKey: "counterSessionExpire")) != nil){
-        
-    }
-    else{
-        UserDefaults.standard.set(0, forKey: "counterSessionExpire")
-    }
-    var counter = UserDefaults.standard.value(forKey: "counterSessionExpire") as! Int
-    counter = counter + 1
-    UserDefaults.standard.setValue(counter, forKey: "counterSessionExpire")
-    if(counter < 2){
+//    if((UserDefaults.standard.value(forKey: "counterSessionExpire")) != nil){
+//        
+//    }
+//    else{
+//        UserDefaults.standard.set(0, forKey: "counterSessionExpire")
+//    }
+   // var counter = UserDefaults.standard.value(forKey: "counterSessionExpire") as! Int
+ //   counter = counter + 1
+ //   UserDefaults.standard.setValue(counter, forKey: "counterSessionExpire")
+ //   if(counter < 2){
     var request = URLRequest(url: URL(string: String(format: "%@%@", baseUrl, "refreshsession"))!)
     request.httpMethod = "POST"
     var token = ""
@@ -130,8 +130,23 @@ func webServiceForRefreshToken(_ url : String, parameters : NSDictionary){
                         UserDefaults.standard.setValue(session, forKey: "session")
                         UserDefaults.standard.setValue(sessionId, forKey: "sessionId")
                         UserDefaults.standard.set(token, forKey: "token")
-                        UserDefaults.standard.setValue(0, forKey: "counterSessionExpire")
+                        
+                        if(url.contains("sessionid=")){
+                        let fullNameArr = url.components(separatedBy: "sessionid=")
+                        
+                        let name    = fullNameArr[0]
+                        
+                        
+                        let strFull = String(format : "%@%@%@", name, "sessionid=", sessionId)
+                            
+                        webServiceCallingPost(strFull, parameters: dict)
+                        }
+                        else{
                         webServiceCallingPost(url, parameters: dict)
+                        }
+                        
+                        
+                        
                     }
                     else{
                         let error = NSError()
@@ -144,26 +159,26 @@ func webServiceForRefreshToken(_ url : String, parameters : NSDictionary){
         }
     }
     task.resume()
-    }
-    else{
-        let error = NSError()
-       delegate?.serviceFailedWitherror(error)
-    }
+//    }
+//    else{
+//        let error = NSError()
+//       delegate?.serviceFailedWitherror(error)
+//    }
     
 }
 
 func webServiceForGetRefreshToken(_ url : String){
-    if((UserDefaults.standard.value(forKey: "counterSessionExpire")) != nil){
-        
-    }
-    else{
-        UserDefaults.standard.set(0, forKey: "counterSessionExpire")
-    }
-    var counter = UserDefaults.standard.value(forKey: "counterSessionExpire") as! Int
-    counter = counter + 1
-    UserDefaults.standard.setValue(counter, forKey: "counterSessionExpire")
-    
-    if(counter < 2){
+//    if((UserDefaults.standard.value(forKey: "counterSessionExpire")) != nil){
+//        
+//    }
+//    else{
+//        UserDefaults.standard.set(0, forKey: "counterSessionExpire")
+//    }
+//    var counter = UserDefaults.standard.value(forKey: "counterSessionExpire") as! Int
+//    counter = counter + 1
+//    UserDefaults.standard.setValue(counter, forKey: "counterSessionExpire")
+//    
+//    if(counter < 2){
 
     var request = URLRequest(url: URL(string: String(format: "%@%@", baseUrl, "refreshsession"))!)
     request.httpMethod = "POST"
@@ -210,7 +225,7 @@ func webServiceForGetRefreshToken(_ url : String){
                         UserDefaults.standard.setValue(session, forKey: "session")
                         UserDefaults.standard.setValue(sessionId, forKey: "sessionId")
                         UserDefaults.standard.set(token, forKey: "token")
-                        UserDefaults.standard.setValue(0, forKey: "counterSessionExpire")
+                      //  UserDefaults.standard.setValue(0, forKey: "counterSessionExpire")
                         webServiceGet(strFull)
                     }
                     else{
@@ -224,11 +239,11 @@ func webServiceForGetRefreshToken(_ url : String){
         }
     }
     task.resume()
-    }
-    else{
-        let error = NSError()
-        delegate?.serviceFailedWitherror(error)
-    }
+//    }
+//    else{
+//        let error = NSError()
+//        delegate?.serviceFailedWitherror(error)
+//    }
     
 }
 

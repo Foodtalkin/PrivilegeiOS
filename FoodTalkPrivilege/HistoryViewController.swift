@@ -115,8 +115,8 @@ class HistoryViewController: UIViewController, UITableViewDelegate, UITableViewD
     func serviceFailedWitherror(_ error : NSError){
         stopAnimation()
         self.view.isUserInteractionEnabled = true
-        var counter = UserDefaults.standard.value(forKey: "counterSessionExpire") as! Int
-        if(counter > 0){
+//        var counter = UserDefaults.standard.value(forKey: "counterSessionExpire") as! Int
+//        if(counter > 0){
             let viewControllers: [UIViewController] = self.navigationController!.viewControllers as [UIViewController];
             var ind = 0
             var isFind = false
@@ -126,7 +126,7 @@ class HistoryViewController: UIViewController, UITableViewDelegate, UITableViewD
                     UserDefaults.standard.setValue(nil, forKey: "userDetails")
                     UserDefaults.standard.setValue(nil, forKey: "session")
                     UserDefaults.standard.setValue(nil, forKey: "expiry")
-                    UserDefaults.standard.setValue(0, forKey: "counterSessionExpire")
+                    
                     self.navigationController!.popToViewController(viewControllers[ind], animated: true);
                     isFind = true
                     break
@@ -138,15 +138,15 @@ class HistoryViewController: UIViewController, UITableViewDelegate, UITableViewD
                     UserDefaults.standard.setValue(nil, forKey: "userDetails")
                     UserDefaults.standard.setValue(nil, forKey: "session")
                     UserDefaults.standard.setValue(nil, forKey: "expiry")
-                    UserDefaults.standard.setValue(0, forKey: "counterSessionExpire")
+                    
                     let openPost = self.storyboard!.instantiateViewController(withIdentifier: "ViewController") as! ViewController;
                     self.navigationController!.visibleViewController!.navigationController!.pushViewController(openPost, animated:true);
                 }
             }
-            
-            counter = 0
-            UserDefaults.standard.set(counter, forKey: "counterSessionExpire")
-        }
+//
+//            counter = 0
+//            UserDefaults.standard.set(counter, forKey: "counterSessionExpire")
+//        }
     }
     
     func serviceUploadProgress(_ myprogress : float_t){

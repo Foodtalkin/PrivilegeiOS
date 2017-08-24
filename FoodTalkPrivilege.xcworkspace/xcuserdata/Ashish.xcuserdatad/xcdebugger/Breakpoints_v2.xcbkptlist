@@ -25,28 +25,12 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "FoodTalkPrivilege/StoreDetailsViewController.swift"
-            timestampString = "525078664.596036"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "604"
-            endingLineNumber = "604"
-            landmarkName = "getDataFromWebService(_:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "FoodTalkPrivilege/WebServices.swift"
-            timestampString = "525087120.926546"
+            timestampString = "525188617.756728"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "155"
-            endingLineNumber = "155"
+            startingLineNumber = "170"
+            endingLineNumber = "170"
             landmarkName = "webServiceForGetRefreshToken(_:)"
             landmarkType = "9">
          </BreakpointContent>
@@ -74,11 +58,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "FoodTalkPrivilege/WebServices.swift"
-            timestampString = "525087120.926546"
+            timestampString = "525188617.756728"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "194"
-            endingLineNumber = "194"
+            startingLineNumber = "209"
+            endingLineNumber = "209"
             landmarkName = "webServiceForGetRefreshToken(_:)"
             landmarkType = "9">
          </BreakpointContent>
@@ -90,107 +74,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "FoodTalkPrivilege/WebServices.swift"
-            timestampString = "525084895.291964"
+            timestampString = "525188617.756728"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "119"
-            endingLineNumber = "119"
-            landmarkName = "webServiceForRefreshToken(_:parameters:)"
-            landmarkType = "9">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "FoodTalkPrivilege.(webServiceForRefreshToken (Swift.String, parameters : __ObjC.NSDictionary) -&gt; ()).(closure #1)"
-                  moduleName = "FoodTalkPrivilege"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/Ashish/Desktop/FoodTalkPrivilege/FoodTalkPrivilege/WebServices.swift"
-                  timestampString = "525092410.781583"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "119"
-                  endingLineNumber = "119"
-                  offsetFromSymbolStart = "1939">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "FoodTalkPrivilege.(webServiceForRefreshToken (Swift.String, parameters : __ObjC.NSDictionary) -&gt; ()).(closure #1)"
-                  moduleName = "FoodTalkPrivilege"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/Ashish/Desktop/FoodTalkPrivilege/FoodTalkPrivilege/WebServices.swift"
-                  timestampString = "525092410.783678"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "119"
-                  endingLineNumber = "119"
-                  offsetFromSymbolStart = "2123">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "FoodTalkPrivilege/WebServices.swift"
-            timestampString = "525085629.888286"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "123"
-            endingLineNumber = "123"
-            landmarkName = "webServiceForRefreshToken(_:parameters:)"
-            landmarkType = "9">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "FoodTalkPrivilege.(webServiceForRefreshToken (Swift.String, parameters : __ObjC.NSDictionary) -&gt; ()).(closure #1)"
-                  moduleName = "FoodTalkPrivilege"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/Ashish/Desktop/FoodTalkPrivilege/FoodTalkPrivilege/WebServices.swift"
-                  timestampString = "525092410.788803"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "123"
-                  endingLineNumber = "123"
-                  offsetFromSymbolStart = "2614">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "FoodTalkPrivilege.(webServiceForRefreshToken (Swift.String, parameters : __ObjC.NSDictionary) -&gt; ()).(closure #1)"
-                  moduleName = "FoodTalkPrivilege"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/Ashish/Desktop/FoodTalkPrivilege/FoodTalkPrivilege/WebServices.swift"
-                  timestampString = "525092410.791039"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "123"
-                  endingLineNumber = "123"
-                  offsetFromSymbolStart = "9567">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "FoodTalkPrivilege/WebServices.swift"
-            timestampString = "525089320.189771"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "182"
-            endingLineNumber = "182"
+            startingLineNumber = "197"
+            endingLineNumber = "197"
             landmarkName = "webServiceForGetRefreshToken(_:)"
             landmarkType = "9">
             <Locations>
@@ -202,12 +90,12 @@
                   moduleName = "FoodTalkPrivilege"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/Ashish/Desktop/FoodTalkPrivilege/FoodTalkPrivilege/WebServices.swift"
-                  timestampString = "525092410.796467"
+                  timestampString = "525188244.485707"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "182"
-                  endingLineNumber = "182"
-                  offsetFromSymbolStart = "3476">
+                  startingLineNumber = "198"
+                  endingLineNumber = "198"
+                  offsetFromSymbolStart = "1815">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
@@ -217,11 +105,11 @@
                   moduleName = "FoodTalkPrivilege"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/Ashish/Desktop/FoodTalkPrivilege/FoodTalkPrivilege/WebServices.swift"
-                  timestampString = "525092410.798545"
+                  timestampString = "525188244.488858"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "183"
-                  endingLineNumber = "183"
+                  startingLineNumber = "199"
+                  endingLineNumber = "199"
                   offsetFromSymbolStart = "38">
                </Location>
             </Locations>
@@ -234,11 +122,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "FoodTalkPrivilege/WebServices.swift"
-            timestampString = "525089334.716037"
+            timestampString = "525188617.756728"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "176"
-            endingLineNumber = "176"
+            startingLineNumber = "191"
+            endingLineNumber = "191"
             landmarkName = "webServiceForGetRefreshToken(_:)"
             landmarkType = "9">
          </BreakpointContent>
@@ -250,11 +138,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "FoodTalkPrivilege/WebServices.swift"
-            timestampString = "525089386.505623"
+            timestampString = "525188617.756728"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "188"
-            endingLineNumber = "188"
+            startingLineNumber = "203"
+            endingLineNumber = "203"
             landmarkName = "webServiceForGetRefreshToken(_:)"
             landmarkType = "9">
             <Locations>
@@ -266,11 +154,11 @@
                   moduleName = "FoodTalkPrivilege"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/Ashish/Desktop/FoodTalkPrivilege/FoodTalkPrivilege/WebServices.swift"
-                  timestampString = "525092410.80787"
+                  timestampString = "525188244.501939"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "188"
-                  endingLineNumber = "188"
+                  startingLineNumber = "204"
+                  endingLineNumber = "204"
                   offsetFromSymbolStart = "277">
                </Location>
                <Location
@@ -281,11 +169,11 @@
                   moduleName = "FoodTalkPrivilege"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/Ashish/Desktop/FoodTalkPrivilege/FoodTalkPrivilege/WebServices.swift"
-                  timestampString = "525092410.809936"
+                  timestampString = "525188244.505049"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "188"
-                  endingLineNumber = "188"
+                  startingLineNumber = "204"
+                  endingLineNumber = "204"
                   offsetFromSymbolStart = "466">
                </Location>
             </Locations>
@@ -298,11 +186,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "FoodTalkPrivilege/HomeViewController.swift"
-            timestampString = "525089439.058141"
+            timestampString = "525179431.686138"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1060"
-            endingLineNumber = "1060"
+            startingLineNumber = "1064"
+            endingLineNumber = "1064"
             landmarkName = "serviceFailedWitherror(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -314,11 +202,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "FoodTalkPrivilege/RestaurantPinViewController.swift"
-            timestampString = "525090691.292459"
+            timestampString = "525166541.758305"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "209"
-            endingLineNumber = "209"
+            startingLineNumber = "208"
+            endingLineNumber = "208"
             landmarkName = "serviceFailedWitherror(_:)"
             landmarkType = "7">
          </BreakpointContent>

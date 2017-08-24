@@ -194,8 +194,7 @@ class RestaurantPinViewController: UIViewController, WebServiceCallingDelegate {
         param.setObject(offer, forKey: "offer_id" as NSCopying)
         param.setObject(numberRedeem, forKey: "offers_redeemed" as NSCopying)
         param.setObject(otp, forKey: "pin" as NSCopying)
-            print(url)
-            print(param)
+            
         webServiceCallingPost(url, parameters: param)
         delegate = self
         }
@@ -207,10 +206,10 @@ class RestaurantPinViewController: UIViewController, WebServiceCallingDelegate {
     }
     
     func serviceFailedWitherror(_ error : NSError){
-      //  stopAnimation()
+        stopAnimation()
         self.view.isUserInteractionEnabled = true
-        var counter = UserDefaults.standard.value(forKey: "counterSessionExpire") as! Int
-        if(counter > 0){
+//        var counter = UserDefaults.standard.value(forKey: "counterSessionExpire") as! Int
+//        if(counter > 0){
             let viewControllers: [UIViewController] = self.navigationController!.viewControllers as [UIViewController];
             var ind = 0
             var isFind = false
@@ -220,7 +219,7 @@ class RestaurantPinViewController: UIViewController, WebServiceCallingDelegate {
                     UserDefaults.standard.setValue(nil, forKey: "userDetails")
                     UserDefaults.standard.setValue(nil, forKey: "session")
                     UserDefaults.standard.setValue(nil, forKey: "expiry")
-                    UserDefaults.standard.setValue(0, forKey: "counterSessionExpire")
+                    
                     self.navigationController!.popToViewController(viewControllers[ind], animated: true);
                     isFind = true
                     break
@@ -233,15 +232,15 @@ class RestaurantPinViewController: UIViewController, WebServiceCallingDelegate {
                     UserDefaults.standard.setValue(nil, forKey: "userDetails")
                     UserDefaults.standard.setValue(nil, forKey: "session")
                     UserDefaults.standard.setValue(nil, forKey: "expiry")
-                    UserDefaults.standard.setValue(0, forKey: "counterSessionExpire")
+                    
                     let openPost = self.storyboard!.instantiateViewController(withIdentifier: "ViewController") as! ViewController;
                     self.navigationController!.visibleViewController!.navigationController!.pushViewController(openPost, animated:true);
                 }
             }
-            
-            counter = 0
-            UserDefaults.standard.set(counter, forKey: "counterSessionExpire")
-        }
+//            
+//            counter = 0
+//            UserDefaults.standard.set(counter, forKey: "counterSessionExpire")
+//        }
     }
     
     func serviceUploadProgress(_ myprogress : float_t){

@@ -319,6 +319,13 @@
                                     <action selector="back:" destination="b0C-Yz-1m3" eventType="touchUpInside" id="ZHk-cv-xCc"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Pay Via Paytm" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rq7-l3-D2v">
+                                <rect key="frame" x="111" y="620" width="163" height="18"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="14"/>
+                                <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="0.19215686269999999" green="0.20000000000000001" blue="0.20784313730000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
@@ -331,6 +338,7 @@
                         <outlet property="lbl2" destination="Za5-Vc-aFZ" id="atd-UN-T9U"/>
                         <outlet property="lbl3" destination="6T4-PQ-vXN" id="74I-LJ-t6V"/>
                         <outlet property="lblHeading" destination="J30-Z3-0uW" id="cev-em-mmb"/>
+                        <outlet property="lblPay" destination="Rq7-l3-D2v" id="1pV-zO-JyP"/>
                         <outlet property="lblPrice" destination="W4l-0K-Yg9" id="TRZ-Qg-4LN"/>
                         <outlet property="lblPrivilege" destination="5m3-Tx-BcY" id="Hnx-ug-hXS"/>
                         <outlet property="lblYear" destination="mni-BX-97M" id="2iF-PA-gj3"/>

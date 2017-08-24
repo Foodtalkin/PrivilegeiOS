@@ -10,6 +10,7 @@ import UIKit
 import MessageUI
 import FirebaseAnalytics
 import FBSDKCoreKit
+import Crashlytics
 
 var restaurantDetails = NSDictionary()
 var restaurantId = String()
@@ -61,7 +62,10 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
         }
       //  Analytics.setScreenName("Home", screenClass: "Home")
         FBSDKAppEvents.logEvent("First_Enter")
+
     }
+
+
     
     func respondToSwipeGesture(gesture: UIGestureRecognizer) {
         if let swipeGesture = gesture as? UISwipeGestureRecognizer {
@@ -742,7 +746,7 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
             UserDefaults.standard.setValue(nil, forKey: "userDetails")
             UserDefaults.standard.setValue(nil, forKey: "session")
             UserDefaults.standard.setValue(nil, forKey: "expiry")
-            UserDefaults.standard.setValue(0, forKey: "counterSessionExpire")
+          //  UserDefaults.standard.setValue(0, forKey: "counterSessionExpire")
             FBSDKAppEvents.logEvent("logout")
             self.navigationController?.popToRootViewController(animated: true)
         }
@@ -1060,8 +1064,8 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
     func serviceFailedWitherror(_ error : NSError){
         stopAnimation()
         self.view.isUserInteractionEnabled = true
-        var counter = UserDefaults.standard.value(forKey: "counterSessionExpire") as! Int
-        if(counter > 0){
+//        var counter = UserDefaults.standard.value(forKey: "counterSessionExpire") as! Int
+//        if(counter > 0){
             let viewControllers: [UIViewController] = self.navigationController!.viewControllers as [UIViewController];
             var ind = 0
             var isFind = false
@@ -1071,7 +1075,7 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
                     UserDefaults.standard.setValue(nil, forKey: "userDetails")
                     UserDefaults.standard.setValue(nil, forKey: "session")
                     UserDefaults.standard.setValue(nil, forKey: "expiry")
-                    UserDefaults.standard.setValue(0, forKey: "counterSessionExpire")
+                    
                     self.navigationController!.popToViewController(viewControllers[ind], animated: true);
                     isFind = true
                     break
@@ -1083,14 +1087,14 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
                 UserDefaults.standard.setValue(nil, forKey: "userDetails")
                 UserDefaults.standard.setValue(nil, forKey: "session")
                 UserDefaults.standard.setValue(nil, forKey: "expiry")
-                UserDefaults.standard.setValue(0, forKey: "counterSessionExpire")
+                
                 let openPost = self.storyboard!.instantiateViewController(withIdentifier: "ViewController") as! ViewController;
                 self.navigationController!.visibleViewController!.navigationController!.pushViewController(openPost, animated:true);
             }
             }
-            counter = 0
-            UserDefaults.standard.set(counter, forKey: "counterSessionExpire")
-        }
+//            counter = 0
+//            UserDefaults.standard.set(counter, forKey: "counterSessionExpire")
+//        }
     }
     
     func serviceUploadProgress(_ myprogress : float_t){

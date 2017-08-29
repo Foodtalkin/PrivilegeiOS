@@ -7,12 +7,14 @@
 //
 
 import UIKit
-import Instamojo
+//import Instamojo
 import FBSDKCoreKit
+import Fabric
+import Crashlytics
 
 var transactionID = ""
 var transactionResult = ""
-class BuySignupViewController: UIViewController, WebServiceCallingDelegate, OrderRequestCallBack, PGTransactionDelegate {
+class BuySignupViewController: UIViewController, WebServiceCallingDelegate, PGTransactionDelegate {
     
     @IBOutlet var btnBuy : UIButton?
     @IBOutlet var btnBack : UIButton?
@@ -43,7 +45,6 @@ class BuySignupViewController: UIViewController, WebServiceCallingDelegate, Orde
         manageScreen()
         setDownLine(btnBuy!)
      //   Instamojo.setup()
-        addNotificationToRecievePaymentCompletion()
         
         let nav = self.navigationController?.navigationBar
         nav?.titleTextAttributes = [ NSFontAttributeName: UIFont(name: fontAbril, size: 18)!, NSForegroundColorAttributeName: colorLightGold]
@@ -124,10 +125,6 @@ class BuySignupViewController: UIViewController, WebServiceCallingDelegate, Orde
         lblPay?.frame = CGRect(x : self.view.frame.size.width/2 - 80, y : self.view.frame.size.height - 50, width : 160, height : 30)
     }
     
-    func addNotificationToRecievePaymentCompletion(){
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(self.paymentCompletionCallBack), name: NSNotification.Name("INSTAMOJO"), object: nil)
-    }
     
     func paymentCompletionCallBack() {
         comingSuccessFrom = "Payment"
@@ -180,7 +177,7 @@ class BuySignupViewController: UIViewController, WebServiceCallingDelegate, Orde
                 let orderid = (dic.object(forKey: "order") as! NSDictionary).object(forKey: "order_id") as! String
                 let accessToken = dic.object(forKey: "access_token") as! String
                 transactionID = (dic.object(forKey: "transaction") as! NSDictionary).object(forKey: "id") as! String
-                self.fetchOrderFromInstamojo(orderID: orderid, accesstoken: accessToken)
+           
             }
         }
       }
@@ -196,6 +193,14 @@ class BuySignupViewController: UIViewController, WebServiceCallingDelegate, Orde
                 UserDefaults.standard.setValue(expiry, forKey: "expiry")
                 transactionResult = "success"
                 FBSDKAppEvents.logPurchase(0.0, currency: "Rupees")
+                
+                Answers.logPurchase(withPrice: 1200,
+                                             currency: "Ruppees",
+                                             success: true,
+                                             itemName: "FoodTalk Privilege",
+                                             itemType: "Purchased",
+                                             itemId: "fti",
+                                             customAttributes: [:])
             }
             else{
                 transactionResult = "failure"
@@ -216,8 +221,7 @@ class BuySignupViewController: UIViewController, WebServiceCallingDelegate, Orde
     func serviceFailedWitherror(_ error : NSError){
         stopAnimation()
         self.view.isUserInteractionEnabled = true
-//        var counter = UserDefaults.standard.value(forKey: "counterSessionExpire") as! Int
-//        if(counter > 0){
+
             let viewControllers: [UIViewController] = self.navigationController!.viewControllers as [UIViewController];
             var ind = 0
             var isFind = false
@@ -244,49 +248,12 @@ class BuySignupViewController: UIViewController, WebServiceCallingDelegate, Orde
                     self.navigationController!.visibleViewController!.navigationController!.pushViewController(openPost, animated:true);
                 }
             }
-//
-//            counter = 0
-//            UserDefaults.standard.set(counter, forKey: "counterSessionExpire")
-//        }
     }
     
     func serviceUploadProgress(_ myprogress : float_t){
         
     }
     
-    //MARK:- Make Payment
-    
-    func callPayment(){
-        
-        fetchOrder()
-    }
-    
-    func fetchOrder() {
-        Instamojo.setBaseUrl(url: "https://www.instamojo.com/")
-  //      let dictSessionId = UserDefaults.standard.object(forKey: "session") as! NSDictionary
-        let session = dictSessionInfo.object(forKey: "session_id") as! String
-        let url = String(format: "%@%@?sessionid=%@", baseUrl,"subscriptionPayment", session)
-        let dict = NSMutableDictionary()
-        dict.setObject("1", forKey: "subscription_type_id" as NSCopying)
-        
-        
-        webServiceCallingPost(url, parameters: dict)
-        delegate = self
-        
-    }
-
-    
-    func onFinish(order: Order, error: String) {
-        self.title = ""
-        if !error.isEmpty {
-            print(error.description)
-        } else {
-            
-            DispatchQueue.main.async {
-                Instamojo.invokePaymentOptionsView(order : order)
-            }
-        }
-    }
 
     func checkPaymentStatus() {
         
@@ -298,11 +265,7 @@ class BuySignupViewController: UIViewController, WebServiceCallingDelegate, Orde
         
     }
     
-    func fetchOrderFromInstamojo(orderID : String, accesstoken : String){
-        
-        let request = Request.init(orderID: orderID, accessToken: accesstoken,  orderRequestCallBack: self)
-        request.execute()
-    }
+
     
     
     //MARK:- PayTm Methods

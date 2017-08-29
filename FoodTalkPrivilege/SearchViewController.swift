@@ -62,6 +62,9 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
     
     override func viewWillAppear(_ animated: Bool) {
         filterText = ""
+        searchBar?.text = ""
+        filtered = []
+        tblSearch.reloadData()
     }
     
     func createSearchTable(){
@@ -870,7 +873,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         else if(arrString.count == 2){
             filterText = String(format : "%@,%@", arrString.object(at: 0) as! String, arrString.object(at: 1) as! String)
         }
-        else{
+        else if(arrString.count > 2){
             
            filterText = String(format : "%@,%@ + %d filters", arrString.object(at: 0) as! String, arrString.object(at: 1) as! String, arrString.count - 2)
         }

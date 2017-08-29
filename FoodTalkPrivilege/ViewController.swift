@@ -44,10 +44,10 @@ class ViewController: UIViewController, UIScrollViewDelegate {
         btnSignIn?.titleLabel?.textAlignment = .left
     }
     
-    func addNotificationToRecievePaymentCompletion(){
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(self.paymentCompletionCallBack), name: NSNotification.Name("INSTAMOJO"), object: nil)
-    }
+//    func addNotificationToRecievePaymentCompletion(){
+//        
+//        NotificationCenter.default.addObserver(self, selector: #selector(self.paymentCompletionCallBack), name: NSNotification.Name("INSTAMOJO"), object: nil)
+//    }
     
     func paymentCompletionCallBack() {
     //    isPaymentComplete = true

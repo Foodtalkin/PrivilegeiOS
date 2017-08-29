@@ -79,22 +79,13 @@ func webServiceCallingPut (_ url : String, parameters : NSDictionary){
 }
 
 func webServiceForRefreshToken(_ url : String, parameters : NSDictionary){
-//    if((UserDefaults.standard.value(forKey: "counterSessionExpire")) != nil){
-//        
-//    }
-//    else{
-//        UserDefaults.standard.set(0, forKey: "counterSessionExpire")
-//    }
-   // var counter = UserDefaults.standard.value(forKey: "counterSessionExpire") as! Int
- //   counter = counter + 1
- //   UserDefaults.standard.setValue(counter, forKey: "counterSessionExpire")
- //   if(counter < 2){
+
     var request = URLRequest(url: URL(string: String(format: "%@%@", baseUrl, "refreshsession"))!)
     request.httpMethod = "POST"
     var token = ""
-    
+    if((UserDefaults.standard.object(forKey: "token")) != nil){
         token = UserDefaults.standard.object(forKey: "token") as! String
-
+    
     
     let postString = ["refresh_token" : token] as Dictionary<String, String>
     do {
@@ -159,31 +150,20 @@ func webServiceForRefreshToken(_ url : String, parameters : NSDictionary){
         }
     }
     task.resume()
-//    }
-//    else{
-//        let error = NSError()
-//       delegate?.serviceFailedWitherror(error)
-//    }
+    }
+    else{
+        let error = NSError()
+        delegate?.serviceFailedWitherror(error)
+    }
     
 }
 
 func webServiceForGetRefreshToken(_ url : String){
-//    if((UserDefaults.standard.value(forKey: "counterSessionExpire")) != nil){
-//        
-//    }
-//    else{
-//        UserDefaults.standard.set(0, forKey: "counterSessionExpire")
-//    }
-//    var counter = UserDefaults.standard.value(forKey: "counterSessionExpire") as! Int
-//    counter = counter + 1
-//    UserDefaults.standard.setValue(counter, forKey: "counterSessionExpire")
-//    
-//    if(counter < 2){
 
     var request = URLRequest(url: URL(string: String(format: "%@%@", baseUrl, "refreshsession"))!)
     request.httpMethod = "POST"
     var token = ""
-    
+    if((UserDefaults.standard.object(forKey: "token")) != nil){
     token = UserDefaults.standard.object(forKey: "token") as! String
     
     
@@ -239,12 +219,12 @@ func webServiceForGetRefreshToken(_ url : String){
         }
     }
     task.resume()
-//    }
-//    else{
-//        let error = NSError()
-//        delegate?.serviceFailedWitherror(error)
-//    }
-    
+
+    }
+    else{
+        let error = NSError()
+        delegate?.serviceFailedWitherror(error)
+    }
 }
 
 

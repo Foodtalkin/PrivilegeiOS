@@ -51,10 +51,6 @@
 		7540DCDE1ECF1A0000102692 /* cancelMaterial@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7540DCDC1ECF1A0000102692 /* cancelMaterial@3x.png */; };
 		7540DCEB1ED2C61E00102692 /* wireless3@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7540DCE91ED2C61E00102692 /* wireless3@2x.png */; };
 		7540DCEC1ED2C61E00102692 /* wireless3@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7540DCEA1ED2C61E00102692 /* wireless3@3x.png */; };
-		7562F30E1F0F5F12009F71AD /* Instamojo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7562F30C1F0F5F12009F71AD /* Instamojo.framework */; };
-		7562F30F1F0F5F12009F71AD /* JuspaySafeBrowser.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7562F30D1F0F5F12009F71AD /* JuspaySafeBrowser.bundle */; };
-		7562F3101F0F5F24009F71AD /* Instamojo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7562F30C1F0F5F12009F71AD /* Instamojo.framework */; };
-		7562F3111F0F5F24009F71AD /* Instamojo.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 7562F30C1F0F5F12009F71AD /* Instamojo.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		7562F31E1F14CB78009F71AD /* OfferTypeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7562F31C1F14CB78009F71AD /* OfferTypeTableViewCell.swift */; };
 		7562F31F1F14CB78009F71AD /* OfferTypeTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7562F31D1F14CB78009F71AD /* OfferTypeTableViewCell.xib */; };
 		756B07121EAF302C00E682F3 /* StoreImageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756B07101EAF302C00E682F3 /* StoreImageTableViewCell.swift */; };
@@ -282,7 +278,6 @@
 			files = (
 				758F26F21F34919A00D0A31E /* FBAudienceNetworkDynamicFramework.framework in Embed Frameworks */,
 				75895AA81EB8720500B82CF6 /* Alamofire.framework in Embed Frameworks */,
-				7562F3111F0F5F24009F71AD /* Instamojo.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -342,8 +337,6 @@
 		7540DCDC1ECF1A0000102692 /* cancelMaterial@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "cancelMaterial@3x.png"; path = "FoodTalkPrivilege/Images/cancelMaterial@3x.png"; sourceTree = "<group>"; };
 		7540DCE91ED2C61E00102692 /* wireless3@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "wireless3@2x.png"; path = "FoodTalkPrivilege/Images/wireless3@2x.png"; sourceTree = "<group>"; };
 		7540DCEA1ED2C61E00102692 /* wireless3@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "wireless3@3x.png"; path = "FoodTalkPrivilege/Images/wireless3@3x.png"; sourceTree = "<group>"; };
-		7562F30C1F0F5F12009F71AD /* Instamojo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Instamojo.framework; path = FoodTalkPrivilege/Instamojo.framework; sourceTree = "<group>"; };
-		7562F30D1F0F5F12009F71AD /* JuspaySafeBrowser.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = JuspaySafeBrowser.bundle; path = FoodTalkPrivilege/JuspaySafeBrowser.bundle; sourceTree = "<group>"; };
 		7562F31C1F14CB78009F71AD /* OfferTypeTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OfferTypeTableViewCell.swift; sourceTree = "<group>"; };
 		7562F31D1F14CB78009F71AD /* OfferTypeTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OfferTypeTableViewCell.xib; sourceTree = "<group>"; };
 		756B07101EAF302C00E682F3 /* StoreImageTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoreImageTableViewCell.swift; sourceTree = "<group>"; };
@@ -510,11 +503,9 @@
 				7526FADA1EF00EE50052DD09 /* AudioToolbox.framework in Frameworks */,
 				758F26EE1F348F3000D0A31E /* FBSDKShareKit.framework in Frameworks */,
 				7526FAD81EF00DB30052DD09 /* libsqlite3.tbd in Frameworks */,
-				7562F3101F0F5F24009F71AD /* Instamojo.framework in Frameworks */,
 				758F26E51F348F3000D0A31E /* Bolts.framework in Frameworks */,
 				758F26E31F348F3000D0A31E /* AccountKit.framework in Frameworks */,
 				7532221A1EDD57C100190C01 /* MessageUI.framework in Frameworks */,
-				7562F30E1F0F5F12009F71AD /* Instamojo.framework in Frameworks */,
 				75AC9F631ED81BF9009DDCF9 /* libc++.1.tbd in Frameworks */,
 				7526FACC1EF00B620052DD09 /* ParseFacebookUtils.framework in Frameworks */,
 				758F26ED1F348F3000D0A31E /* FBSDKPlacesKit.framework in Frameworks */,
@@ -800,8 +791,6 @@
 				7537E3E31F46FBAF009F79C2 /* SystemConfiguration.framework */,
 				7537E3DA1F46FB81009F79C2 /* Security.framework */,
 				756C9E621F26162F00C25220 /* AdSupport.framework */,
-				7562F30C1F0F5F12009F71AD /* Instamojo.framework */,
-				7562F30D1F0F5F12009F71AD /* JuspaySafeBrowser.bundle */,
 				7526FAD91EF00EE50052DD09 /* AudioToolbox.framework */,
 				7526FAD71EF00DB30052DD09 /* libsqlite3.tbd */,
 				7526FAC41EF00B620052DD09 /* Bolts.framework */,
@@ -1109,7 +1098,6 @@
 				75AC9F761ED8694E009DDCF9 /* payment@2x.png in Resources */,
 				75895AD91EC3330C00B82CF6 /* FilterCostTableViewCell.xib in Resources */,
 				758F26261F2B578300D0A31E /* screen4.png in Resources */,
-				7562F30F1F0F5F12009F71AD /* JuspaySafeBrowser.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1188,7 +1176,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Fabric/run\" 1dd9b3a281340dc23f1c672a7330fa1119c5a7b8 2722aa233fbe36f5370c5495b2a677d3fc9d0e665bb6926e09e5daefe8d3c124";
+			shellScript = "\"${PODS_ROOT}/Fabric/run\" 85e7717124c7a0097628060a3d2431f3889a9fab 89311219b1e53c0765a2c2250038b98e96effae7d2e623d744fae388533f8148";
 		};
 		85F3059CE40F2C9947FE0850 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;

@@ -266,7 +266,7 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
         }
         
         
-        self.collectionView.reloadItems(at: self.collectionView.indexPathsForVisibleItems)
+ //       self.collectionView.reloadItems(at: self.collectionView.indexPathsForVisibleItems)
         self.collectionView.delegate = self
         self.collectionView.dataSource = self
         self.collectionView.backgroundColor = UIColor.clear
@@ -746,7 +746,7 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
             UserDefaults.standard.setValue(nil, forKey: "userDetails")
             UserDefaults.standard.setValue(nil, forKey: "session")
             UserDefaults.standard.setValue(nil, forKey: "expiry")
-          //  UserDefaults.standard.setValue(0, forKey: "counterSessionExpire")
+            UserDefaults.standard.setValue(nil, forKey: "token")
             FBSDKAppEvents.logEvent("logout")
             self.navigationController?.popToRootViewController(animated: true)
         }
@@ -1075,7 +1075,7 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
                     UserDefaults.standard.setValue(nil, forKey: "userDetails")
                     UserDefaults.standard.setValue(nil, forKey: "session")
                     UserDefaults.standard.setValue(nil, forKey: "expiry")
-                    
+                    UserDefaults.standard.setValue(nil, forKey: "token")
                     self.navigationController!.popToViewController(viewControllers[ind], animated: true);
                     isFind = true
                     break
@@ -1087,7 +1087,7 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
                 UserDefaults.standard.setValue(nil, forKey: "userDetails")
                 UserDefaults.standard.setValue(nil, forKey: "session")
                 UserDefaults.standard.setValue(nil, forKey: "expiry")
-                
+                UserDefaults.standard.setValue(nil, forKey: "token")
                 let openPost = self.storyboard!.instantiateViewController(withIdentifier: "ViewController") as! ViewController;
                 self.navigationController!.visibleViewController!.navigationController!.pushViewController(openPost, animated:true);
             }

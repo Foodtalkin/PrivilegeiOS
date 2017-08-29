@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Crashlytics
 
 var dictSessionInfo = NSDictionary()
 
@@ -345,6 +346,10 @@ class LoginViewController: UIViewController, WebServiceCallingDelegate {
                 }
                 else{
                     loginAs = "user"
+                    Answers.logSignUp(withMethod: "SignUp",
+                                                success: true,
+                                                customAttributes: [:])
+                    
                     UserDefaults.standard.setValue(nil, forKey: "userDetails")
                     UserDefaults.standard.setValue(nil, forKey: "session")
                     let openPost = self.storyboard!.instantiateViewController(withIdentifier: "BuySignup") as! BuySignupViewController;
@@ -374,26 +379,26 @@ class LoginViewController: UIViewController, WebServiceCallingDelegate {
     }
     
     
-    func refundTheAmount(amount: String, transctionID: String) {
-        let url: String = "https://sample-sdk-server.instamojo.com/refund/"
-        let request = NSMutableURLRequest(url: NSURL(string: url)! as URL)
-        request.httpMethod = "POST"
-        let session = URLSession.shared
-        let env = "Test Environment"
-        let params = ["env": env, "transaction_id": transctionID, "amount": "1200", "type": "PTH", "body": "Refund the Amount"] as [String : Any]
-        request.setBodyContent(parameters: params)
-        request.addValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
-        request.addValue("Bearer " + accessToken, forHTTPHeaderField: "Authorization")
-        
-        let task = session.dataTask(with: request as URLRequest, completionHandler: {_, _, error -> Void in
-            if error == nil {
-                print("Refund intiated successfully")
-            } else {
-                print("Failed to intiate refund")
-            }
-        })
-        task.resume()
-    }
+//    func refundTheAmount(amount: String, transctionID: String) {
+//        let url: String = "https://sample-sdk-server.instamojo.com/refund/"
+//        let request = NSMutableURLRequest(url: NSURL(string: url)! as URL)
+//        request.httpMethod = "POST"
+//        let session = URLSession.shared
+//        let env = "Test Environment"
+//        let params = ["env": env, "transaction_id": transctionID, "amount": "1200", "type": "PTH", "body": "Refund the Amount"] as [String : Any]
+//        request.setBodyContent(parameters: params)
+//        request.addValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+//        request.addValue("Bearer " + accessToken, forHTTPHeaderField: "Authorization")
+//        
+//        let task = session.dataTask(with: request as URLRequest, completionHandler: {_, _, error -> Void in
+//            if error == nil {
+//                print("Refund intiated successfully")
+//            } else {
+//                print("Failed to intiate refund")
+//            }
+//        })
+//        task.resume()
+//    }
 
     
     //MARK:- vibrate Label

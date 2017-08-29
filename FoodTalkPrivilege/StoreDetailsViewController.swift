@@ -121,8 +121,11 @@ class StoreDetailsViewController: UIViewController, UITableViewDataSource, UITab
         }
         else if(indexPath.row == 1){
             let cell = tableView.dequeueReusableCell(withIdentifier: "AddressCell", for: indexPath) as! AddressCussineTableViewCell
+            
             cell.lblAddress?.text = dictDetails.object(forKey: "address") as? String
-            cell.lblTime?.text = dictDetails.object(forKey: "work_hours") as? String
+            let strAddress = dictDetails.object(forKey: "work_hours") as? String
+            let newString = strAddress?.replacingOccurrences(of: ",", with: "\n")
+            cell.lblTime?.text = newString
             if(arrCousins.count > 0){
             var strCusin = (arrCousins.object(at: 0) as! NSDictionary).object(forKey: "title") as? String
             for index in 1..<arrCousins.count{
@@ -172,9 +175,9 @@ class StoreDetailsViewController: UIViewController, UITableViewDataSource, UITab
             if(dictDetails.count > 0){
             cell.lblTitle?.text = restaurantName
             let url = dictDetails.object(forKey: "cover_image") as? String
-          //  setImageWithUrl(url!, imgView: cell.imgOffer!)
+          
                 let img = UIImage(named : "mask.png")
-         //   setPlaceHolderImage(with: url!, placeholderImage: img!, imgView: cell.imgOffer!)
+         
                 DispatchQueue.main.async{
                     setPlaceHolderImage(with: url!, placeholderImage: img!, imgView: cell.imgOffer!)
                 }
@@ -480,7 +483,7 @@ class StoreDetailsViewController: UIViewController, UITableViewDataSource, UITab
     
     @IBAction func nextTapped(_ sender : UIButton){
         if(loginAs == "user"){
-         //   webServiceForRedeem()
+         
             numberRedeem = (lblNumber?.text)!
             let openPost = self.storyboard!.instantiateViewController(withIdentifier: "RestaurantPin") as! RestaurantPinViewController;
             self.navigationController!.visibleViewController!.navigationController!.pushViewController(openPost, animated:true);
@@ -694,8 +697,7 @@ class StoreDetailsViewController: UIViewController, UITableViewDataSource, UITab
     func serviceFailedWitherror(_ error : NSError){
         stopAnimation()
         self.view.isUserInteractionEnabled = true
-//        var counter = UserDefaults.standard.value(forKey: "counterSessionExpire") as! Int
-//        if(counter > 0){
+
             let viewControllers: [UIViewController] = self.navigationController!.viewControllers as [UIViewController];
             var ind = 0
             var isFind = false
@@ -722,10 +724,7 @@ class StoreDetailsViewController: UIViewController, UITableViewDataSource, UITab
                     self.navigationController!.visibleViewController!.navigationController!.pushViewController(openPost, animated:true);
                 }
             }
-//            
-//            counter = 0
-//            UserDefaults.standard.set(counter, forKey: "counterSessionExpire")
-//        }
+
     }
     
     func serviceUploadProgress(_ myprogress : float_t){

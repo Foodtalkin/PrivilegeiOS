@@ -93,7 +93,6 @@ class SelectOutletViewController: UIViewController, UITableViewDataSource, UITab
                 let openPost = self.storyboard!.instantiateViewController(withIdentifier: "StoreDetails") as! StoreDetailsViewController;
                 self.navigationController!.visibleViewController!.navigationController!.pushViewController(openPost, animated:true);
             }
-         
         }
     }
     
@@ -141,38 +140,10 @@ class SelectOutletViewController: UIViewController, UITableViewDataSource, UITab
     func serviceFailedWitherror(_ error : NSError){
         stopAnimation()
         self.view.isUserInteractionEnabled = true
-//        var counter = UserDefaults.standard.value(forKey: "counterSessionExpire") as! Int
-//        if(counter > 0){
-            let viewControllers: [UIViewController] = self.navigationController!.viewControllers as [UIViewController];
-            var ind = 0
-            var isFind = false
-            for vc in viewControllers{
-                
-                if(vc.isKind(of: ViewController.self)) {
-                    UserDefaults.standard.setValue(nil, forKey: "userDetails")
-                    UserDefaults.standard.setValue(nil, forKey: "session")
-                    UserDefaults.standard.setValue(nil, forKey: "expiry")
-                    
-                    self.navigationController!.popToViewController(viewControllers[ind], animated: true);
-                    isFind = true
-                    break
-                }
-                ind = ind + 1
-            }
-            if(isFind == false){
-                if(ind == viewControllers.count){
-                    UserDefaults.standard.setValue(nil, forKey: "userDetails")
-                    UserDefaults.standard.setValue(nil, forKey: "session")
-                    UserDefaults.standard.setValue(nil, forKey: "expiry")
-                    
-                    let openPost = self.storyboard!.instantiateViewController(withIdentifier: "ViewController") as! ViewController;
-                    self.navigationController!.visibleViewController!.navigationController!.pushViewController(openPost, animated:true);
-                }
-            }
-//
-//            counter = 0
-//            UserDefaults.standard.set(counter, forKey: "counterSessionExpire")
-//        }
+        UserDefaults.standard.setValue(nil, forKey: "userDetails")
+        UserDefaults.standard.setValue(nil, forKey: "session")
+        UserDefaults.standard.setValue(nil, forKey: "expiry")
+        self.navigationController?.popToRootViewController(animated: true)
     }
     
     func serviceUploadProgress(_ myprogress : float_t){

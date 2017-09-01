@@ -28,7 +28,7 @@ func webServiceCallingPost (_ url : String, parameters : NSDictionary){
     Alamofire.request(url, method: .post, parameters: parameters as? Parameters, encoding: JSONEncoding.default, headers: headers as? HTTPHeaders).responseJSON { response in
         if(response.result.isFailure){
             print(response.description);
-         //   delegate?.serviceFailedWitherror(response.result.error! as NSError)
+         
         }else{
             if let JSON = response.result.value {
                 
@@ -42,7 +42,6 @@ func webServiceCallingPost (_ url : String, parameters : NSDictionary){
                 else{
                     delegate?.getDataFromWebService((JSON as! NSDictionary).mutableCopy() as! NSMutableDictionary)
                 }
-                
             }
         }
     }

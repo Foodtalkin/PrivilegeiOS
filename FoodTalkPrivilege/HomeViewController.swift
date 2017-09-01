@@ -18,7 +18,7 @@ var selectedWebType = ""
 var strOneLiner = ""
 var restaurantName = ""
 
-class HomeViewController: UIViewController,UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UITableViewDataSource, UITableViewDelegate, WebServiceCallingDelegate, MFMailComposeViewControllerDelegate, UIScrollViewDelegate {
+class HomeViewController: UIViewController,UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UITableViewDataSource, UITableViewDelegate, WebServiceCallingDelegate, MFMailComposeViewControllerDelegate, UIScrollViewDelegate, CLLocationManagerDelegate {
     
     fileprivate let barSize : CGFloat = 44.0
     fileprivate let kCellReuse : String = "PackCell"
@@ -41,6 +41,12 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
     var arrCards = NSMutableArray()
     var savingValue = ""
     
+    var viewBottom = UIView()
+    var locationManager = CLLocationManager()
+    var latitude = ""
+    var longitude = ""
+    var isLocationCalled : Bool = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -57,15 +63,15 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
         self.view.addGestureRecognizer(swipeDown)
         
         
-        DispatchQueue.main.async{
-         self.callWebServiceForHome()
-        }
       //  Analytics.setScreenName("Home", screenClass: "Home")
         FBSDKAppEvents.logEvent("First_Enter")
 
+        locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.activityType = .automotiveNavigation
+
+        
     }
-
-
     
     func respondToSwipeGesture(gesture: UIGestureRecognizer) {
         if let swipeGesture = gesture as? UISwipeGestureRecognizer {
@@ -120,6 +126,158 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
         createMenuView()
         tblMenu.reloadData()
         self.navigationController?.isNavigationBarHidden = true
+        
+        createBottomView()
+        
+        findLocationService()
+    }
+    
+    func createBottomView(){
+        viewBottom.frame = CGRect(x : 0, y : self.view.frame.size.height - 60, width : self.view.frame.size.width, height : 60)
+        viewBottom.backgroundColor = colorDarkGray
+        self.view.addSubview(viewBottom)
+        
+        let lblText = UILabel(frame : CGRect(x: 20, y: 0, width : viewBottom.frame.size.width - 160, height : viewBottom.frame.size.height))
+        lblText.text = "Enable location access to see deals at nearby restaurants."
+        lblText.textColor = .white
+        lblText.font = UIFont(name : fontAbril, size : 14)
+        lblText.numberOfLines = 0
+        viewBottom.addSubview(lblText)
+        
+        let btnEnable = UIButton(frame : CGRect(x: viewBottom.frame.size.width - 140, y: 10, width : 100, height: 40))
+        btnEnable.backgroundColor = colorLightGold
+        btnEnable.setTitle("ENABLE", for: .normal)
+        btnEnable.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
+        btnEnable.setTitleColor(colorDarkGray, for: .normal)
+        btnEnable.addTarget(self, action: #selector(HomeViewController.enableLocation(_:)), for: .touchUpInside)
+        setDownLine(btnEnable)
+        viewBottom.addSubview(btnEnable)
+        
+        let btnClose = UIButton(frame : CGRect(x: viewBottom.frame.size.width - 35, y: 17.5, width : 25, height: 25))
+        btnClose.setImage(UIImage(named : "cancelMaterial.png"), for: .normal)
+        btnClose.setTitleColor(.white, for: .normal)
+        btnClose.addTarget(self, action: #selector(HomeViewController.closeLocation(_:)), for: .touchUpInside)
+        viewBottom.addSubview(btnClose)
+        
+    }
+    
+    func closeLocation(_ sender : UIButton){
+        viewBottom.isHidden = true
+        viewBase?.frame.size.height = (viewBase?.frame.size.height)! + 60
+    }
+    
+    func selectLocation(_ sender : UIButton){
+    //    locationManager.startUpdatingLocation()
+    }
+    
+    func enableLocation(_ sender : UIButton){
+        if #available(iOS 10.0, *) {
+            UIApplication.shared.open(URL(string:"App-prefs:root=LOCATION_SERVICES")!, options: [:], completionHandler: nil)
+        } else {
+            // Fallback on earlier versions
+        }
+
+        
+        if CLLocationManager.locationServicesEnabled() {
+            switch(CLLocationManager.authorizationStatus()) {
+            case .notDetermined, .restricted, .denied:
+                if #available(iOS 10.0, *) {
+                    UIApplication.shared.open(URL(string:"App-prefs:root=LOCATION_SERVICES")!, options: [:], completionHandler: nil)
+                } else {
+                    // Fallback on earlier versions
+                }
+            case .authorizedAlways, .authorizedWhenInUse:
+                        isLocationCalled = false
+                        locationManager.delegate = self
+                        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+                        locationManager.activityType = .automotiveNavigation
+                        locationManager.requestAlwaysAuthorization()
+                        locationManager.requestWhenInUseAuthorization()
+                        locationManager.startUpdatingLocation()
+                
+            }
+        } else {
+            print("Location services are not enabled")
+        }
+    }
+    
+    //MARK:- location Delegates
+    
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        locationManager.stopUpdatingLocation()
+        if ((error) != nil) {
+                print(error)
+        }
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        if(isLocationCalled == false){
+            let locationArray = locations as NSArray
+            let locationObj = locationArray.lastObject as! CLLocation
+            
+        
+        latitude = "\(locationObj.coordinate.latitude)"
+        longitude = "\(locationObj.coordinate.longitude)"
+            
+        manager.stopUpdatingLocation()
+       
+        arrCards.removeAllObjects()
+        DispatchQueue.main.async{
+            self.callWebServiceForLocation()
+        }
+                    viewBottom.isHidden = true
+            if(loginAs == "user"){
+                viewBase?.frame.size.height = (viewBase?.frame.size.height)! + 50
+                collectionView.frame.size.height = (viewBase?.frame.size.height)!
+            }
+            else{
+                viewBase?.frame.size.height = (viewBase?.frame.size.height)! + 50
+                collectionView.frame.size.height = (viewBase?.frame.size.height)!
+            }
+            
+                    locationManager.startUpdatingLocation()
+            isLocationCalled = true
+        }
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        
+        switch status {
+        case CLAuthorizationStatus.restricted: break
+            
+        case CLAuthorizationStatus.denied: break
+            
+        case CLAuthorizationStatus.notDetermined: break
+            
+        case CLAuthorizationStatus.authorizedWhenInUse : break
+         //   manager.startUpdatingLocation()
+            
+        default: break
+            
+        }
+        
+    }
+    
+    //MARK:- find LOcation Services
+    
+    func findLocationService(){
+        if CLLocationManager.locationServicesEnabled() {
+            switch(CLLocationManager.authorizationStatus()) {
+            case .notDetermined, .restricted, .denied:
+                viewBottom.isHidden = false
+                
+                DispatchQueue.main.async{
+                    self.callWebServiceForHome()
+                }
+            case .authorizedAlways, .authorizedWhenInUse:
+                viewBottom.isHidden = true
+                
+             locationManager.startUpdatingLocation()
+                
+            }
+        } else {
+            print("Location services are not enabled")
+        }
     }
     
     func createBuyView(){
@@ -299,6 +457,19 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
                 cell.lblMoney?.text = String(format : "\u{20B9} %@", (arrCards.object(at: indexPath.row) as! NSDictionary).object(forKey: "cost") as! String)
                 
                 let imgCell = (arrCards.object(at: indexPath.row) as! NSDictionary).object(forKey: "card_image") as! String
+                cell.lblDistance?.layer.cornerRadius = 9.5
+                cell.lblDistance?.layer.masksToBounds = false
+                dropShadow(color: .darkGray, opacity: 1.0, offSet: CGSize(width: -1, height: 1), radius: 1, scale: true, lbl: cell.lblDistance!)
+                if(((arrCards.object(at: indexPath.row) as! NSDictionary).object(forKey: "distance")) != nil){
+                    cell.lblDistance?.isHidden = false
+                    var distance = (arrCards.object(at: indexPath.row) as! NSDictionary).object(forKey: "distance") as! Double
+                    distance = distance / 1000
+                    cell.lblDistance?.text = String(format : "%.1f KM", distance)
+                }
+                else{
+                    cell.lblDistance?.isHidden = true
+                }
+                
                 //      setImageWithUrl(imgCell, imgView: cell.packCellImage!)
                 DispatchQueue.main.async{
                     
@@ -344,8 +515,21 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
         cell.backgroundColor = .white
         
         cell.lblMoney?.text = String(format : "\u{20B9} %@", (arrCards.object(at: indexPath.row - 1) as! NSDictionary).object(forKey: "cost") as! String)
-        
+        cell.lblDistance?.layer.cornerRadius = 9.5
+            cell.lblDistance?.layer.masksToBounds = false
+            dropShadow(color: .darkGray, opacity: 1.0, offSet: CGSize(width: -1, height: 1), radius: 1, scale: true, lbl: cell.lblDistance!)
         let imgCell = (arrCards.object(at: indexPath.row - 1) as! NSDictionary).object(forKey: "card_image") as! String
+            
+            if(((arrCards.object(at: indexPath.row - 1) as! NSDictionary).object(forKey: "distance")) != nil){
+                cell.lblDistance?.isHidden = false
+                var distance = (arrCards.object(at: indexPath.row - 1) as! NSDictionary).object(forKey: "distance") as! Double
+                distance = distance / 1000
+                cell.lblDistance?.text = String(format : "%.1f KM", distance)
+            }
+            else{
+                cell.lblDistance?.isHidden = true
+            }
+            
   //      setImageWithUrl(imgCell, imgView: cell.packCellImage!)
         DispatchQueue.main.async{
        
@@ -393,6 +577,18 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
                 
                 setImageWithUrl(imgCell, imgView: cell.packCellImage!)
                 
+            }
+            cell.lblDistance?.layer.cornerRadius = 9.5
+            cell.lblDistance?.layer.masksToBounds = false
+            dropShadow(color: .darkGray, opacity: 1.0, offSet: CGSize(width: -1, height: 1), radius: 1, scale: true, lbl: cell.lblDistance!)
+            if(((arrCards.object(at: indexPath.row) as! NSDictionary).object(forKey: "distance")) != nil){
+                cell.lblDistance?.isHidden = false
+                var distance = ((arrCards.object(at: indexPath.row) as! NSDictionary).object(forKey: "distance") as! NSString).doubleValue
+                distance = distance / 1000
+                cell.lblDistance?.text = String(format : "%.1f KM", distance)
+            }
+            else{
+                cell.lblDistance?.isHidden = true
             }
             
             cell.lblRestaurant?.text = (arrCards.object(at: indexPath.row) as! NSDictionary).object(forKey: "name") as? String
@@ -1009,10 +1205,39 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
         }
     }
     
+    func callWebServiceForLocation(){
+        showActivityIndicator(view: self.view)
+        if (isConnectedToNetwork() == true){
+            let url = String(format: "%@%@?latitude=%@&longitude=%@", baseUrl,"offers", latitude, longitude)
+            
+            webServiceGet(url)
+            delegate = self
+        }
+        else{
+            stopAnimation()
+            openAlertScreen(self.view)
+            alerButton.addTarget(self, action: #selector(HomeViewController.alertTap), for: .touchUpInside)
+        }
+ 
+    }
+    
     func callWebNextUrl(){
         showActivityIndicator(view: self.view)
         if (isConnectedToNetwork() == true){
             let url = String(format: "%@", nextPageUrl)
+            webServiceGet(url)
+            delegate = self
+        }
+        else{
+            openAlertScreen(self.view)
+            alerButton.addTarget(self, action: #selector(HomeViewController.alertTap), for: .touchUpInside)
+        }
+    }
+    
+    func callWebNextLocationUrl(){
+        showActivityIndicator(view: self.view)
+        if (isConnectedToNetwork() == true){
+            let url = String(format: "%@&latitude=%@&longitude=%@", nextPageUrl,latitude, longitude)
             webServiceGet(url)
             delegate = self
         }
@@ -1064,37 +1289,10 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
     func serviceFailedWitherror(_ error : NSError){
         stopAnimation()
         self.view.isUserInteractionEnabled = true
-//        var counter = UserDefaults.standard.value(forKey: "counterSessionExpire") as! Int
-//        if(counter > 0){
-            let viewControllers: [UIViewController] = self.navigationController!.viewControllers as [UIViewController];
-            var ind = 0
-            var isFind = false
-            for vc in viewControllers{
-                
-                if(vc.isKind(of: ViewController.self)) {
-                    UserDefaults.standard.setValue(nil, forKey: "userDetails")
-                    UserDefaults.standard.setValue(nil, forKey: "session")
-                    UserDefaults.standard.setValue(nil, forKey: "expiry")
-                    UserDefaults.standard.setValue(nil, forKey: "token")
-                    self.navigationController!.popToViewController(viewControllers[ind], animated: true);
-                    isFind = true
-                    break
-                }
-                ind = ind + 1
-            }
-            if(isFind == false){
-            if(ind == viewControllers.count){
-                UserDefaults.standard.setValue(nil, forKey: "userDetails")
-                UserDefaults.standard.setValue(nil, forKey: "session")
-                UserDefaults.standard.setValue(nil, forKey: "expiry")
-                UserDefaults.standard.setValue(nil, forKey: "token")
-                let openPost = self.storyboard!.instantiateViewController(withIdentifier: "ViewController") as! ViewController;
-                self.navigationController!.visibleViewController!.navigationController!.pushViewController(openPost, animated:true);
-            }
-            }
-//            counter = 0
-//            UserDefaults.standard.set(counter, forKey: "counterSessionExpire")
-//        }
+        UserDefaults.standard.setValue(nil, forKey: "userDetails")
+        UserDefaults.standard.setValue(nil, forKey: "session")
+        UserDefaults.standard.setValue(nil, forKey: "expiry")
+        self.navigationController?.popToRootViewController(animated: true)
     }
     
     func serviceUploadProgress(_ myprogress : float_t){
@@ -1104,20 +1302,61 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
     //MARK:- scrollview delegate
     
     
-//    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-//        if(nextPageUrl.characters.count > 0){
-//            callWebNextUrl()
-//        }
-//    }
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+            if(isMoreTapped == false){
+            if(nextPageUrl.characters.count > 0){
+             //   callWebNextUrl()
+                if CLLocationManager.locationServicesEnabled() {
+                    switch(CLLocationManager.authorizationStatus()) {
+                    case .notDetermined, .restricted, .denied:
+                        DispatchQueue.main.async{
+                            self.callWebNextUrl()
+                        }
     
-    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
-        if(isMoreTapped == false){
-        if(nextPageUrl.characters.count > 0){
-            callWebNextUrl()
-        }
-        }
-        
+                    case .authorizedAlways, .authorizedWhenInUse:
+                        viewBottom.isHidden = true
+                        locationManager.startUpdatingLocation()
+                        DispatchQueue.main.async{
+                            self.callWebNextLocationUrl()
+                        }
+    
+                    }
+                    
+                } else {
+                    DispatchQueue.main.async{
+                     self.callWebNextUrl()
+                    }
+                }
+            }
+            }
     }
+    
+//    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+//        if(isMoreTapped == false){
+//        if(nextPageUrl.characters.count > 0){
+//         //   callWebNextUrl()
+//            if CLLocationManager.locationServicesEnabled() {
+//                switch(CLLocationManager.authorizationStatus()) {
+//                case .notDetermined, .restricted, .denied: break
+//
+//                    
+//                case .authorizedAlways, .authorizedWhenInUse:
+//                    viewBottom.isHidden = true
+//                    locationManager.startUpdatingLocation()
+//                    DispatchQueue.main.async{
+//                        self.callWebNextLocationUrl()
+//                    }
+//
+//                }
+//            } else {
+//                DispatchQueue.main.async{
+//                 self.callWebNextUrl()
+//                }
+//            }
+//        }
+//        }
+//        
+//    }
     
     //MARK:- contactUS
     
@@ -1151,6 +1390,20 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
             break
         }
         self.dismiss(animated: true, completion: nil)
+    }
+    
+    //MARK:- Shadow
+    
+    func dropShadow(color: UIColor, opacity: Float = 0.5, offSet: CGSize, radius: CGFloat = 1, scale: Bool = true, lbl : UILabel) {
+        lbl.layer.masksToBounds = false
+        lbl.layer.shadowColor = color.cgColor
+        lbl.layer.shadowOpacity = opacity
+        lbl.layer.shadowOffset = offSet
+        lbl.layer.shadowRadius = radius
+        
+        lbl.layer.shadowPath = UIBezierPath(rect: lbl.bounds).cgPath
+        lbl.layer.shouldRasterize = true
+        lbl.layer.rasterizationScale = scale ? UIScreen.main.scale : 1
     }
 
     override func didReceiveMemoryWarning() {

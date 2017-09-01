@@ -23,12 +23,11 @@ class FullImageViewController: UIViewController, iCarouselDataSource, iCarouselD
         carousal?.currentItemIndex = indexSelectedImage
         
         lblNumber?.frame = CGRect(x: self.view.frame.size.width/2 - 64, y: self.view.frame.size.height - 50, width : 127, height : 30)
-        lblNumber?.text = String(format : "%d/%d", 1, arrImages.count)
+        lblNumber?.text = String(format : "%d/%d", indexSelectedImage + 1, arrImages.count)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         carousal?.isHidden = false
-        
     }
     
     //MARK:- CarousalDelegates
@@ -57,7 +56,17 @@ class FullImageViewController: UIViewController, iCarouselDataSource, iCarouselD
             
         }
         else{
-            itemView = view!;
+           // itemView = view!;
+            itemView = UIView(frame:CGRect(x: 0, y:self.view.frame.size.height/2 - 250, width:carousel.frame.size.width, height:400))
+            itemView.backgroundColor = .clear
+            let img = UIImageView(frame : CGRect(x: 0, y: 0, width: itemView.frame.size.width, height: itemView.frame.size.height))
+            img.contentMode = .scaleAspectFit
+            itemView.addSubview(img)
+            var url = ""
+            if(arrImages.count > 0){
+                url = (arrImages.object(at: index) as! NSDictionary).object(forKey: "url") as! String
+                setImageWithUrl(url, imgView: img)
+            }
         }
         return itemView
     }

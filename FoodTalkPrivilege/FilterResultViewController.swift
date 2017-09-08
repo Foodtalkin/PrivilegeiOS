@@ -93,20 +93,23 @@ class FilterResultViewController: UIViewController,UICollectionViewDataSource, U
         
         cell.lblRestaurant?.text = (arrFilteredData.object(at: indexPath.row) as! NSDictionary).object(forKey: "name") as? String
         
+       // cell.lblDistance?.isHidden = true
+        
+        if(((arrFilteredData.object(at: indexPath.row) as! NSDictionary).object(forKey: "distance")) != nil){
+            cell.lblDistance?.isHidden = false
+            var distance = ((arrFilteredData.object(at: indexPath.row) as! NSDictionary).object(forKey: "distance") as! NSString).doubleValue
+            distance = distance / 1000
+            cell.lblDistance?.text = String(format : "%.1f KM", distance)
+        }
+        else{
+            cell.lblDistance?.isHidden = true
+        }
         
         let outletCount = (arrFilteredData.object(at: indexPath.row) as! NSDictionary).object(forKey: "primary_cuisine") as? String
         
-   //     let offerCount = ((arrFilteredData.object(at: indexPath.row) as! NSDictionary).object(forKey: "offer_count") as? NSString)?.intValue
-        
-//        if(outletCount! > 1){
-//            cell.lblLocation?.text = String(format : "%d Locations", outletCount!)
-//        }
-//        else if(offerCount! > 1){
-//            cell.lblLocation?.text = String(format : "%d Offers", offerCount!)
-//        }
-//        else{
+
             cell.lblLocation?.text = outletCount
-      //  }
+     
         let amount = ((arrFilteredData.object(at: indexPath.row) as! NSDictionary).object(forKey: "cost") as! NSString).intValue
         if(amount < 500){
             cell.lblMoney?.text = String(format : "%@", "\u{20B9}")
@@ -228,6 +231,12 @@ class FilterResultViewController: UIViewController,UICollectionViewDataSource, U
             var url = ""
             
             url = String(format : "%@&%@", nextUrlFilter, selectedFilterUrl)
+            if(latitude == ""){
+                
+            }
+            else{
+                url = String(format : "%@&latitude=%@&longitude=%@", url, latitude, longitude)
+            }
             webServiceGet(url)
             delegate = self
         }
@@ -251,38 +260,10 @@ class FilterResultViewController: UIViewController,UICollectionViewDataSource, U
     func serviceFailedWitherror(_ error : NSError){
         stopAnimation()
         self.view.isUserInteractionEnabled = true
-//        var counter = UserDefaults.standard.value(forKey: "counterSessionExpire") as! Int
-//        if(counter > 0){
-            let viewControllers: [UIViewController] = self.navigationController!.viewControllers as [UIViewController];
-            var ind = 0
-            var isFind = false
-            for vc in viewControllers{
-                
-                if(vc.isKind(of: ViewController.self)) {
-                    UserDefaults.standard.setValue(nil, forKey: "userDetails")
-                    UserDefaults.standard.setValue(nil, forKey: "session")
-                    UserDefaults.standard.setValue(nil, forKey: "expiry")
-                    
-                    self.navigationController!.popToViewController(viewControllers[ind], animated: true);
-                    isFind = true
-                    break
-                }
-                ind = ind + 1
-            }
-            if(isFind == false){
-                if(ind == viewControllers.count){
-                    UserDefaults.standard.setValue(nil, forKey: "userDetails")
-                    UserDefaults.standard.setValue(nil, forKey: "session")
-                    UserDefaults.standard.setValue(nil, forKey: "expiry")
-                    
-                    let openPost = self.storyboard!.instantiateViewController(withIdentifier: "ViewController") as! ViewController;
-                    self.navigationController!.visibleViewController!.navigationController!.pushViewController(openPost, animated:true);
-                }
-            }
-//
-//            counter = 0
-//            UserDefaults.standard.set(counter, forKey: "counterSessionExpire")
-//        }
+        UserDefaults.standard.setValue(nil, forKey: "userDetails")
+        UserDefaults.standard.setValue(nil, forKey: "session")
+        UserDefaults.standard.setValue(nil, forKey: "expiry")
+        self.navigationController?.popToRootViewController(animated: true)
     }
     
     func serviceUploadProgress(_ myprogress : float_t){

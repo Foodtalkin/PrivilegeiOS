@@ -43,9 +43,10 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
     
     var viewBottom = UIView()
     var locationManager = CLLocationManager()
-    var latitude = ""
-    var longitude = ""
+    
     var isLocationCalled : Bool = false
+    var isLocationEnable : Bool = false
+    var isLocationKill : Bool = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -138,9 +139,9 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
         self.view.addSubview(viewBottom)
         
         let lblText = UILabel(frame : CGRect(x: 20, y: 0, width : viewBottom.frame.size.width - 160, height : viewBottom.frame.size.height))
-        lblText.text = "Enable location access to see deals at nearby restaurants."
+        lblText.text = "Enable location access to discover nearby restaurants"
         lblText.textColor = .white
-        lblText.font = UIFont(name : fontAbril, size : 14)
+        lblText.font = UIFont(name : "Futura-Medium", size : 14)
         lblText.numberOfLines = 0
         viewBottom.addSubview(lblText)
         
@@ -162,6 +163,7 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
     }
     
     func closeLocation(_ sender : UIButton){
+        isLocationKill = true
         viewBottom.isHidden = true
         viewBase?.frame.size.height = (viewBase?.frame.size.height)! + 60
     }
@@ -171,22 +173,14 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
     }
     
     func enableLocation(_ sender : UIButton){
-        if #available(iOS 10.0, *) {
-            UIApplication.shared.open(URL(string:"App-prefs:root=LOCATION_SERVICES")!, options: [:], completionHandler: nil)
-        } else {
-            // Fallback on earlier versions
+        if(UserDefaults.standard.bool(forKey: "isLocationEnable")){
+            isLocationEnable = UserDefaults.standard.bool(forKey: "isLocationEnable")
         }
 
-        
-        if CLLocationManager.locationServicesEnabled() {
-            switch(CLLocationManager.authorizationStatus()) {
-            case .notDetermined, .restricted, .denied:
-                if #available(iOS 10.0, *) {
-                    UIApplication.shared.open(URL(string:"App-prefs:root=LOCATION_SERVICES")!, options: [:], completionHandler: nil)
-                } else {
-                    // Fallback on earlier versions
-                }
-            case .authorizedAlways, .authorizedWhenInUse:
+            if CLLocationManager.locationServicesEnabled() {
+                switch(CLLocationManager.authorizationStatus()) {
+                case .notDetermined, .restricted, .denied:
+                    if(isLocationEnable == false){
                         isLocationCalled = false
                         locationManager.delegate = self
                         locationManager.desiredAccuracy = kCLLocationAccuracyBest
@@ -194,11 +188,55 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
                         locationManager.requestAlwaysAuthorization()
                         locationManager.requestWhenInUseAuthorization()
                         locationManager.startUpdatingLocation()
-                
+                        isLocationEnable = true
+                        UserDefaults.standard.set(true, forKey: "isLocationEnable")
+                    }
+                    else{
+                        
+                if let appSettings = URL(string: UIApplicationOpenSettingsURLString) {
+                            if #available(iOS 10.0, *) {
+                                UIApplication.shared.open(appSettings, options: [:], completionHandler: nil)
+                            } else {
+                                // Fallback on earlier versions
+                            }
+                        }
+                    }
+                    
+                case .authorizedAlways, .authorizedWhenInUse:
+                    isLocationCalled = false
+                    locationManager.delegate = self
+                    locationManager.desiredAccuracy = kCLLocationAccuracyBest
+                    locationManager.activityType = .automotiveNavigation
+                    locationManager.requestAlwaysAuthorization()
+                    locationManager.requestWhenInUseAuthorization()
+                    locationManager.startUpdatingLocation()
+                    
+                }
+            } else {
+                        if(isLocationEnable == false){
+                            isLocationCalled = false
+                            locationManager.delegate = self
+                            locationManager.desiredAccuracy = kCLLocationAccuracyBest
+                            locationManager.activityType = .automotiveNavigation
+                            locationManager.requestAlwaysAuthorization()
+                            locationManager.requestWhenInUseAuthorization()
+                            locationManager.startUpdatingLocation()
+                            isLocationEnable = true
+                            UserDefaults.standard.set(true, forKey: "isLocationEnable")
+                        }
+                        else{
+                print("Location services are not enabled")
+
+            if let appSettings = URL(string: UIApplicationOpenSettingsURLString) {
+                if #available(iOS 10.0, *) {
+                    UIApplication.shared.open(appSettings, options: [:], completionHandler: nil)
+                } else {
+                    // Fallback on earlier versions
+                }
+                }
+                }
             }
-        } else {
-            print("Location services are not enabled")
-        }
+       // }
     }
     
     //MARK:- location Delegates
@@ -228,11 +266,11 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
                     viewBottom.isHidden = true
             if(loginAs == "user"){
                 viewBase?.frame.size.height = (viewBase?.frame.size.height)! + 50
-                collectionView.frame.size.height = (viewBase?.frame.size.height)!
+            //    collectionView.frame.size.height = (viewBase?.frame.size.height)!
             }
             else{
                 viewBase?.frame.size.height = (viewBase?.frame.size.height)! + 50
-                collectionView.frame.size.height = (viewBase?.frame.size.height)!
+           //     collectionView.frame.size.height = (viewBase?.frame.size.height)!
             }
             
                     locationManager.startUpdatingLocation()
@@ -264,8 +302,12 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
         if CLLocationManager.locationServicesEnabled() {
             switch(CLLocationManager.authorizationStatus()) {
             case .notDetermined, .restricted, .denied:
+                if(isLocationKill == false){
                 viewBottom.isHidden = false
-                
+                }
+                else{
+                viewBottom.isHidden = true
+                }
                 DispatchQueue.main.async{
                     self.callWebServiceForHome()
                 }
@@ -277,6 +319,9 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
             }
         } else {
             print("Location services are not enabled")
+            DispatchQueue.main.async{
+                self.callWebServiceForHome()
+            }
         }
     }
     
@@ -462,7 +507,7 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
                 dropShadow(color: .darkGray, opacity: 1.0, offSet: CGSize(width: -1, height: 1), radius: 1, scale: true, lbl: cell.lblDistance!)
                 if(((arrCards.object(at: indexPath.row) as! NSDictionary).object(forKey: "distance")) != nil){
                     cell.lblDistance?.isHidden = false
-                    var distance = (arrCards.object(at: indexPath.row) as! NSDictionary).object(forKey: "distance") as! Double
+                    var distance = ((arrCards.object(at: indexPath.row) as! NSDictionary).object(forKey: "distance") as! NSString).doubleValue
                     distance = distance / 1000
                     cell.lblDistance?.text = String(format : "%.1f KM", distance)
                 }
@@ -522,7 +567,8 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
             
             if(((arrCards.object(at: indexPath.row - 1) as! NSDictionary).object(forKey: "distance")) != nil){
                 cell.lblDistance?.isHidden = false
-                var distance = (arrCards.object(at: indexPath.row - 1) as! NSDictionary).object(forKey: "distance") as! Double
+                
+                var distance = ((arrCards.object(at: indexPath.row - 1) as! NSDictionary).object(forKey: "distance") as! NSString).doubleValue
                 distance = distance / 1000
                 cell.lblDistance?.text = String(format : "%.1f KM", distance)
             }
@@ -1165,6 +1211,7 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
             self.viewBuy.frame = CGRect(x: self.view.frame.size.width/2 + 100, y: (self.viewNavigate?.frame.size.height)!, width: self.view.frame.size.width, height: 50)
             self.viewNavigate?.frame = CGRect(x: self.view.frame.size.width/2 + 100, y: (self.viewNavigate?.frame.origin.y)!, width: (self.viewNavigate?.frame.size.width)!, height: (self.viewNavigate?.frame.size.height)!)
             self.viewBase?.frame = CGRect(x: self.view.frame.size.width/2 + 100, y: (self.viewBase?.frame.origin.y)!, width: (self.viewBase?.frame.size.width)!, height: (self.viewBase?.frame.size.height)!)
+            self.viewBottom.frame = CGRect(x: self.view.frame.size.width/2 + 100, y: (self.viewBottom.frame.origin.y), width: (self.viewBottom.frame.size.width), height: (self.viewBottom.frame.size.height))
         })
             isMoreTapped = true
         }
@@ -1174,6 +1221,7 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
                 self.viewBuy.frame = CGRect(x: 0, y: (self.viewNavigate?.frame.size.height)!, width: self.view.frame.size.width, height: 50)
                 self.viewNavigate?.frame = CGRect(x: 0, y: (self.viewNavigate?.frame.origin.y)!, width: (self.viewNavigate?.frame.size.width)!, height: (self.viewNavigate?.frame.size.height)!)
                 self.viewBase?.frame = CGRect(x: 0, y: (self.viewBase?.frame.origin.y)!, width: (self.viewBase?.frame.size.width)!, height: (self.viewBase?.frame.size.height)!)
+                self.viewBottom.frame = CGRect(x: 0, y: (self.viewBottom.frame.origin.y), width: (self.viewBottom.frame.size.width), height: (self.viewBottom.frame.size.height))
             })
             isMoreTapped = false
         }
@@ -1222,7 +1270,7 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
     }
     
     func callWebNextUrl(){
-        showActivityIndicator(view: self.view)
+     //   showActivityIndicator(view: self.view)
         if (isConnectedToNetwork() == true){
             let url = String(format: "%@", nextPageUrl)
             webServiceGet(url)
@@ -1235,7 +1283,7 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
     }
     
     func callWebNextLocationUrl(){
-        showActivityIndicator(view: self.view)
+     //   showActivityIndicator(view: self.view)
         if (isConnectedToNetwork() == true){
             let url = String(format: "%@&latitude=%@&longitude=%@", nextPageUrl,latitude, longitude)
             webServiceGet(url)
@@ -1270,7 +1318,7 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
         if((dict.object(forKey: "api") as! String).contains("profile?")){
             savingValue = (dict.object(forKey: "result") as! NSDictionary).object(forKey: "saving") as! String
         }
-        else{
+        else if((dict.object(forKey: "api") as! String).contains("offers")){
         if(dict.object(forKey: "status") as! String == "OK"){
             let arr = ((dict.object(forKey: "result") as! NSDictionary).object(forKey: "data") as! NSArray).mutableCopy() as! NSMutableArray
             for index in 0..<arr.count{
@@ -1302,61 +1350,64 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
     //MARK:- scrollview delegate
     
     
-    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-            if(isMoreTapped == false){
+//    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+//            if(isMoreTapped == false){
+//            if(nextPageUrl.characters.count > 0){
+//             //   callWebNextUrl()
+//                if CLLocationManager.locationServicesEnabled() {
+//                    switch(CLLocationManager.authorizationStatus()) {
+//                    case .notDetermined, .restricted, .denied:
+//                        DispatchQueue.main.async{
+//                            self.callWebNextUrl()
+//                        }
+//    
+//                    case .authorizedAlways, .authorizedWhenInUse:
+//                        viewBottom.isHidden = true
+//                        locationManager.startUpdatingLocation()
+//                        DispatchQueue.main.async{
+//                            self.callWebNextLocationUrl()
+//                        }
+//    
+//                    }
+//                    
+//                } else {
+//                    DispatchQueue.main.async{
+//                     self.callWebNextUrl()
+//                    }
+//                }
+//            }
+//            }
+//    }
+    
+    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        if(isMoreTapped == false){
             if(nextPageUrl.characters.count > 0){
-             //   callWebNextUrl()
+                //   callWebNextUrl()
                 if CLLocationManager.locationServicesEnabled() {
                     switch(CLLocationManager.authorizationStatus()) {
                     case .notDetermined, .restricted, .denied:
                         DispatchQueue.main.async{
                             self.callWebNextUrl()
                         }
-    
+                        
                     case .authorizedAlways, .authorizedWhenInUse:
                         viewBottom.isHidden = true
                         locationManager.startUpdatingLocation()
                         DispatchQueue.main.async{
                             self.callWebNextLocationUrl()
                         }
-    
+                        
                     }
                     
                 } else {
                     DispatchQueue.main.async{
-                     self.callWebNextUrl()
+                        self.callWebNextUrl()
                     }
                 }
             }
-            }
+        }
+        
     }
-    
-//    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
-//        if(isMoreTapped == false){
-//        if(nextPageUrl.characters.count > 0){
-//         //   callWebNextUrl()
-//            if CLLocationManager.locationServicesEnabled() {
-//                switch(CLLocationManager.authorizationStatus()) {
-//                case .notDetermined, .restricted, .denied: break
-//
-//                    
-//                case .authorizedAlways, .authorizedWhenInUse:
-//                    viewBottom.isHidden = true
-//                    locationManager.startUpdatingLocation()
-//                    DispatchQueue.main.async{
-//                        self.callWebNextLocationUrl()
-//                    }
-//
-//                }
-//            } else {
-//                DispatchQueue.main.async{
-//                 self.callWebNextUrl()
-//                }
-//            }
-//        }
-//        }
-//        
-//    }
     
     //MARK:- contactUS
     

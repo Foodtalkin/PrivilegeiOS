@@ -14,6 +14,7 @@ class PackCollectionViewCell: UICollectionViewCell {
     @IBOutlet var lblRestaurant : UILabel?
     @IBOutlet var lblLocation : UILabel?
     @IBOutlet var lblMoney : UILabel?
+    @IBOutlet var lblDistance : UILabel?
 
     override func awakeFromNib() {
         super.awakeFromNib()

@@ -18,7 +18,7 @@ class SelectOutletViewController: UIViewController, UITableViewDataSource, UITab
     @IBOutlet var tblOutlet : UITableView?
     
     var arrOutlets = NSMutableArray()
-    
+    var myMutableString = NSMutableAttributedString()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,8 +30,19 @@ class SelectOutletViewController: UIViewController, UITableViewDataSource, UITab
         lblRestaurant?.text = restaurantName
         lblRangeType?.text = strOneLiner
         
-        DispatchQueue.main.async{
-            self.callWebServiceForRestaurant()
+        callWebServiceOutlet()
+    }
+    
+    func callWebServiceOutlet(){
+        if(latitude == ""){
+            DispatchQueue.main.async{
+                self.callWebServiceForRestaurant()
+            }
+        }
+        else{
+            DispatchQueue.main.async{
+             self.callWebServiceForRestaurantLocation()
+            }
         }
     }
     
@@ -62,10 +73,24 @@ class SelectOutletViewController: UIViewController, UITableViewDataSource, UITab
         else{
             
             if(arrOutlets.count > 0){
+                
             cell?.textLabel?.frame.origin.x = 30
-            cell?.textLabel?.text = String(format : "  %@", ((arrOutlets.object(at: indexPath.row - 1) as! NSDictionary).object(forKey: "area") as? String)!)
+            cell?.textLabel?.numberOfLines = 0
+                cell?.textLabel?.font = UIFont.systemFont(ofSize: 15)
+                if(((arrOutlets.object(at: indexPath.row - 1) as! NSDictionary).object(forKey: "distance")) != nil){
+                var distance = ((arrOutlets.object(at: indexPath.row - 1) as! NSDictionary).object(forKey: "distance") as? NSString)?.doubleValue
+                    distance = distance! / 1000
+                let myString = String(format : "  %@ \n  %.1f KM", ((arrOutlets.object(at: indexPath.row - 1) as! NSDictionary).object(forKey: "area") as? String)!, distance!).uppercased()
+                myMutableString = NSMutableAttributedString(string: myString, attributes: [NSForegroundColorAttributeName: UIColor.black])
+                myMutableString.addAttribute(NSFontAttributeName, value: UIFont.boldSystemFont(ofSize: 12), range: NSRange(location:myString.characters.count - 7,length: 7))
+                myMutableString.addAttribute(NSForegroundColorAttributeName, value: colorLightGold, range: NSRange(location:myString.characters.count - 7,length:7))
+                cell?.textLabel?.attributedText = myMutableString
+                }
+                else{
+                   cell?.textLabel?.text = ((arrOutlets.object(at: indexPath.row - 1) as! NSDictionary).object(forKey: "area") as? String)?.uppercased()
+                }
             cell?.accessoryType = .disclosureIndicator
-            cell?.textLabel?.font = UIFont.systemFont(ofSize: 17)
+         
             }
         }
         
@@ -116,6 +141,21 @@ class SelectOutletViewController: UIViewController, UITableViewDataSource, UITab
         showActivityIndicator(view: self.view)
         if (isConnectedToNetwork() == true){
             let url = String(format: "%@%@%@%@", baseUrl,"restaurant/","outlets/",restaurantId)
+            
+            webServiceGet(url)
+            delegate = self
+        }
+        else{
+            stopAnimation()
+            openAlertScreen(self.view)
+            alerButton.addTarget(self, action: #selector(SelectOutletViewController.alertTap), for: .touchUpInside)
+        }
+    }
+    
+    func callWebServiceForRestaurantLocation(){
+        showActivityIndicator(view: self.view)
+        if (isConnectedToNetwork() == true){
+            let url = String(format: "%@%@%@%@?latitude=%@&longitude=%@", baseUrl,"restaurant/","outlets/",restaurantId,latitude,longitude)
             
             webServiceGet(url)
             delegate = self

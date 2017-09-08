@@ -37,6 +37,8 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
     var arrOfferTypes = NSMutableArray()
     var arrOffer = NSMutableArray()
     var arrString = NSMutableArray()
+    
+    var myMutableString = NSMutableAttributedString()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -230,16 +232,30 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
             
             if(filtered.count > 0){
                 
-                lblRestaurant.text = ((filtered.object(at: indexPath.row) as! NSDictionary).object(forKey: "_source") as! NSDictionary).object(forKey: "name") as! String
-                let amount = (((filtered.object(at: indexPath.row) as! NSDictionary).object(forKey: "_source") as! NSDictionary).object(forKey: "cost") as! NSString).intValue
+                lblRestaurant.text = (filtered.object(at: indexPath.row) as! NSDictionary).object(forKey: "name") as? String
+                let amount = ((filtered.object(at: indexPath.row) as! NSDictionary).object(forKey: "cost") as! NSString).intValue
+                var offerP = ""
                 if(amount < 500){
-                    lblOffers.text = String(format : "%@", "\u{20B9}")
+                    offerP = String(format : "%@", "\u{20B9}")
                 }
                 else if(amount < 999){
-                    lblOffers.text = String(format : "%@%@", "\u{20B9}", "\u{20B9}")
+                    offerP = String(format : "%@%@", "\u{20B9}", "\u{20B9}")
                 }
                 else{
-                    lblOffers.text = String(format : "%@%@%@", "\u{20B9}", "\u{20B9}", "\u{20B9}")
+                    offerP = String(format : "%@%@%@", "\u{20B9}", "\u{20B9}", "\u{20B9}")
+                }
+                
+                if(((filtered.object(at: indexPath.row) as! NSDictionary).object(forKey: "distance")) != nil){
+                    var distance = ((filtered.object(at: indexPath.row) as! NSDictionary).object(forKey: "distance") as? NSString)?.doubleValue
+                    distance = distance! / 1000
+                    let myString = String(format : "%@  %.1f KM", offerP, distance!)
+                    myMutableString = NSMutableAttributedString(string: myString, attributes: [NSForegroundColorAttributeName: UIColor.black])
+                    myMutableString.addAttribute(NSFontAttributeName, value: UIFont.boldSystemFont(ofSize: 12), range: NSRange(location:myString.characters.count - 7,length: 7))
+                    myMutableString.addAttribute(NSForegroundColorAttributeName, value: colorLightGold, range: NSRange(location:myString.characters.count - 7,length:7))
+                    lblOffers.attributedText = myMutableString
+                }
+                else{
+                    lblOffers.text = offerP
                 }
             }
             else{
@@ -266,28 +282,30 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if(tableView == tblSearch){
-            restaurantName = ((filtered.object(at: indexPath.row) as! NSDictionary).object(forKey: "_source") as! NSDictionary).object(forKey: "name") as! String
+            if(filtered.count > 0){
+            restaurantName = (filtered.object(at: indexPath.row) as! NSDictionary).object(forKey: "name") as! String
             restaurantDetails = filtered.object(at: indexPath.row) as! NSDictionary
-            restaurantId = ((filtered.object(at: indexPath.row) as! NSDictionary).object(forKey: "_source") as! NSDictionary).object(forKey: "rid") as! String
-            strOneLiner = ((filtered.object(at: indexPath.row) as! NSDictionary).object(forKey: "_source") as! NSDictionary).object(forKey: "one_liner") as! String
-            let outletCount = Int(((filtered.object(at: indexPath.row) as! NSDictionary).object(forKey: "_source") as! NSDictionary).object(forKey: "outlet_count") as! String)
+            restaurantId = (filtered.object(at: indexPath.row) as! NSDictionary).object(forKey: "rid") as! String
+            strOneLiner = (filtered.object(at: indexPath.row) as! NSDictionary).object(forKey: "one_liner") as! String
+            let outletCount = Int((filtered.object(at: indexPath.row) as! NSDictionary).object(forKey: "outlet_count") as! String)
             
-            let offerCount = Int(((filtered.object(at: indexPath.row) as! NSDictionary).object(forKey: "_source") as! NSDictionary).object(forKey: "offer_count") as! String)
+            let offerCount = Int((filtered.object(at: indexPath.row) as! NSDictionary).object(forKey: "offer_count") as! String)
             
             if(outletCount! > 1){
                 let openPost = self.storyboard!.instantiateViewController(withIdentifier: "SelectOutlet") as! SelectOutletViewController;
                 self.navigationController!.visibleViewController!.navigationController!.pushViewController(openPost, animated:true);
             }
             else if(offerCount! > 1){
-                outletId = ((filtered.object(at: indexPath.row) as! NSDictionary).object(forKey: "_source") as! NSDictionary).object(forKey: "outlet_ids") as! String
+                outletId = (filtered.object(at: indexPath.row) as! NSDictionary).object(forKey: "outlet_ids") as! String
                 let openPost = self.storyboard!.instantiateViewController(withIdentifier: "SelectOffer") as! SelectOfferViewController;
                 self.navigationController!.visibleViewController!.navigationController!.pushViewController(openPost, animated:true);
             }
             else{
-                outletId = ((filtered.object(at: indexPath.row) as! NSDictionary).object(forKey: "_source") as! NSDictionary).object(forKey: "outlet_ids") as! String
-                offerIds = ((filtered.object(at: indexPath.row) as! NSDictionary).object(forKey: "_source") as! NSDictionary).object(forKey: "offer_ids") as! String
+                outletId = (filtered.object(at: indexPath.row) as! NSDictionary).object(forKey: "outlet_ids") as! String
+                offerIds = (filtered.object(at: indexPath.row) as! NSDictionary).object(forKey: "offer_ids") as! String
                 let openPost = self.storyboard!.instantiateViewController(withIdentifier: "StoreDetails") as! StoreDetailsViewController;
                 self.navigationController!.visibleViewController!.navigationController!.pushViewController(openPost, animated:true);
+            }
             }
         }
         else if(tableView == tblFilter){
@@ -408,8 +426,15 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
       //  showActivityIndicator(view: self.view)
         if (isConnectedToNetwork()){
                 let searchText = (text).lowercased()
-                let url = String(format: "%@%@%@", baseUrl, "search/", searchText)
+                var url = String(format: "%@%@%@", baseUrl, "search_restaurant/", searchText)
+            
             FBSDKAppEvents.logEvent("search", parameters: ["search" : searchText])
+            if(latitude == ""){
+                
+            }
+            else{
+                url = String(format : "%@?latitude=%@&longitude=%@", url, latitude, longitude)
+            }
                 webServiceGet(url)
                 
                 delegate = self
@@ -502,6 +527,12 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
             else if(cityZone == "" && cusine == "" && cost != "" && offer_types != ""){
                 url = String(format: "%@%@cost=%@&type=%@", baseUrl, "offers?", cost, offer_types)
             }
+            if(latitude == ""){
+                
+            }
+            else{
+                url = String(format : "%@&latitude=%@&longitude=%@", url, latitude, longitude)
+            }
             let fullNameArr = url.components(separatedBy: "offers?")
             let surname = fullNameArr[1]
             selectedFilterUrl = surname
@@ -519,12 +550,12 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
     }
     
     func getDataFromWebService(_ dict : NSMutableDictionary){
-        
+       
         stopAnimation()
-        if((dict.object(forKey: "api") as! String).contains("search")){
+        if((dict.object(forKey: "api") as! String).contains("search_restaurant")){
             if(dict.object(forKey: "status") as! String == "OK"){
                 filtered.removeAllObjects()
-                let valuesArray = ((dict.object(forKey: "result") as! NSDictionary).object(forKey: "hits") as! NSArray).mutableCopy() as! NSMutableArray
+                let valuesArray = ((dict.object(forKey: "result") as! NSDictionary).object(forKey: "data") as! NSArray).mutableCopy() as! NSMutableArray
                 for index in 0..<valuesArray.count {
                     
                     filtered.add(valuesArray.object(at: index))
@@ -548,12 +579,13 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
             }
         }
         else{
-            
+        if((dict.object(forKey: "api") as! String).contains("offers?")){
         nextUrlFilter = (dict.object(forKey: "result") as! NSDictionary).object(forKey: "next_page_url") as! String
            
         arrFilteredData = ((dict.object(forKey: "result") as! NSDictionary).object(forKey: "data") as! NSArray).mutableCopy() as! NSMutableArray
         let openPost = self.storyboard!.instantiateViewController(withIdentifier: "FilterResult") as! FilterResultViewController;
         self.navigationController!.visibleViewController!.navigationController!.pushViewController(openPost, animated:false);
+            }
         }
     }
     

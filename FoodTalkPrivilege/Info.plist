@@ -17,7 +17,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.31</string>
+	<string>1.36</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -56,10 +56,8 @@
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict>
-	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Nearby Restaurants</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Nearby Restaurants</string>
+	<string>Enable location services to discover nearby restaurants</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>

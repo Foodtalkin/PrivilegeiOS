@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12120" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -49,9 +49,21 @@
                         <color key="textColor" red="0.3921568627" green="0.38431372549999998" blue="0.38431372549999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1.8 KM" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wX0-nK-Ro2">
+                        <rect key="frame" x="108" y="11" width="42" height="19"/>
+                        <color key="backgroundColor" red="0.10980392156862745" green="0.10980392156862745" blue="0.11764705882352941" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="19" id="AbU-Y0-nde"/>
+                            <constraint firstAttribute="width" constant="42" id="JIb-5b-Q0H"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="9"/>
+                        <color key="textColor" red="1" green="0.85490196080000003" blue="0.2666666667" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                 </subviews>
             </view>
             <constraints>
+                <constraint firstAttribute="trailing" secondItem="wX0-nK-Ro2" secondAttribute="trailing" constant="10" id="HVK-hW-jyG"/>
                 <constraint firstItem="aC7-IG-Rf9" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="I0I-RG-8ID"/>
                 <constraint firstItem="KG8-v9-4Jf" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="9" id="Iw9-cX-IpG"/>
                 <constraint firstItem="bo0-zC-Eh8" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="9" id="Jsk-Wq-QKG"/>
@@ -62,10 +74,12 @@
                 <constraint firstItem="aC7-IG-Rf9" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="YCK-Xf-fqv"/>
                 <constraint firstAttribute="trailing" secondItem="bo0-zC-Eh8" secondAttribute="trailing" constant="8" id="gcc-kE-eF6"/>
                 <constraint firstItem="bo0-zC-Eh8" firstAttribute="top" secondItem="aC7-IG-Rf9" secondAttribute="bottom" constant="4" id="pll-W4-i7G"/>
+                <constraint firstItem="wX0-nK-Ro2" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="11" id="qF3-Lk-R8U"/>
                 <constraint firstItem="0RJ-CW-6Rv" firstAttribute="top" secondItem="aC7-IG-Rf9" secondAttribute="bottom" constant="24" id="sal-o5-1V0"/>
             </constraints>
             <size key="customSize" width="134" height="128"/>
             <connections>
+                <outlet property="lblDistance" destination="wX0-nK-Ro2" id="vhT-ej-n1j"/>
                 <outlet property="lblLocation" destination="KG8-v9-4Jf" id="pZ7-7g-Iak"/>
                 <outlet property="lblMoney" destination="0RJ-CW-6Rv" id="Dsf-wi-1uQ"/>
                 <outlet property="lblRestaurant" destination="bo0-zC-Eh8" id="9aH-AF-a15"/>

@@ -356,7 +356,6 @@ class StoreDetailsViewController: UIViewController, UITableViewDataSource, UITab
                     self.viewDown?.frame = CGRect(x: 0, y: self.view.frame.size.height - 290, width: self.view.frame.size.width, height: 290)
                 })
             }
-        
         btnCancel?.isHidden = false
         btnNext?.isHidden = false
         }
@@ -671,7 +670,7 @@ class StoreDetailsViewController: UIViewController, UITableViewDataSource, UITab
                 lblTip2?.frame.origin.y -= 80
                 lblTip3?.frame.origin.y -= 80
                 btnAdd?.isEnabled = false
-                
+                btnAdd?.alpha = 0.5
                 lblSelectCoupons?.text = "Only 1 coupon can be used at a time"
             }
             

@@ -638,6 +638,225 @@ to the Internet. Check your connection</string>
             </objects>
             <point key="canvasLocation" x="1338.4000000000001" y="1960.569715142429"/>
         </scene>
+        <!--City Selection View Controller-->
+        <scene sceneID="uta-UI-3CI">
+            <objects>
+                <viewController storyboardIdentifier="CitySelection" id="Fcw-HU-tGc" customClass="CitySelectionViewController" customModule="FoodTalkPrivilege" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="GyI-8h-vdE"/>
+                        <viewControllerLayoutGuide type="bottom" id="SKz-Aw-foX"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="XbU-CH-m1d">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="INTRODUCING" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Hnt-Cp-aPZ">
+                                <rect key="frame" x="16" y="76" width="138" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="138" id="fOU-4t-7fU"/>
+                                    <constraint firstAttribute="height" constant="21" id="gq7-lz-OoY"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Privilege  Bombay" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SUo-t3-9Fc">
+                                <rect key="frame" x="16" y="98" width="203" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="Sa1-ru-abM"/>
+                                    <constraint firstAttribute="width" constant="203" id="h2y-aW-zzB"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="BodoniSvtyTwoITCTT-Bold" family="Bodoni 72" pointSize="18"/>
+                                <color key="textColor" red="0.97254901959999995" green="0.55294117649999996" blue="0.090196078430000007" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="india-gate.png" translatesAutoresizingMaskIntoConstraints="NO" id="Ikj-It-dbc">
+                                <rect key="frame" x="268" y="148" width="100" height="100"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="100" id="bGq-xT-mS0"/>
+                                    <constraint firstAttribute="height" constant="100" id="dkz-vN-Cg3"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="heH-ln-jJv">
+                                <rect key="frame" x="16" y="132" width="220" height="108"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="108" id="KOE-B4-dYT"/>
+                                    <constraint firstAttribute="width" constant="220" id="bqu-o4-zQg"/>
+                                </constraints>
+                                <string key="text">FoodTalk Privilege is now available on Bombay, No extra purchase, no hidden charges just switch between cities and start redeeming.</string>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dCa-3n-hfk">
+                                <rect key="frame" x="0.0" y="615" width="375" height="52"/>
+                                <color key="backgroundColor" red="0.21176470588235294" green="0.78431372549019607" blue="0.27058823529411763" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="52" id="vDH-mg-2h8"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Futura-Bold" family="Futura" pointSize="17"/>
+                                <state key="normal" title="Save">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="saveClicked:" destination="Fcw-HU-tGc" eventType="touchUpInside" id="wNv-g4-Ric"/>
+                                </connections>
+                            </button>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ha5-TU-1IP">
+                                <rect key="frame" x="0.0" y="248" width="375" height="367"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Select a city" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rc5-6X-4Eu">
+                                        <rect key="frame" x="100" y="17" width="176" height="21"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="176" id="732-NK-YKH"/>
+                                            <constraint firstAttribute="height" constant="21" id="Z8N-ut-b5K"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kgc-u4-2Zz">
+                                        <rect key="frame" x="8" y="57" width="359" height="73"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="DELHI NCR" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kzn-IS-7tc">
+                                                <rect key="frame" x="44" y="15" width="136" height="21"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="21" id="Z8K-Nr-NG0"/>
+                                                    <constraint firstAttribute="width" constant="136" id="wge-b7-AoF"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" name="Futura-Bold" family="Futura" pointSize="17"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="126 Restaurants" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nCk-S7-c2D">
+                                                <rect key="frame" x="44" y="39" width="136" height="19"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="136" id="RHC-Gc-x4n"/>
+                                                    <constraint firstAttribute="height" constant="19" id="XVY-Cu-gws"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="goi.png" translatesAutoresizingMaskIntoConstraints="NO" id="vdu-FE-s3z">
+                                                <rect key="frame" x="302" y="11" width="28" height="51"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="28" id="7mW-rJ-qqZ"/>
+                                                    <constraint firstAttribute="height" constant="51" id="LJG-cP-Rqf"/>
+                                                </constraints>
+                                            </imageView>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ehl-Fl-0Oa">
+                                                <rect key="frame" x="0.0" y="0.0" width="6" height="73"/>
+                                                <color key="backgroundColor" red="0.21176470589999999" green="0.7843137255" blue="0.27058823529999998" alpha="1" colorSpace="calibratedRGB"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="6" id="R6I-fY-cN9"/>
+                                                </constraints>
+                                            </view>
+                                        </subviews>
+                                        <color key="backgroundColor" red="0.1450980392" green="0.14901960780000001" blue="0.15686274510000001" alpha="1" colorSpace="calibratedRGB"/>
+                                        <constraints>
+                                            <constraint firstItem="Ehl-Fl-0Oa" firstAttribute="top" secondItem="kgc-u4-2Zz" secondAttribute="top" id="4qC-xu-kGl"/>
+                                            <constraint firstItem="Ehl-Fl-0Oa" firstAttribute="leading" secondItem="kgc-u4-2Zz" secondAttribute="leading" id="AQx-n5-Tgn"/>
+                                            <constraint firstAttribute="height" constant="73" id="E77-CW-G6d"/>
+                                            <constraint firstItem="kzn-IS-7tc" firstAttribute="leading" secondItem="kgc-u4-2Zz" secondAttribute="leading" constant="44" id="Hmi-gs-mot"/>
+                                            <constraint firstAttribute="bottom" secondItem="Ehl-Fl-0Oa" secondAttribute="bottom" id="KzK-Pr-xKd"/>
+                                            <constraint firstItem="nCk-S7-c2D" firstAttribute="leading" secondItem="kgc-u4-2Zz" secondAttribute="leading" constant="44" id="STP-vm-swU"/>
+                                            <constraint firstItem="nCk-S7-c2D" firstAttribute="top" secondItem="kzn-IS-7tc" secondAttribute="bottom" constant="3" id="XOs-ep-O9U"/>
+                                            <constraint firstItem="kzn-IS-7tc" firstAttribute="top" secondItem="kgc-u4-2Zz" secondAttribute="top" constant="15" id="jeb-N7-sT5"/>
+                                            <constraint firstItem="vdu-FE-s3z" firstAttribute="centerY" secondItem="kgc-u4-2Zz" secondAttribute="centerY" id="qmU-1W-mhD"/>
+                                            <constraint firstAttribute="trailing" secondItem="vdu-FE-s3z" secondAttribute="trailing" constant="29" id="wMY-Wc-Fzz"/>
+                                        </constraints>
+                                    </view>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QXq-eC-AIg">
+                                        <rect key="frame" x="8" y="146" width="359" height="74"/>
+                                        <subviews>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="india-gates.png" translatesAutoresizingMaskIntoConstraints="NO" id="04g-ET-AYy">
+                                                <rect key="frame" x="287" y="13" width="50" height="50"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="50" id="87V-Ch-Qz6"/>
+                                                    <constraint firstAttribute="width" constant="50" id="hqN-Zc-dKi"/>
+                                                </constraints>
+                                            </imageView>
+                                        </subviews>
+                                        <color key="backgroundColor" red="0.1450980392" green="0.14901960780000001" blue="0.15686274510000001" alpha="1" colorSpace="calibratedRGB"/>
+                                        <constraints>
+                                            <constraint firstItem="04g-ET-AYy" firstAttribute="centerY" secondItem="QXq-eC-AIg" secondAttribute="centerY" constant="1" id="1LR-7W-6TI"/>
+                                            <constraint firstAttribute="height" constant="74" id="hZ5-UL-6bR"/>
+                                            <constraint firstAttribute="trailing" secondItem="04g-ET-AYy" secondAttribute="trailing" constant="22" id="oa5-jI-XKP"/>
+                                        </constraints>
+                                    </view>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dQf-hk-5Se">
+                                        <rect key="frame" x="8" y="146" width="6" height="74"/>
+                                        <color key="backgroundColor" red="0.21176470589999999" green="0.7843137255" blue="0.27058823529999998" alpha="1" colorSpace="calibratedRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="6" id="E6t-jq-iyd"/>
+                                            <constraint firstAttribute="height" constant="74" id="qqb-pg-N72"/>
+                                        </constraints>
+                                    </view>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="MUMBAI" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mYx-FB-egW">
+                                        <rect key="frame" x="52" y="157" width="136" height="21"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" name="Futura-Bold" family="Futura" pointSize="17"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="126 Restaurants" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jLc-5f-hbT">
+                                        <rect key="frame" x="52" y="185" width="136" height="19"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="Rc5-6X-4Eu" firstAttribute="top" secondItem="ha5-TU-1IP" secondAttribute="top" constant="17" id="0jL-PA-htb"/>
+                                    <constraint firstItem="kgc-u4-2Zz" firstAttribute="top" secondItem="Rc5-6X-4Eu" secondAttribute="bottom" constant="19" id="8i3-09-ayn"/>
+                                    <constraint firstAttribute="trailing" secondItem="kgc-u4-2Zz" secondAttribute="trailing" constant="8" id="HSe-6r-Brd"/>
+                                    <constraint firstItem="QXq-eC-AIg" firstAttribute="leading" secondItem="ha5-TU-1IP" secondAttribute="leading" constant="8" id="Y7N-1s-Vcb"/>
+                                    <constraint firstItem="Rc5-6X-4Eu" firstAttribute="centerX" secondItem="ha5-TU-1IP" secondAttribute="centerX" id="YuQ-me-tt7"/>
+                                    <constraint firstItem="kgc-u4-2Zz" firstAttribute="leading" secondItem="ha5-TU-1IP" secondAttribute="leading" constant="8" id="c4P-DT-hbG"/>
+                                    <constraint firstItem="QXq-eC-AIg" firstAttribute="top" secondItem="kgc-u4-2Zz" secondAttribute="bottom" constant="16" id="cfS-H5-5S8"/>
+                                    <constraint firstItem="dQf-hk-5Se" firstAttribute="top" secondItem="kgc-u4-2Zz" secondAttribute="bottom" constant="16" id="jSr-zi-m6h"/>
+                                    <constraint firstAttribute="trailing" secondItem="QXq-eC-AIg" secondAttribute="trailing" constant="8" id="ne1-s9-pHR"/>
+                                    <constraint firstItem="dQf-hk-5Se" firstAttribute="leading" secondItem="ha5-TU-1IP" secondAttribute="leading" constant="8" id="pqw-Dr-GmY"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" red="0.14509803921568626" green="0.14901960784313725" blue="0.15686274509803921" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="trailingMargin" secondItem="Ikj-It-dbc" secondAttribute="trailing" constant="-9" id="5Px-BR-VcD"/>
+                            <constraint firstItem="Hnt-Cp-aPZ" firstAttribute="leading" secondItem="XbU-CH-m1d" secondAttribute="leadingMargin" id="5lt-Md-yaO"/>
+                            <constraint firstItem="dCa-3n-hfk" firstAttribute="leading" secondItem="XbU-CH-m1d" secondAttribute="leading" id="624-Hb-5jj"/>
+                            <constraint firstItem="ha5-TU-1IP" firstAttribute="top" secondItem="heH-ln-jJv" secondAttribute="bottom" constant="8" id="69k-KT-NOS"/>
+                            <constraint firstItem="Hnt-Cp-aPZ" firstAttribute="top" secondItem="GyI-8h-vdE" secondAttribute="bottom" constant="12" id="DFN-2D-HcH"/>
+                            <constraint firstItem="SUo-t3-9Fc" firstAttribute="leading" secondItem="XbU-CH-m1d" secondAttribute="leadingMargin" id="Zo9-UZ-97G"/>
+                            <constraint firstItem="ha5-TU-1IP" firstAttribute="top" secondItem="Ikj-It-dbc" secondAttribute="bottom" id="alz-wi-4yJ"/>
+                            <constraint firstItem="heH-ln-jJv" firstAttribute="leading" secondItem="XbU-CH-m1d" secondAttribute="leadingMargin" id="cB7-Fz-rWV"/>
+                            <constraint firstAttribute="trailing" secondItem="ha5-TU-1IP" secondAttribute="trailing" id="ctG-8c-BNO"/>
+                            <constraint firstItem="SUo-t3-9Fc" firstAttribute="top" secondItem="Hnt-Cp-aPZ" secondAttribute="bottom" constant="1" id="euD-RD-GAr"/>
+                            <constraint firstItem="heH-ln-jJv" firstAttribute="top" secondItem="SUo-t3-9Fc" secondAttribute="bottom" constant="13" id="gBu-wZ-3zr"/>
+                            <constraint firstAttribute="trailing" secondItem="dCa-3n-hfk" secondAttribute="trailing" id="lvH-lK-rUs"/>
+                            <constraint firstItem="SKz-Aw-foX" firstAttribute="top" secondItem="dCa-3n-hfk" secondAttribute="bottom" id="mre-3J-D7M"/>
+                            <constraint firstItem="dCa-3n-hfk" firstAttribute="top" secondItem="ha5-TU-1IP" secondAttribute="bottom" id="wX0-k9-B1A"/>
+                            <constraint firstItem="ha5-TU-1IP" firstAttribute="leading" secondItem="XbU-CH-m1d" secondAttribute="leading" id="xjb-2n-lWH"/>
+                        </constraints>
+                    </view>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                    <connections>
+                        <outlet property="imgBombay" destination="04g-ET-AYy" id="N5N-fl-LbS"/>
+                        <outlet property="lblRestCountBombay" destination="jLc-5f-hbT" id="koy-As-Beo"/>
+                        <outlet property="lblRestCountNCR" destination="nCk-S7-c2D" id="I98-23-bny"/>
+                        <outlet property="viewBombay" destination="QXq-eC-AIg" id="mih-IU-tvi"/>
+                        <outlet property="viewNCR" destination="kgc-u4-2Zz" id="paz-Gw-RQt"/>
+                        <outlet property="viewSelectBombay" destination="dQf-hk-5Se" id="zos-Jt-6N4"/>
+                        <outlet property="viewSelectNCR" destination="Ehl-Fl-0Oa" id="QSq-yD-roG"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="iOI-k3-YUS" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2023.2" y="1962.3688155922041"/>
+        </scene>
         <!--Favourites View Controller-->
         <scene sceneID="Dkw-69-azr">
             <objects>
@@ -2354,7 +2573,7 @@ For any help you can contact us.</string>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="64W-uT-pBh">
                                         <rect key="frame" x="183" y="185" width="58" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <state key="normal" title="Sign in">
+                                        <state key="normal" title="Log in">
                                             <color key="titleColor" red="0.1215686275" green="0.71372549019999998" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         </state>
                                         <connections>
@@ -2419,7 +2638,7 @@ For any help you can contact us.</string>
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="66"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="FOOD TALK" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="o13-7Z-stV">
-                                        <rect key="frame" x="92" y="24" width="190" height="35"/>
+                                        <rect key="frame" x="92" y="16" width="190" height="35"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="35" id="4iW-iz-88N"/>
                                             <constraint firstAttribute="width" constant="190" id="H4p-bX-YaS"/>
@@ -2450,12 +2669,24 @@ For any help you can contact us.</string>
                                             <action selector="openSearch:" destination="nWx-nw-cZv" eventType="touchUpInside" id="1pj-Tg-kDK"/>
                                         </connections>
                                     </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="DELHI NCR" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WdP-Pw-LZg">
+                                        <rect key="frame" x="115" y="41" width="146" height="21"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="21" id="acm-Mz-JIf"/>
+                                            <constraint firstAttribute="width" constant="146" id="f8I-KR-Ibv"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="11"/>
+                                        <color key="textColor" red="0.14901960784313725" green="0.37254901960784315" blue="0.5490196078431373" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                 </subviews>
                                 <color key="backgroundColor" red="0.1450980392" green="0.14901960780000001" blue="0.15686274510000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstItem="o13-7Z-stV" firstAttribute="centerX" secondItem="NsF-Ff-8qf" secondAttribute="centerX" id="3VM-Gn-cg4"/>
+                                    <constraint firstAttribute="bottom" secondItem="WdP-Pw-LZg" secondAttribute="bottom" constant="4" id="6Y3-oU-i2R"/>
                                     <constraint firstAttribute="height" constant="66" id="9aL-op-iV8"/>
-                                    <constraint firstItem="o13-7Z-stV" firstAttribute="centerY" secondItem="NsF-Ff-8qf" secondAttribute="centerY" constant="8.5" id="AHa-y4-bCp"/>
+                                    <constraint firstItem="o13-7Z-stV" firstAttribute="centerY" secondItem="NsF-Ff-8qf" secondAttribute="centerY" constant="0.5" id="AHa-y4-bCp"/>
+                                    <constraint firstItem="WdP-Pw-LZg" firstAttribute="centerX" secondItem="NsF-Ff-8qf" secondAttribute="centerX" id="I6n-Nd-2Xg"/>
                                     <constraint firstAttribute="bottom" secondItem="KDN-t0-YLw" secondAttribute="bottom" constant="4" id="Jup-r9-aPk"/>
                                     <constraint firstAttribute="bottom" secondItem="PnY-gw-2Wf" secondAttribute="bottom" constant="9" id="STA-uj-W7I"/>
                                     <constraint firstItem="KDN-t0-YLw" firstAttribute="leading" secondItem="NsF-Ff-8qf" secondAttribute="leading" constant="8" id="iNJ-aA-3Wh"/>
@@ -2479,6 +2710,7 @@ For any help you can contact us.</string>
                     <connections>
                         <outlet property="btnMore" destination="KDN-t0-YLw" id="sM4-We-UdF"/>
                         <outlet property="btnSearch" destination="PnY-gw-2Wf" id="7V8-Fk-100"/>
+                        <outlet property="lblCity" destination="WdP-Pw-LZg" id="6i2-KY-Hsx"/>
                         <outlet property="viewBase" destination="X8r-SU-9hh" id="Lls-NH-fRW"/>
                         <outlet property="viewNavigate" destination="NsF-Ff-8qf" id="na9-0n-I1H"/>
                     </connections>
@@ -2948,6 +3180,83 @@ For any help you can contact us.</string>
             </objects>
             <point key="canvasLocation" x="1428" y="13.943028485757123"/>
         </scene>
+        <!--Coming Soon City View Controller-->
+        <scene sceneID="9kd-Ei-2Ct">
+            <objects>
+                <viewController storyboardIdentifier="ComingSoonCity" id="5t7-aG-aVb" customClass="ComingSoonCityViewController" customModule="FoodTalkPrivilege" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="cqs-Fi-Cff"/>
+                        <viewControllerLayoutGuide type="bottom" id="zvJ-iD-Z3l"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="dKy-dO-u89">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="india-gate.png" translatesAutoresizingMaskIntoConstraints="NO" id="S8p-R9-K0T">
+                                <rect key="frame" x="112" y="129" width="150" height="150"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="150" id="JUu-Fz-fwj"/>
+                                    <constraint firstAttribute="width" constant="150" id="jQe-5K-Tfc"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Coming soon" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2tJ-Ag-IGY">
+                                <rect key="frame" x="45" y="313" width="285" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="285" id="5xr-fn-fbJ"/>
+                                    <constraint firstAttribute="height" constant="21" id="UUM-iK-vUd"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Experiences are coming soon to Mumbai, stay tuned" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lhv-eb-YWg">
+                                <rect key="frame" x="64" y="361" width="247" height="63"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="247" id="5iP-7B-SIZ"/>
+                                    <constraint firstAttribute="height" constant="63" id="gic-Vc-2gt"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DBl-5d-hjV">
+                                <rect key="frame" x="64" y="466" width="247" height="66"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="247" id="MH1-nC-kPw"/>
+                                    <constraint firstAttribute="height" constant="66" id="Mkb-f8-9Mh"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Futura-Bold" family="Futura" pointSize="17"/>
+                                <state key="normal" title="Browse offers">
+                                    <color key="titleColor" red="0.1215686275" green="0.71372549019999998" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="browseTapped:" destination="5t7-aG-aVb" eventType="touchUpInside" id="tlc-Le-ISr"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="Lhv-eb-YWg" firstAttribute="top" secondItem="2tJ-Ag-IGY" secondAttribute="bottom" constant="27" id="75Q-mR-wPg"/>
+                            <constraint firstItem="S8p-R9-K0T" firstAttribute="top" secondItem="cqs-Fi-Cff" secondAttribute="bottom" constant="65" id="9b5-dD-Ud3"/>
+                            <constraint firstItem="S8p-R9-K0T" firstAttribute="centerX" secondItem="dKy-dO-u89" secondAttribute="centerX" id="IpB-mu-o6C"/>
+                            <constraint firstItem="2tJ-Ag-IGY" firstAttribute="centerX" secondItem="dKy-dO-u89" secondAttribute="centerX" id="b2v-IO-j31"/>
+                            <constraint firstItem="Lhv-eb-YWg" firstAttribute="centerX" secondItem="dKy-dO-u89" secondAttribute="centerX" id="d4E-Bt-zkQ"/>
+                            <constraint firstItem="DBl-5d-hjV" firstAttribute="top" secondItem="Lhv-eb-YWg" secondAttribute="bottom" constant="42" id="jBn-Zg-Od6"/>
+                            <constraint firstItem="DBl-5d-hjV" firstAttribute="centerX" secondItem="dKy-dO-u89" secondAttribute="centerX" id="kcC-rd-BS8"/>
+                            <constraint firstItem="2tJ-Ag-IGY" firstAttribute="top" secondItem="S8p-R9-K0T" secondAttribute="bottom" constant="34" id="nX1-gT-C6Q"/>
+                        </constraints>
+                    </view>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                    <connections>
+                        <outlet property="btnBrowse" destination="DBl-5d-hjV" id="Aht-Fb-TD6"/>
+                        <outlet property="imgView" destination="S8p-R9-K0T" id="se4-s9-S7w"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="EwM-H7-GhF" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2088.8000000000002" y="11.244377811094454"/>
+        </scene>
     </scenes>
     <resources>
         <image name="call.png" width="17" height="17"/>
@@ -2955,8 +3264,11 @@ For any help you can contact us.</string>
         <image name="favWhite.png" width="13" height="17"/>
         <image name="fill301.png" width="9" height="14"/>
         <image name="fill81.png" width="31" height="23"/>
+        <image name="goi.png" width="28" height="51"/>
         <image name="group.png" width="20" height="14"/>
         <image name="group12.png" width="228" height="110"/>
+        <image name="india-gate.png" width="150" height="150"/>
+        <image name="india-gates.png" width="50" height="50"/>
         <image name="map.png" width="12" height="17"/>
         <image name="paySuccess.png" width="228" height="110"/>
         <image name="search.png" width="15" height="16"/>

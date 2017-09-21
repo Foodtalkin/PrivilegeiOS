@@ -44,10 +44,6 @@ class ViewController: UIViewController, UIScrollViewDelegate {
         btnSignIn?.titleLabel?.textAlignment = .left
     }
     
-//    func addNotificationToRecievePaymentCompletion(){
-//        
-//        NotificationCenter.default.addObserver(self, selector: #selector(self.paymentCompletionCallBack), name: NSNotification.Name("INSTAMOJO"), object: nil)
-//    }
     
     func paymentCompletionCallBack() {
     //    isPaymentComplete = true
@@ -367,9 +363,8 @@ class ViewController: UIViewController, UIScrollViewDelegate {
         // Calculate the frame that should scroll to based on the page control current page.
         var newFrame = scrollView!.frame
         newFrame.origin.x = newFrame.size.width * CGFloat(pageControl!.currentPage)
-        print(newFrame.origin.x)
-        scrollView!.scrollRectToVisible(newFrame, animated: true)
         
+        scrollView!.scrollRectToVisible(newFrame, animated: true)
     }
     
 

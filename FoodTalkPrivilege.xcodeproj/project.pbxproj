@@ -21,12 +21,23 @@
 		7526FAF71EF282880052DD09 /* StoreDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7526FAF61EF282880052DD09 /* StoreDetailsViewController.swift */; };
 		7526FB021EF3BA160052DD09 /* confirm@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7526FB001EF3BA160052DD09 /* confirm@2x.png */; };
 		7526FB031EF3BA160052DD09 /* confirm@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7526FB011EF3BA160052DD09 /* confirm@3x.png */; };
+		752E48761F739B1B0029F193 /* BombayLocationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752E48741F739B1B0029F193 /* BombayLocationTableViewCell.swift */; };
+		752E48771F739B1B0029F193 /* BombayLocationTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 752E48751F739B1B0029F193 /* BombayLocationTableViewCell.xib */; };
 		753222111EDD507000190C01 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753222101EDD507000190C01 /* WebViewController.swift */; };
 		7532221A1EDD57C100190C01 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 753222191EDD57C100190C01 /* MessageUI.framework */; };
 		7537E3DB1F46FB81009F79C2 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7537E3DA1F46FB81009F79C2 /* Security.framework */; };
 		7537E3E41F46FBAF009F79C2 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7537E3E31F46FBAF009F79C2 /* SystemConfiguration.framework */; };
 		7537E3EE1F470041009F79C2 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7537E3ED1F470041009F79C2 /* Fabric.framework */; };
 		7537E3F01F470055009F79C2 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7537E3EF1F470055009F79C2 /* Crashlytics.framework */; };
+		753DE8A71F69007D0008961F /* CitySelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753DE8A61F69007D0008961F /* CitySelectionViewController.swift */; };
+		753DE8B51F69366F0008961F /* goi@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 753DE8AF1F69366F0008961F /* goi@2x.png */; };
+		753DE8B61F69366F0008961F /* goi@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 753DE8B01F69366F0008961F /* goi@3x.png */; };
+		753DE8B71F69366F0008961F /* india-gate@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 753DE8B11F69366F0008961F /* india-gate@2x.png */; };
+		753DE8B81F69366F0008961F /* india-gate@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 753DE8B21F69366F0008961F /* india-gate@3x.png */; };
+		753DE8B91F69366F0008961F /* india-gates@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 753DE8B31F69366F0008961F /* india-gates@2x.png */; };
+		753DE8BA1F69366F0008961F /* india-gates@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 753DE8B41F69366F0008961F /* india-gates@3x.png */; };
+		753DE8BD1F6941230008961F /* location_on@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 753DE8BB1F6941230008961F /* location_on@2x.png */; };
+		753DE8BE1F6941230008961F /* location_on@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 753DE8BC1F6941230008961F /* location_on@3x.png */; };
 		753F66891EA89AA3009B68A9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753F66881EA89AA3009B68A9 /* AppDelegate.swift */; };
 		753F668B1EA89AA3009B68A9 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753F668A1EA89AA3009B68A9 /* ViewController.swift */; };
 		753F668E1EA89AA4009B68A9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 753F668C1EA89AA4009B68A9 /* Main.storyboard */; };
@@ -53,6 +64,7 @@
 		7540DCEC1ED2C61E00102692 /* wireless3@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7540DCEA1ED2C61E00102692 /* wireless3@3x.png */; };
 		7562F31E1F14CB78009F71AD /* OfferTypeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7562F31C1F14CB78009F71AD /* OfferTypeTableViewCell.swift */; };
 		7562F31F1F14CB78009F71AD /* OfferTypeTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7562F31D1F14CB78009F71AD /* OfferTypeTableViewCell.xib */; };
+		7563FDA31F7284C900EF2756 /* ComingSoonCityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7563FDA21F7284C900EF2756 /* ComingSoonCityViewController.swift */; };
 		756B07121EAF302C00E682F3 /* StoreImageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756B07101EAF302C00E682F3 /* StoreImageTableViewCell.swift */; };
 		756B07131EAF302C00E682F3 /* StoreImageTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 756B07111EAF302C00E682F3 /* StoreImageTableViewCell.xib */; };
 		756B07161EAF53F400E682F3 /* AddressCussineTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756B07141EAF53F400E682F3 /* AddressCussineTableViewCell.swift */; };
@@ -301,12 +313,23 @@
 		7526FAF61EF282880052DD09 /* StoreDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoreDetailsViewController.swift; sourceTree = "<group>"; };
 		7526FB001EF3BA160052DD09 /* confirm@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "confirm@2x.png"; path = "FoodTalkPrivilege/Images/confirm@2x.png"; sourceTree = "<group>"; };
 		7526FB011EF3BA160052DD09 /* confirm@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "confirm@3x.png"; path = "FoodTalkPrivilege/Images/confirm@3x.png"; sourceTree = "<group>"; };
+		752E48741F739B1B0029F193 /* BombayLocationTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BombayLocationTableViewCell.swift; sourceTree = "<group>"; };
+		752E48751F739B1B0029F193 /* BombayLocationTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BombayLocationTableViewCell.xib; sourceTree = "<group>"; };
 		753222101EDD507000190C01 /* WebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
 		753222191EDD57C100190C01 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		7537E3DA1F46FB81009F79C2 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		7537E3E31F46FBAF009F79C2 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		7537E3ED1F470041009F79C2 /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Fabric.framework; path = Pods/Fabric/Fabric.framework; sourceTree = "<group>"; };
 		7537E3EF1F470055009F79C2 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Crashlytics.framework; path = Pods/Crashlytics/Crashlytics.framework; sourceTree = "<group>"; };
+		753DE8A61F69007D0008961F /* CitySelectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CitySelectionViewController.swift; sourceTree = "<group>"; };
+		753DE8AF1F69366F0008961F /* goi@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "goi@2x.png"; path = "FoodTalkPrivilege/Images/goi@2x.png"; sourceTree = "<group>"; };
+		753DE8B01F69366F0008961F /* goi@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "goi@3x.png"; path = "FoodTalkPrivilege/Images/goi@3x.png"; sourceTree = "<group>"; };
+		753DE8B11F69366F0008961F /* india-gate@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "india-gate@2x.png"; path = "FoodTalkPrivilege/Images/india-gate@2x.png"; sourceTree = "<group>"; };
+		753DE8B21F69366F0008961F /* india-gate@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "india-gate@3x.png"; path = "FoodTalkPrivilege/Images/india-gate@3x.png"; sourceTree = "<group>"; };
+		753DE8B31F69366F0008961F /* india-gates@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "india-gates@2x.png"; path = "FoodTalkPrivilege/Images/india-gates@2x.png"; sourceTree = "<group>"; };
+		753DE8B41F69366F0008961F /* india-gates@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "india-gates@3x.png"; path = "FoodTalkPrivilege/Images/india-gates@3x.png"; sourceTree = "<group>"; };
+		753DE8BB1F6941230008961F /* location_on@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "location_on@2x.png"; path = "FoodTalkPrivilege/Images/location_on@2x.png"; sourceTree = "<group>"; };
+		753DE8BC1F6941230008961F /* location_on@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "location_on@3x.png"; path = "FoodTalkPrivilege/Images/location_on@3x.png"; sourceTree = "<group>"; };
 		753F66851EA89AA3009B68A9 /* FoodTalkPrivilege.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FoodTalkPrivilege.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		753F66881EA89AA3009B68A9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		753F668A1EA89AA3009B68A9 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -339,6 +362,7 @@
 		7540DCEA1ED2C61E00102692 /* wireless3@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "wireless3@3x.png"; path = "FoodTalkPrivilege/Images/wireless3@3x.png"; sourceTree = "<group>"; };
 		7562F31C1F14CB78009F71AD /* OfferTypeTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OfferTypeTableViewCell.swift; sourceTree = "<group>"; };
 		7562F31D1F14CB78009F71AD /* OfferTypeTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OfferTypeTableViewCell.xib; sourceTree = "<group>"; };
+		7563FDA21F7284C900EF2756 /* ComingSoonCityViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComingSoonCityViewController.swift; sourceTree = "<group>"; };
 		756B07101EAF302C00E682F3 /* StoreImageTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoreImageTableViewCell.swift; sourceTree = "<group>"; };
 		756B07111EAF302C00E682F3 /* StoreImageTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StoreImageTableViewCell.xib; sourceTree = "<group>"; };
 		756B07141EAF53F400E682F3 /* AddressCussineTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddressCussineTableViewCell.swift; sourceTree = "<group>"; };
@@ -550,6 +574,14 @@
 		753F667C1EA89AA3009B68A9 = {
 			isa = PBXGroup;
 			children = (
+				753DE8BB1F6941230008961F /* location_on@2x.png */,
+				753DE8BC1F6941230008961F /* location_on@3x.png */,
+				753DE8AF1F69366F0008961F /* goi@2x.png */,
+				753DE8B01F69366F0008961F /* goi@3x.png */,
+				753DE8B11F69366F0008961F /* india-gate@2x.png */,
+				753DE8B21F69366F0008961F /* india-gate@3x.png */,
+				753DE8B31F69366F0008961F /* india-gates@2x.png */,
+				753DE8B41F69366F0008961F /* india-gates@3x.png */,
 				758F27261F3D7E4F00D0A31E /* libPaymentsSDK.a */,
 				758F27201F3D7E3E00D0A31E /* PaymentsSDK.h */,
 				758F27211F3D7E3E00D0A31E /* PGMerchantConfiguration.h */,
@@ -697,8 +729,10 @@
 				75895A0E1EB7037200B82CF6 /* WebServices.swift */,
 				753F668A1EA89AA3009B68A9 /* ViewController.swift */,
 				75A3CA711EA9E7D8002DBA57 /* LoginViewController.swift */,
+				753DE8A61F69007D0008961F /* CitySelectionViewController.swift */,
 				7540DCD21ECF00CB00102692 /* BuySignupViewController.swift */,
 				75A3CA7F1EAA096D002DBA57 /* LoginNumberViewController.swift */,
+				7563FDA21F7284C900EF2756 /* ComingSoonCityViewController.swift */,
 				75895AF31EC4948300B82CF6 /* SignUpViewController.swift */,
 				75AC9F661ED85FF7009DDCF9 /* HowItWorkViewController.swift */,
 				758F26FC1F3B178900D0A31E /* SavingCollectionViewCell.swift */,
@@ -733,6 +767,8 @@
 				75895AD71EC3330C00B82CF6 /* FilterCostTableViewCell.xib */,
 				75895ADA1EC3390800B82CF6 /* FilterCousinTableViewCell.swift */,
 				75895ADB1EC3390800B82CF6 /* FilterCousinTableViewCell.xib */,
+				752E48741F739B1B0029F193 /* BombayLocationTableViewCell.swift */,
+				752E48751F739B1B0029F193 /* BombayLocationTableViewCell.xib */,
 				75895AED1EC48C5300B82CF6 /* FavouritesViewController.swift */,
 				7562F31C1F14CB78009F71AD /* OfferTypeTableViewCell.swift */,
 				7562F31D1F14CB78009F71AD /* OfferTypeTableViewCell.xib */,
@@ -1002,6 +1038,7 @@
 				758F270A1F3B18A600D0A31E /* piggy-bank@3x.png in Resources */,
 				75F171071EAE24A300012CA7 /* map@3x.png in Resources */,
 				75A3CA7D1EAA085C002DBA57 /* fill301@2x.png in Resources */,
+				753DE8B91F69366F0008961F /* india-gates@2x.png in Resources */,
 				75A3CA631EA9E4B4002DBA57 /* fill41@2x.png in Resources */,
 				75AC1B881EE5861200B41FDF /* wrong@3x.png in Resources */,
 				758F262A1F2F07A900D0A31E /* landing.jpg in Resources */,
@@ -1045,6 +1082,7 @@
 				75A3CA8B1EAA238D002DBA57 /* about@3x.png in Resources */,
 				75D72B1C1EE97406005A7830 /* filter3@2x.png in Resources */,
 				75AC1B861EE5861200B41FDF /* paySuccess@3x.png in Resources */,
+				753DE8B51F69366F0008961F /* goi@2x.png in Resources */,
 				75A3CA5D1EA9E4B4002DBA57 /* fill3@2x.png in Resources */,
 				758F26F01F348F3000D0A31E /* README.txt in Resources */,
 				75A3CA641EA9E4B4002DBA57 /* fill41@3x.png in Resources */,
@@ -1077,8 +1115,11 @@
 				756B071B1EAF569600E682F3 /* DescriptionTableViewCell.xib in Resources */,
 				75AC9F701ED8694E009DDCF9 /* Dine@2x.png in Resources */,
 				7526FAF51EF281CB0052DD09 /* spalsh6@3x.jpg in Resources */,
+				753DE8B71F69366F0008961F /* india-gate@2x.png in Resources */,
 				758F26251F2B578300D0A31E /* screen3.png in Resources */,
+				753DE8BD1F6941230008961F /* location_on@2x.png in Resources */,
 				756C9E671F27575C00C25220 /* exp@2x.png in Resources */,
+				753DE8BE1F6941230008961F /* location_on@3x.png in Resources */,
 				75AC9F741ED8694E009DDCF9 /* Filter@2x.png in Resources */,
 				75A3CA9E1EAA2C2E002DBA57 /* history@3x.png in Resources */,
 				75AC9F721ED8694E009DDCF9 /* explore@2x.png in Resources */,
@@ -1086,8 +1127,10 @@
 				7540DCEC1ED2C61E00102692 /* wireless3@3x.png in Resources */,
 				7540DCDD1ECF1A0000102692 /* cancelMaterial@2x.png in Resources */,
 				753F668E1EA89AA4009B68A9 /* Main.storyboard in Resources */,
+				752E48771F739B1B0029F193 /* BombayLocationTableViewCell.xib in Resources */,
 				75F170FB1EAE226100012CA7 /* favWhite@3x.png in Resources */,
 				7526FAF41EF281CB0052DD09 /* spalsh6@2x.jpg in Resources */,
+				753DE8B81F69366F0008961F /* india-gate@3x.png in Resources */,
 				753F66D01EA8DE88009B68A9 /* group@2x.png in Resources */,
 				75A3CA601EA9E4B4002DBA57 /* fill7@2x.png in Resources */,
 				75A3CA6D1EA9E4B4002DBA57 /* fill131@3x.png in Resources */,
@@ -1095,6 +1138,8 @@
 				75AC9F731ED8694E009DDCF9 /* explore@3x.png in Resources */,
 				753F66D31EA8DE88009B68A9 /* search@2x.png in Resources */,
 				753F66C01EA8B11E009B68A9 /* crown@3x.png in Resources */,
+				753DE8BA1F69366F0008961F /* india-gates@3x.png in Resources */,
+				753DE8B61F69366F0008961F /* goi@3x.png in Resources */,
 				75AC9F761ED8694E009DDCF9 /* payment@2x.png in Resources */,
 				75895AD91EC3330C00B82CF6 /* FilterCostTableViewCell.xib in Resources */,
 				758F26261F2B578300D0A31E /* screen4.png in Resources */,
@@ -1209,7 +1254,9 @@
 				75895ABC1EBC56A400B82CF6 /* HistoryViewController.swift in Sources */,
 				75A3CA721EA9E7D8002DBA57 /* LoginViewController.swift in Sources */,
 				758F26FE1F3B178900D0A31E /* SavingCollectionViewCell.swift in Sources */,
+				7563FDA31F7284C900EF2756 /* ComingSoonCityViewController.swift in Sources */,
 				753F66B71EA89C50009B68A9 /* General.swift in Sources */,
+				753DE8A71F69007D0008961F /* CitySelectionViewController.swift in Sources */,
 				75A3CA801EAA096D002DBA57 /* LoginNumberViewController.swift in Sources */,
 				753F66C51EA8BF69009B68A9 /* PackCollectionViewCell.swift in Sources */,
 				75895A591EB7212300B82CF6 /* UIImage+AlamofireImage.swift in Sources */,
@@ -1246,6 +1293,7 @@
 				75A081461EB0C33800FC2244 /* SuccessViewController.swift in Sources */,
 				75AC1C181EE6BEAD00B41FDF /* DotActivityIndicatorParms.m in Sources */,
 				75895A581EB7212300B82CF6 /* UIButton+AlamofireImage.swift in Sources */,
+				752E48761F739B1B0029F193 /* BombayLocationTableViewCell.swift in Sources */,
 				756B07261EAF646400E682F3 /* FoodTalkSuggestTableViewCell.swift in Sources */,
 				75A081441EB0764800FC2244 /* RestaurantPinViewController.swift in Sources */,
 				756B071A1EAF569600E682F3 /* DescriptionTableViewCell.swift in Sources */,

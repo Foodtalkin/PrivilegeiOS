@@ -222,6 +222,7 @@ class RestaurantPinViewController: UIViewController, WebServiceCallingDelegate {
         stopAnimation()
         
         if(dict.object(forKey: "status") as! String == "OK"){
+            FBSDKAppEvents.logEvent("Successfully Redeemed")
             comingSuccessFrom = "Redeem"
             rid = (dict.object(forKey: "result") as! NSDictionary).object(forKey: "id") as! NSNumber
          let openPost = self.storyboard!.instantiateViewController(withIdentifier: "Success") as! SuccessViewController;

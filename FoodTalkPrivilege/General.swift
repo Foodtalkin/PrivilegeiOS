@@ -10,7 +10,8 @@ import Foundation
 import UIKit
 import SystemConfiguration
 
-var baseUrl = "http://api.foodtalk.in/"
+//var baseUrl = "http://api.foodtalk.in/"
+var baseUrl = "http://stg-api.foodtalk.in/"
 
 var colorBattleShipGray = UIColor(red: 116/255, green: 117/255, blue: 118/255, alpha: 1.0)
 var colorBrightSkyBlue = UIColor(red: 31/255, green: 182/255, blue: 255/255, alpha: 1.0)
@@ -29,6 +30,9 @@ var viewAlert = UIView()
 var alerButton = UIButton()
 var viewSpinner = UIView()
 var problemArise = ""
+var latitude = ""
+var longitude = ""
+var city_id = ""
 
 func isConnectedToNetwork() -> Bool {
     

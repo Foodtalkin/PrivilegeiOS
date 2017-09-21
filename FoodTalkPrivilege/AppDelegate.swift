@@ -66,6 +66,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         FBSDKAppEvents.activateApp()
         
         Fabric.with([Crashlytics.self])
+        
 
         return true
     }

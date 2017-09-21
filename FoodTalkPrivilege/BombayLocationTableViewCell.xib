@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" restorationIdentifier="BombayLocation" selectionStyle="default" indentationWidth="10" rowHeight="166" id="KGk-i7-Jjw" customClass="BombayLocationTableViewCell" customModule="FoodTalkPrivilege" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="337" height="166"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="337" height="166"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="FILTER BY LOCATION" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Pc-mu-522">
+                        <rect key="frame" x="16" y="8" width="251" height="21"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="21" id="cks-tI-8oL"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                        <color key="textColor" red="0.54117647059999996" green="0.70196078429999997" blue="0.81176470590000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <button opaque="NO" tag="8" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OxS-Iy-RF5">
+                        <rect key="frame" x="16" y="47" width="15" height="15"/>
+                        <color key="backgroundColor" red="0.54117647059999996" green="0.70196078429999997" blue="0.81176470590000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="15" id="12o-VK-gTT"/>
+                            <constraint firstAttribute="height" constant="15" id="iLw-Ga-n4R"/>
+                        </constraints>
+                    </button>
+                    <label opaque="NO" tag="8" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Western Suburbs" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LXS-9w-RO9">
+                        <rect key="frame" x="47" y="41" width="236" height="27"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="27" id="CYi-UM-BFD"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <color key="textColor" red="0.3803921569" green="0.50196078430000002" blue="0.58039215690000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <button opaque="NO" tag="9" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BiQ-K6-Fze">
+                        <rect key="frame" x="16" y="77" width="15" height="15"/>
+                        <color key="backgroundColor" red="0.54117647059999996" green="0.70196078429999997" blue="0.81176470590000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="15" id="9ix-tJ-StP"/>
+                            <constraint firstAttribute="height" constant="15" id="uPG-6c-biY"/>
+                        </constraints>
+                    </button>
+                    <label opaque="NO" tag="9" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Eastern Suburbs" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wiM-kX-syF">
+                        <rect key="frame" x="47" y="71" width="236" height="27"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="27" id="rVB-nW-k9d"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <color key="textColor" red="0.3803921569" green="0.50196078430000002" blue="0.58039215690000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <button opaque="NO" tag="10" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JOt-1K-SaQ">
+                        <rect key="frame" x="16" y="107" width="15" height="15"/>
+                        <color key="backgroundColor" red="0.54117647059999996" green="0.70196078429999997" blue="0.81176470590000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="15" id="IyB-Pp-Ai2"/>
+                            <constraint firstAttribute="width" constant="15" id="dcn-m7-Q3i"/>
+                        </constraints>
+                    </button>
+                    <label opaque="NO" tag="10" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Harbour Suburbs" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aLw-Kb-b2m">
+                        <rect key="frame" x="47" y="101" width="236" height="27"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="27" id="Hov-hk-j5K"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <color key="textColor" red="0.3803921569" green="0.50196078430000002" blue="0.58039215690000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <button opaque="NO" tag="11" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gib-ya-z6f">
+                        <rect key="frame" x="16" y="137" width="15" height="15"/>
+                        <color key="backgroundColor" red="0.54117647059999996" green="0.70196078429999997" blue="0.81176470590000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="15" id="bj2-ZB-ZW8"/>
+                            <constraint firstAttribute="height" constant="15" id="rLa-Cd-XUr"/>
+                        </constraints>
+                    </button>
+                    <label opaque="NO" tag="11" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="South Mumbai" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fVF-6k-Mwb">
+                        <rect key="frame" x="47" y="131" width="236" height="27"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="27" id="rO6-Mh-fKo"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <color key="textColor" red="0.3803921569" green="0.50196078430000002" blue="0.58039215690000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="aLw-Kb-b2m" firstAttribute="leading" secondItem="JOt-1K-SaQ" secondAttribute="trailing" constant="16" id="0Iu-Af-i4R"/>
+                    <constraint firstItem="5Pc-mu-522" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" id="1Vb-6p-S8N"/>
+                    <constraint firstItem="LXS-9w-RO9" firstAttribute="leading" secondItem="OxS-Iy-RF5" secondAttribute="trailing" constant="16" id="497-aH-sCV"/>
+                    <constraint firstItem="OxS-Iy-RF5" firstAttribute="top" secondItem="5Pc-mu-522" secondAttribute="bottom" constant="18" id="4MP-F3-R7V"/>
+                    <constraint firstItem="Gib-ya-z6f" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="8" id="8gU-xV-Uyl"/>
+                    <constraint firstItem="BiQ-K6-Fze" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="8" id="Hjd-2C-k0G"/>
+                    <constraint firstItem="wiM-kX-syF" firstAttribute="leading" secondItem="BiQ-K6-Fze" secondAttribute="trailing" constant="16" id="Jo9-Ar-Pt5"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="wiM-kX-syF" secondAttribute="trailing" constant="46" id="JtT-m1-ZJJ"/>
+                    <constraint firstItem="fVF-6k-Mwb" firstAttribute="top" secondItem="aLw-Kb-b2m" secondAttribute="bottom" constant="3" id="V3H-JT-s1Q"/>
+                    <constraint firstItem="Gib-ya-z6f" firstAttribute="top" secondItem="JOt-1K-SaQ" secondAttribute="bottom" constant="15" id="VhL-X9-dFn"/>
+                    <constraint firstItem="OxS-Iy-RF5" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="8" id="W5T-cD-n1A"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="LXS-9w-RO9" secondAttribute="trailing" constant="46" id="Yhp-Ua-yYb"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="5Pc-mu-522" secondAttribute="trailing" constant="62" id="YuH-59-kNH"/>
+                    <constraint firstItem="BiQ-K6-Fze" firstAttribute="top" secondItem="OxS-Iy-RF5" secondAttribute="bottom" constant="15" id="Z5y-Ee-X4t"/>
+                    <constraint firstItem="5Pc-mu-522" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="8" id="ZGn-eO-IUh"/>
+                    <constraint firstItem="LXS-9w-RO9" firstAttribute="top" secondItem="5Pc-mu-522" secondAttribute="bottom" constant="12" id="eT9-Ye-HDu"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="aLw-Kb-b2m" secondAttribute="trailing" constant="46" id="g0k-Nr-d4B"/>
+                    <constraint firstItem="fVF-6k-Mwb" firstAttribute="leading" secondItem="Gib-ya-z6f" secondAttribute="trailing" constant="16" id="jqj-21-zMN"/>
+                    <constraint firstAttribute="trailing" secondItem="fVF-6k-Mwb" secondAttribute="trailing" constant="54" id="nUg-JE-1dC"/>
+                    <constraint firstItem="JOt-1K-SaQ" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="8" id="sIP-M7-fhu"/>
+                    <constraint firstItem="JOt-1K-SaQ" firstAttribute="top" secondItem="BiQ-K6-Fze" secondAttribute="bottom" constant="15" id="tCG-hg-mNo"/>
+                    <constraint firstItem="aLw-Kb-b2m" firstAttribute="top" secondItem="wiM-kX-syF" secondAttribute="bottom" constant="3" id="ywz-Vj-q9k"/>
+                    <constraint firstItem="wiM-kX-syF" firstAttribute="top" secondItem="LXS-9w-RO9" secondAttribute="bottom" constant="3" id="yym-CJ-WUC"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="btnEast" destination="BiQ-K6-Fze" id="VNO-uH-qUo"/>
+                <outlet property="btnNorth" destination="JOt-1K-SaQ" id="oZ7-Ct-YTs"/>
+                <outlet property="btnSouth" destination="Gib-ya-z6f" id="8S2-Y6-ZIz"/>
+                <outlet property="btnWest" destination="OxS-Iy-RF5" id="ISV-f1-zt6"/>
+                <outlet property="lblEast" destination="wiM-kX-syF" id="zAL-PD-dtk"/>
+                <outlet property="lblNorth" destination="aLw-Kb-b2m" id="Kga-3e-Eeg"/>
+                <outlet property="lblSouth" destination="fVF-6k-Mwb" id="Sl1-b4-kw4"/>
+                <outlet property="lblWest" destination="LXS-9w-RO9" id="Kox-Fg-lix"/>
+            </connections>
+            <point key="canvasLocation" x="42.5" y="115"/>
+        </tableViewCell>
+    </objects>
+</document>

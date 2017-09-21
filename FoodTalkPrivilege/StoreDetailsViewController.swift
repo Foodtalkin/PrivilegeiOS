@@ -615,7 +615,7 @@ class StoreDetailsViewController: UIViewController, UITableViewDataSource, UITab
             
         if(dict.object(forKey: "status") as! String == "OK"){
         dictDetails = dict.object(forKey: "result") as! NSDictionary
-            
+        
         isBookmark = dictDetails.object(forKey: "is_bookmarked") as! String
          
             if(isBookmark == "1"){

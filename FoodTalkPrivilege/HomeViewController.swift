@@ -18,6 +18,7 @@ var selectedWebType = ""
 var strOneLiner = ""
 var restaurantName = ""
 
+
 class HomeViewController: UIViewController,UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UITableViewDataSource, UITableViewDelegate, WebServiceCallingDelegate, MFMailComposeViewControllerDelegate, UIScrollViewDelegate, CLLocationManagerDelegate {
     
     fileprivate let barSize : CGFloat = 44.0
@@ -32,6 +33,7 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
     @IBOutlet var btnSearch : UIButton?
     @IBOutlet var viewNavigate : UIView?
     @IBOutlet var viewBase : UIView?
+    @IBOutlet var lblCity : UILabel?
     
     var viewMenu = UIView()
     var isMoreTapped : Bool = false
@@ -116,21 +118,38 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
         if(loginAs == "guest"){
             viewBase?.frame = CGRect(x: 0, y: 114, width: self.view.frame.size.width, height: self.view.frame.size.height - 115)
             createBuyView()
+            if(city_id == ""){
+                let openPost = self.storyboard!.instantiateViewController(withIdentifier: "CitySelection") as! CitySelectionViewController;
+                self.navigationController!.visibleViewController!.navigationController!.pushViewController(openPost, animated:true);
+            }
         }
         else{
             viewBuy.isHidden = true
             viewBase?.frame = CGRect(x: 0, y: 64, width: self.view.frame.size.width, height: self.view.frame.size.height - 65)
             webServiceForProfile()
         }
-     //   viewBase?.backgroundColor = .red
         setCollectionView()
         createMenuView()
         tblMenu.reloadData()
         self.navigationController?.isNavigationBarHidden = true
         
         createBottomView()
+        if((UserDefaults.standard.object(forKey: "city_id")) != nil){
+            city_id = UserDefaults.standard.object(forKey: "city_id") as! String
+        }
+        isMoreTapped = false
+        isLocationCalled = false
+    //    arrCards.removeAllObjects()
+    //    DispatchQueue.main.async{
+         self.findLocationService()
+   //     }
         
-        findLocationService()
+        if(city_id == "1"){
+            lblCity?.text = "DELHI NCR"
+        }
+        else{
+            lblCity?.text = "MUMBAI"
+        }
     }
     
     func createBottomView(){
@@ -514,8 +533,8 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
                 else{
                     cell.lblDistance?.isHidden = true
                 }
-                
-                //      setImageWithUrl(imgCell, imgView: cell.packCellImage!)
+            
+            
                 DispatchQueue.main.async{
                     
                     setImageWithUrl(imgCell, imgView: cell.packCellImage!)
@@ -576,7 +595,7 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
                 cell.lblDistance?.isHidden = true
             }
             
-  //      setImageWithUrl(imgCell, imgView: cell.packCellImage!)
+  
         DispatchQueue.main.async{
        
             setImageWithUrl(imgCell, imgView: cell.packCellImage!)
@@ -618,7 +637,7 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
             cell.lblMoney?.text = String(format : "\u{20B9} %@", (arrCards.object(at: indexPath.row) as! NSDictionary).object(forKey: "cost") as! String)
             
             let imgCell = (arrCards.object(at: indexPath.row) as! NSDictionary).object(forKey: "card_image") as! String
-            //      setImageWithUrl(imgCell, imgView: cell.packCellImage!)
+           
             DispatchQueue.main.async{
                 
                 setImageWithUrl(imgCell, imgView: cell.packCellImage!)
@@ -856,14 +875,53 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
         
     }
     
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        
+        let lastElement = arrCards.count - 2
+        if indexPath.row == lastElement {
+            loadMoreMethod()
+        }
+    }
+    
+    //MARK:- loadMore
+    
+    func loadMoreMethod(){
+        if(isMoreTapped == false){
+            if(nextPageUrl.characters.count > 0){
+                //   callWebNextUrl()
+                if CLLocationManager.locationServicesEnabled() {
+                    switch(CLLocationManager.authorizationStatus()) {
+                    case .notDetermined, .restricted, .denied:
+                        DispatchQueue.main.async{
+                            self.callWebNextUrl()
+                        }
+                        
+                    case .authorizedAlways, .authorizedWhenInUse:
+                        viewBottom.isHidden = true
+                        locationManager.startUpdatingLocation()
+                        DispatchQueue.main.async{
+                            self.callWebNextLocationUrl()
+                        }
+                        
+                    }
+                    
+                } else {
+                    DispatchQueue.main.async{
+                        self.callWebNextUrl()
+                    }
+                }
+            }
+        }
+    }
+    
     //MARK:- TableViewDelegates and Datasource
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if(loginAs == "guest"){
-            return 11
+            return 13
         }
         else{
-            return 13
+            return 15
         }
     }
     
@@ -875,7 +933,7 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
         cell?.selectionStyle = .none
         cell?.backgroundColor = .clear
         if(loginAs == "guest"){
-           if((indexPath.row == 3) || (indexPath.row == 7)){
+           if((indexPath.row == 1) || (indexPath.row == 5) || (indexPath.row == 9)){
             
            }
            else{
@@ -883,7 +941,7 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
            }
         }
         else{
-            if((indexPath.row == 4) || (indexPath.row == 8) || (indexPath.row == 11)){
+            if((indexPath.row == 1) || (indexPath.row == 6) || (indexPath.row == 10) || (indexPath.row == 13)){
                 
             }
             else{
@@ -898,78 +956,98 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
             if(indexPath.row == 0){
                 viewMenu.removeFromSuperview()
                 tblMenu.removeFromSuperview()
+                let openPost = self.storyboard!.instantiateViewController(withIdentifier: "CitySelection") as! CitySelectionViewController;
+                self.navigationController!.visibleViewController!.navigationController!.pushViewController(openPost, animated:true);
+            }
+            else if(indexPath.row == 2){
+                viewMenu.removeFromSuperview()
+                tblMenu.removeFromSuperview()
                 let openPost = self.storyboard!.instantiateViewController(withIdentifier: "LoginNumber") as! LoginNumberViewController;
                 self.navigationController!.visibleViewController!.navigationController!.pushViewController(openPost, animated:true);
             }
-            else if(indexPath.row == 1){
-                let openPost = self.storyboard!.instantiateViewController(withIdentifier: "BuySignup") as! BuySignupViewController;
-                self.navigationController!.pushViewController(openPost, animated: true)
-            }
-            else if(indexPath.row == 2){
+            else if(indexPath.row == 3){
                 let openPost = self.storyboard!.instantiateViewController(withIdentifier: "BuySignup") as! BuySignupViewController;
                 self.navigationController!.pushViewController(openPost, animated: true)
             }
             else if(indexPath.row == 4){
+                let openPost = self.storyboard!.instantiateViewController(withIdentifier: "BuySignup") as! BuySignupViewController;
+                self.navigationController!.pushViewController(openPost, animated: true)
+            }
+            else if(indexPath.row == 6){
                 let openPost = self.storyboard!.instantiateViewController(withIdentifier: "HowItWork") as! HowItWorkViewController;
                 self.navigationController!.pushViewController(openPost, animated: true)
             }
-            else if(indexPath.row == 5){
+            else if(indexPath.row == 7){
                 selectedWebType = "faq"
                 let openPost = self.storyboard!.instantiateViewController(withIdentifier: "Web") as! WebViewController;
                 self.navigationController!.visibleViewController!.navigationController!.pushViewController(openPost, animated:true);
             }
-            else if(indexPath.row == 6){
+            else if(indexPath.row == 8){
                 selectedWebType = "legal"
                 let openPost = self.storyboard!.instantiateViewController(withIdentifier: "Web") as! WebViewController;
                 self.navigationController!.visibleViewController!.navigationController!.pushViewController(openPost, animated:true);
             }
-            else if(indexPath.row == 8){
+            else if(indexPath.row == 10){
                 contactUs()
             }
         }
         else{
             if(indexPath.row == 0){
+                
+                let openPost = self.storyboard!.instantiateViewController(withIdentifier: "CitySelection") as! CitySelectionViewController;
+                self.navigationController!.visibleViewController!.navigationController!.pushViewController(openPost, animated:true);
+            }
+            if(indexPath.row == 2){
                 let openPost = self.storyboard!.instantiateViewController(withIdentifier: "Account") as! AccountViewController;
                 self.navigationController!.visibleViewController!.navigationController!.pushViewController(openPost, animated:true);
             }
-            else if(indexPath.row == 1){
+            else if(indexPath.row == 3){
                 let openPost = self.storyboard!.instantiateViewController(withIdentifier: "History") as! HistoryViewController;
                 self.navigationController!.visibleViewController!.navigationController!.pushViewController(openPost, animated:true);
             }
-            else if(indexPath.row == 2){
+            else if(indexPath.row == 4){
                 let openPost = self.storyboard!.instantiateViewController(withIdentifier: "Favourites") as! FavouritesViewController;
                 self.navigationController!.visibleViewController!.navigationController!.pushViewController(openPost, animated:true);
             }
-            else if(indexPath.row == 3){
+            else if(indexPath.row == 5){
                 selectedWebType = "exp"
+                if(city_id == "1"){
                 let openPost = self.storyboard!.instantiateViewController(withIdentifier: "Web") as! WebViewController;
                 self.navigationController!.visibleViewController!.navigationController!.pushViewController(openPost, animated:true);
+                }
+                else{
+                    let openPost = self.storyboard!.instantiateViewController(withIdentifier: "ComingSoonCity") as! ComingSoonCityViewController;
+                    self.navigationController!.visibleViewController!.navigationController!.pushViewController(openPost, animated:true);
+                }
             }
-            else if(indexPath.row == 5){
+            else if(indexPath.row == 7){
                 let openPost = self.storyboard!.instantiateViewController(withIdentifier: "HowItWork") as! HowItWorkViewController;
                 self.navigationController!.visibleViewController!.navigationController!.pushViewController(openPost, animated:true);
             }
-            else if(indexPath.row == 6){
+            else if(indexPath.row == 8){
                 selectedWebType = "faq"
                 let openPost = self.storyboard!.instantiateViewController(withIdentifier: "Web") as! WebViewController;
                 self.navigationController!.visibleViewController!.navigationController!.pushViewController(openPost, animated:true);
             }
-            else if(indexPath.row == 7){
+            else if(indexPath.row == 9){
                 selectedWebType = "legal"
                 let openPost = self.storyboard!.instantiateViewController(withIdentifier: "Web") as! WebViewController;
                 self.navigationController!.visibleViewController!.navigationController!.pushViewController(openPost, animated:true);
             }
-            else if(indexPath.row == 9){
+            else if(indexPath.row == 11){
                 FBSDKAppEvents.logEvent("contact_us_view")
                 contactUs()
             }
-            else if(indexPath.row == 10){
+            else if(indexPath.row == 12){
                 showAlert()
             }
         }
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if(indexPath.row == 1){
+            return 25
+        }
         return 45
     }
     
@@ -989,6 +1067,7 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
             UserDefaults.standard.setValue(nil, forKey: "session")
             UserDefaults.standard.setValue(nil, forKey: "expiry")
             UserDefaults.standard.setValue(nil, forKey: "token")
+            UserDefaults.standard.setValue(nil, forKey: "city_id")
             FBSDKAppEvents.logEvent("logout")
             self.navigationController?.popToRootViewController(animated: true)
         }
@@ -1010,7 +1089,18 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
         let imgViewIcon = UIImageView()
         let lblValue = UILabel()
         if(loginAs == "guest"){
+            
         if(indexPath.row == 0){
+                imgViewIcon.frame = CGRect(x: 46, y: 45/2 - 11, width: 17, height : 22)
+                imgViewIcon.image = UIImage(named : "location_on.png")
+                
+                lblValue.frame = CGRect(x: 94, y: imgViewIcon.frame.origin.y, width: 170, height: 22)
+                lblValue.text = "DELHI NCR"
+                lblValue.textColor = .white
+                lblValue.font = UIFont.boldSystemFont(ofSize: 17)
+        }
+            
+        else if(indexPath.row == 2){
             imgViewIcon.frame = CGRect(x: 46, y: 45/2 - 11, width: 17, height : 22)
             imgViewIcon.image = UIImage(named : "fill131.png")
             
@@ -1019,7 +1109,7 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
             lblValue.textColor = .white
             lblValue.font = UIFont.boldSystemFont(ofSize: 17)
         }
-        else if(indexPath.row == 1){
+        else if(indexPath.row == 3){
             imgViewIcon.frame = CGRect(x: 46, y: 45/2 - 11, width: 22.8, height : 22)
             imgViewIcon.image = UIImage(named : "fill7.png")
             
@@ -1028,7 +1118,7 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
             lblValue.textColor = .white
             lblValue.font = UIFont.boldSystemFont(ofSize: 17)
         }
-        else if(indexPath.row == 2){
+        else if(indexPath.row == 4){
             imgViewIcon.frame = CGRect(x: 46, y: 45/2 - 11, width: 22.8, height : 22)
             imgViewIcon.image = UIImage(named : "exp.png")
             
@@ -1037,7 +1127,7 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
             lblValue.textColor = .white
             lblValue.font = UIFont.boldSystemFont(ofSize: 17)
         }
-        else if(indexPath.row == 4){
+        else if(indexPath.row == 6){
             imgViewIcon.frame = CGRect(x: 46, y: 45/2 - 11, width: 17.7, height : 22)
             imgViewIcon.image = UIImage(named : "fill86.png")
             
@@ -1046,7 +1136,7 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
             lblValue.textColor = .white
             lblValue.font = UIFont.boldSystemFont(ofSize: 17)
         }
-        else if(indexPath.row == 5){
+        else if(indexPath.row == 7){
             imgViewIcon.frame = CGRect(x: 46, y: 45/2 - 11, width: 17.7, height : 22)
             imgViewIcon.image = UIImage(named : "fill41.png")
             
@@ -1055,7 +1145,7 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
             lblValue.textColor = .white
             lblValue.font = UIFont.boldSystemFont(ofSize: 17)
         }
-        else if(indexPath.row == 6){
+        else if(indexPath.row == 8){
             imgViewIcon.frame = CGRect(x: 46, y: 45/2 - 11, width: 19.6, height : 22)
             imgViewIcon.image = UIImage(named : "fill3.png")
             
@@ -1064,7 +1154,7 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
             lblValue.textColor = .white
             lblValue.font = UIFont.boldSystemFont(ofSize: 17)
         }
-        else if(indexPath.row == 8){
+        else if(indexPath.row == 10){
             imgViewIcon.frame = CGRect(x: 46, y: 45/2 - 11, width: 21.6, height : 22)
             imgViewIcon.image = UIImage(named : "fill76.png")
             
@@ -1073,7 +1163,7 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
             lblValue.textColor = .white
             lblValue.font = UIFont.boldSystemFont(ofSize: 17)
         }
-        else if(indexPath.row == 10){
+        else if(indexPath.row == 12){
             imgViewIcon.frame = CGRect(x: 0, y: 0, width: 0, height : 0)
             
             lblValue.frame = CGRect(x: 46, y: 0, width: 200, height: 44)
@@ -1087,6 +1177,22 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
         }
         else{
             if(indexPath.row == 0){
+                imgViewIcon.frame = CGRect(x: 46, y: 45/2 - 11, width: 17, height : 22)
+                imgViewIcon.image = UIImage(named : "location_on.png")
+                
+                lblValue.frame = CGRect(x: 94, y: imgViewIcon.frame.origin.y, width: 170, height: 22)
+                if(city_id == "1"){
+                   lblValue.text = "DELHI NCR"
+                }
+                else{
+                   lblValue.text = "MUMBAI"
+                }
+                
+                lblValue.textColor = .white
+                lblValue.font = UIFont.boldSystemFont(ofSize: 17)
+            }
+            
+            else if(indexPath.row == 2){
                 imgViewIcon.frame = CGRect(x: 46, y: 45/2 - 11, width: 22, height : 22)
                 imgViewIcon.image = UIImage(named : "fill9.png")
                 
@@ -1095,7 +1201,7 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
                 lblValue.textColor = .white
                 lblValue.font = UIFont.boldSystemFont(ofSize: 17)
             }
-            else if(indexPath.row == 1){
+            else if(indexPath.row == 3){
                 imgViewIcon.frame = CGRect(x: 46, y: 45/2 - 11, width: 21, height : 21)
                 imgViewIcon.image = UIImage(named : "history.png")
                 
@@ -1104,7 +1210,7 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
                 lblValue.textColor = .white
                 lblValue.font = UIFont.boldSystemFont(ofSize: 17)
             }
-            else if(indexPath.row == 2){
+            else if(indexPath.row == 4){
                 imgViewIcon.frame = CGRect(x: 46, y: 45/2 - 11, width: 16.1, height : 22)
                 imgViewIcon.image = UIImage(named : "fav.png")
                 
@@ -1113,7 +1219,7 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
                 lblValue.textColor = .white
                 lblValue.font = UIFont.boldSystemFont(ofSize: 17)
             }
-            else if(indexPath.row == 3){
+            else if(indexPath.row == 5){
                 imgViewIcon.frame = CGRect(x: 46, y: 45/2 - 11, width: 16.1, height : 22)
                 imgViewIcon.image = UIImage(named : "exp.png")
                 
@@ -1122,7 +1228,7 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
                 lblValue.textColor = .white
                 lblValue.font = UIFont.boldSystemFont(ofSize: 17)
             }
-            else if(indexPath.row == 5){
+            else if(indexPath.row == 7){
                 imgViewIcon.frame = CGRect(x: 46, y: 45/2 - 11, width: 17.7, height : 22)
                 imgViewIcon.image = UIImage(named : "fill86.png")
                 
@@ -1131,7 +1237,7 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
                 lblValue.textColor = .white
                 lblValue.font = UIFont.boldSystemFont(ofSize: 17)
             }
-            else if(indexPath.row == 6){
+            else if(indexPath.row == 8){
                 imgViewIcon.frame = CGRect(x: 46, y: 45/2 - 11, width: 17.7, height : 22)
                 imgViewIcon.image = UIImage(named : "fill41.png")
                 
@@ -1140,7 +1246,7 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
                 lblValue.textColor = .white
                 lblValue.font = UIFont.boldSystemFont(ofSize: 17)
             }
-            else if(indexPath.row == 7){
+            else if(indexPath.row == 9){
                 imgViewIcon.frame = CGRect(x: 46, y: 45/2 - 11, width: 19.6, height : 22)
                 imgViewIcon.image = UIImage(named : "fill3.png")
                 
@@ -1149,7 +1255,7 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
                 lblValue.textColor = .white
                 lblValue.font = UIFont.boldSystemFont(ofSize: 17)
             }
-            else if(indexPath.row == 9){
+            else if(indexPath.row == 11){
                 imgViewIcon.frame = CGRect(x: 46, y: 45/2 - 11, width: 21.6, height : 22)
                 imgViewIcon.image = UIImage(named : "fill76.png")
                 
@@ -1158,7 +1264,7 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
                 lblValue.textColor = .white
                 lblValue.font = UIFont.boldSystemFont(ofSize: 17)
             }
-            else if(indexPath.row == 10){
+            else if(indexPath.row == 12){
                 imgViewIcon.frame = CGRect(x: 46, y: 45/2 - 11, width: 21.6, height : 22)
                 imgViewIcon.image = UIImage(named : "fill131.png")
                 
@@ -1167,7 +1273,7 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
                 lblValue.textColor = .white
                 lblValue.font = UIFont.boldSystemFont(ofSize: 17)
             }
-            else if(indexPath.row == 12){
+            else if(indexPath.row == 14){
                 imgViewIcon.frame = CGRect(x: 0, y: 0, width: 0, height : 0)
                 
                 lblValue.frame = CGRect(x: 46, y: 0, width: 200, height: 30)
@@ -1242,7 +1348,8 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
     func callWebServiceForHome(){
         showActivityIndicator(view: self.view)
         if (isConnectedToNetwork() == true){
-            let url = String(format: "%@%@", baseUrl,"offers")
+            let url = String(format: "%@%@city_id=%@", baseUrl,"offers?",city_id)
+            
             webServiceGet(url)
             delegate = self
         }
@@ -1256,7 +1363,7 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
     func callWebServiceForLocation(){
         showActivityIndicator(view: self.view)
         if (isConnectedToNetwork() == true){
-            let url = String(format: "%@%@?latitude=%@&longitude=%@", baseUrl,"offers", latitude, longitude)
+            let url = String(format: "%@%@?latitude=%@&longitude=%@&city_id=%@", baseUrl,"offers", latitude, longitude, city_id)
             
             webServiceGet(url)
             delegate = self
@@ -1272,7 +1379,8 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
     func callWebNextUrl(){
      //   showActivityIndicator(view: self.view)
         if (isConnectedToNetwork() == true){
-            let url = String(format: "%@", nextPageUrl)
+            let url = String(format: "%@&city_id=%@", nextPageUrl, city_id)
+            
             webServiceGet(url)
             delegate = self
         }
@@ -1285,7 +1393,7 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
     func callWebNextLocationUrl(){
      //   showActivityIndicator(view: self.view)
         if (isConnectedToNetwork() == true){
-            let url = String(format: "%@&latitude=%@&longitude=%@", nextPageUrl,latitude, longitude)
+            let url = String(format: "%@&latitude=%@&longitude=%@&city_id=%@", nextPageUrl,latitude, longitude, city_id)
             webServiceGet(url)
             delegate = self
         }
@@ -1317,21 +1425,32 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
         stopAnimation()
         if((dict.object(forKey: "api") as! String).contains("profile?")){
             savingValue = (dict.object(forKey: "result") as! NSDictionary).object(forKey: "saving") as! String
+            let city_id1 = (dict.object(forKey: "result") as! NSDictionary).object(forKey: "city_id") as! String
+            if(city_id1 == ""){
+                let openPost = self.storyboard!.instantiateViewController(withIdentifier: "CitySelection") as! CitySelectionViewController;
+                self.navigationController!.visibleViewController!.navigationController!.pushViewController(openPost, animated:true);
+            }
+            else{
+                if(loginAs == "user"){
+                 UserDefaults.standard.set(city_id1, forKey: "city_id")
+                }
+            }
+            city_id = city_id1
         }
         else if((dict.object(forKey: "api") as! String).contains("offers")){
         if(dict.object(forKey: "status") as! String == "OK"){
             let arr = ((dict.object(forKey: "result") as! NSDictionary).object(forKey: "data") as! NSArray).mutableCopy() as! NSMutableArray
             for index in 0..<arr.count{
                 arrCards.add(arr.object(at: index) as! NSDictionary)
-                let imgView = UIImageView()
-                let imgCell = (arr.object(at: index) as! NSDictionary).object(forKey: "card_image") as! String
-                setImageWithUrl(imgCell, imgView: imgView)
             }
             nextPageUrl = (dict.object(forKey: "result") as! NSDictionary).object(forKey: "next_page_url") as! String
         }
         }
-        
-        collectionView.reloadData()
+   //     DispatchQueue.main.async{
+    //     self.collectionView.reloadSections(NSIndexSet(index: 0) as IndexSet)
+            self.collectionView.reloadData()
+   //     }
+   //     stopAnimation()
     }
     
     func serviceFailedWitherror(_ error : NSError){
@@ -1379,35 +1498,35 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
 //            }
 //    }
     
-    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
-        if(isMoreTapped == false){
-            if(nextPageUrl.characters.count > 0){
-                //   callWebNextUrl()
-                if CLLocationManager.locationServicesEnabled() {
-                    switch(CLLocationManager.authorizationStatus()) {
-                    case .notDetermined, .restricted, .denied:
-                        DispatchQueue.main.async{
-                            self.callWebNextUrl()
-                        }
-                        
-                    case .authorizedAlways, .authorizedWhenInUse:
-                        viewBottom.isHidden = true
-                        locationManager.startUpdatingLocation()
-                        DispatchQueue.main.async{
-                            self.callWebNextLocationUrl()
-                        }
-                        
-                    }
-                    
-                } else {
-                    DispatchQueue.main.async{
-                        self.callWebNextUrl()
-                    }
-                }
-            }
-        }
-        
-    }
+//    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+//        if(isMoreTapped == false){
+//            if(nextPageUrl.characters.count > 0){
+//                //   callWebNextUrl()
+//                if CLLocationManager.locationServicesEnabled() {
+//                    switch(CLLocationManager.authorizationStatus()) {
+//                    case .notDetermined, .restricted, .denied:
+//                        DispatchQueue.main.async{
+//                            self.callWebNextUrl()
+//                        }
+//                        
+//                    case .authorizedAlways, .authorizedWhenInUse:
+//                        viewBottom.isHidden = true
+//                        locationManager.startUpdatingLocation()
+//                        DispatchQueue.main.async{
+//                            self.callWebNextLocationUrl()
+//                        }
+//                        
+//                    }
+//                    
+//                } else {
+//                    DispatchQueue.main.async{
+//                        self.callWebNextUrl()
+//                    }
+//                }
+//            }
+//        }
+//        
+//    }
     
     //MARK:- contactUS
     

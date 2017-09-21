@@ -80,10 +80,12 @@ class SelectOutletViewController: UIViewController, UITableViewDataSource, UITab
                 if(((arrOutlets.object(at: indexPath.row - 1) as! NSDictionary).object(forKey: "distance")) != nil){
                 var distance = ((arrOutlets.object(at: indexPath.row - 1) as! NSDictionary).object(forKey: "distance") as? NSString)?.doubleValue
                     distance = distance! / 1000
+                    
                 let myString = String(format : "  %@ \n  %.1f KM", ((arrOutlets.object(at: indexPath.row - 1) as! NSDictionary).object(forKey: "area") as? String)!, distance!).uppercased()
+                let area = (arrOutlets.object(at: indexPath.row - 1) as! NSDictionary).object(forKey: "area") as? NSString
                 myMutableString = NSMutableAttributedString(string: myString, attributes: [NSForegroundColorAttributeName: UIColor.black])
-                myMutableString.addAttribute(NSFontAttributeName, value: UIFont.boldSystemFont(ofSize: 12), range: NSRange(location:myString.characters.count - 7,length: 7))
-                myMutableString.addAttribute(NSForegroundColorAttributeName, value: colorLightGold, range: NSRange(location:myString.characters.count - 7,length:7))
+                myMutableString.addAttribute(NSFontAttributeName, value: UIFont.boldSystemFont(ofSize: 12), range: NSRange(location:(area?.length)! + 4,length: myString.characters.count - ((area?.length)! + 4)))
+                myMutableString.addAttribute(NSForegroundColorAttributeName, value: colorLightGold, range: NSRange(location:(area?.length)! + 4,length: myString.characters.count - ((area?.length)! + 4)))
                 cell?.textLabel?.attributedText = myMutableString
                 }
                 else{

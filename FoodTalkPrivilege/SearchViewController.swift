@@ -51,6 +51,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         tblFilter!.register(UINib(nibName: "FilterCostTableViewCell", bundle: nil), forCellReuseIdentifier: "FilterCost")
         tblFilter!.register(UINib(nibName: "FilterCousinTableViewCell", bundle: nil), forCellReuseIdentifier: "FilterCousin")
         tblFilter!.register(UINib(nibName: "OfferTypeTableViewCell", bundle: nil), forCellReuseIdentifier: "OfferType")
+        tblFilter!.register(UINib(nibName: "BombayLocationTableViewCell", bundle: nil), forCellReuseIdentifier: "BombayLocation")
         
         tblFilter?.backgroundColor = colorPaleGray
         self.view.backgroundColor = colorPaleGray
@@ -99,6 +100,32 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if(tableView == tblFilter){
         if(indexPath.row == 0){
+            if(city_id == "2"){
+                let cell = tableView.dequeueReusableCell(withIdentifier: "BombayLocation", for: indexPath) as! BombayLocationTableViewCell
+                cell.selectionStyle = .none
+                createCircleButton(cell.btnEast!)
+                createCircleButton(cell.btnWest!)
+                createCircleButton(cell.btnNorth!)
+                createCircleButton(cell.btnSouth!)
+                
+                cell.btnSouth?.addTarget(self, action: #selector(SearchViewController.selectFilterLocation(_:)), for: .touchUpInside)
+                cell.btnNorth?.addTarget(self, action: #selector(SearchViewController.selectFilterLocation(_:)), for: .touchUpInside)
+                cell.btnWest?.addTarget(self, action: #selector(SearchViewController.selectFilterLocation(_:)), for: .touchUpInside)
+                cell.btnEast?.addTarget(self, action: #selector(SearchViewController.selectFilterLocation(_:)), for: .touchUpInside)
+                
+                let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(SearchViewController.handleTapBombayLocation(_:)))
+                let gestureRecognizer1 = UITapGestureRecognizer(target: self, action: #selector(SearchViewController.handleTapBombayLocation(_:)))
+                let gestureRecognizer2 = UITapGestureRecognizer(target: self, action: #selector(SearchViewController.handleTapBombayLocation(_:)))
+                let gestureRecognizer3 = UITapGestureRecognizer(target: self, action: #selector(SearchViewController.handleTapBombayLocation(_:)))
+                
+                cell.lblEast?.addGestureRecognizer(gestureRecognizer)
+                cell.lblWest?.addGestureRecognizer(gestureRecognizer1)
+                cell.lblNorth?.addGestureRecognizer(gestureRecognizer2)
+                cell.lblSouth?.addGestureRecognizer(gestureRecognizer3)
+                
+                return cell
+            }
+            else{
            let cell = tableView.dequeueReusableCell(withIdentifier: "FilterLocation", for: indexPath) as! FilterLocationTableViewCell
             cell.selectionStyle = .none
             createCircleButton(cell.btnEastDelhi!)
@@ -133,6 +160,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
             cell.lblWestDelhi?.addGestureRecognizer(gestureRecognizer6)
             
             return cell
+            }
         }
         else if(indexPath.row == 1){
             let cell = tableView.dequeueReusableCell(withIdentifier: "FilterCost", for: indexPath) as! FilterCostTableViewCell
@@ -235,23 +263,30 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
                 lblRestaurant.text = (filtered.object(at: indexPath.row) as! NSDictionary).object(forKey: "name") as? String
                 let amount = ((filtered.object(at: indexPath.row) as! NSDictionary).object(forKey: "cost") as! NSString).intValue
                 var offerP = ""
+                var count = 0
                 if(amount < 500){
+                    count = 1
                     offerP = String(format : "%@", "\u{20B9}")
                 }
                 else if(amount < 999){
+                    count = 2
                     offerP = String(format : "%@%@", "\u{20B9}", "\u{20B9}")
                 }
                 else{
+                    count = 3
                     offerP = String(format : "%@%@%@", "\u{20B9}", "\u{20B9}", "\u{20B9}")
                 }
                 
                 if(((filtered.object(at: indexPath.row) as! NSDictionary).object(forKey: "distance")) != nil){
                     var distance = ((filtered.object(at: indexPath.row) as! NSDictionary).object(forKey: "distance") as? NSString)?.doubleValue
                     distance = distance! / 1000
-                    let myString = String(format : "%@  %.1f KM", offerP, distance!)
+                    let myString = String(format : "%@ | %.1f KM", offerP, distance!)
+                    
                     myMutableString = NSMutableAttributedString(string: myString, attributes: [NSForegroundColorAttributeName: UIColor.black])
-                    myMutableString.addAttribute(NSFontAttributeName, value: UIFont.boldSystemFont(ofSize: 12), range: NSRange(location:myString.characters.count - 7,length: 7))
-                    myMutableString.addAttribute(NSForegroundColorAttributeName, value: colorLightGold, range: NSRange(location:myString.characters.count - 7,length:7))
+                    myMutableString.addAttribute(NSFontAttributeName, value: UIFont.boldSystemFont(ofSize: 12), range: NSRange(location: count,length: myString.characters.count - count))
+                    myMutableString.addAttribute(NSForegroundColorAttributeName, value: UIColor.lightGray, range: NSRange(location:count + 1 ,length:1))
+                    myMutableString.addAttribute(NSForegroundColorAttributeName, value: colorLightGold, range: NSRange(location:count + 2 ,length:myString.characters.count - (count + 2)))
+                    
                     lblOffers.attributedText = myMutableString
                 }
                 else{
@@ -325,6 +360,9 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if(tableView == tblFilter){
         if(indexPath.row == 0){
+            if(city_id == "2"){
+               return 166
+            }
             return 269
         }
         else if(indexPath.row == 1){
@@ -405,7 +443,6 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
             tblSearch.reloadData()
         }
         
-        
     }
     
     //MARK:- alertTapped
@@ -426,7 +463,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
       //  showActivityIndicator(view: self.view)
         if (isConnectedToNetwork()){
                 let searchText = (text).lowercased()
-                var url = String(format: "%@%@%@", baseUrl, "search_restaurant/", searchText)
+                var url = String(format: "%@%@%@?city_id=%@", baseUrl, "search_restaurant/", searchText, city_id)
             
             FBSDKAppEvents.logEvent("search", parameters: ["search" : searchText])
             if(latitude == ""){
@@ -435,7 +472,8 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
             else{
                 url = String(format : "%@?latitude=%@&longitude=%@", url, latitude, longitude)
             }
-                webServiceGet(url)
+            let urlwithPercentEscapes = url.addingPercentEncoding( withAllowedCharacters: NSCharacterSet.urlQueryAllowed)
+                webServiceGet(urlwithPercentEscapes!)
                 
                 delegate = self
                 
@@ -449,7 +487,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
     
     func webServiceForOffertype(){
         if (isConnectedToNetwork()){
-            let url = String(format: "%@%@", baseUrl, "offer_types")
+            let url = String(format: "%@%@?city_id=%@", baseUrl, "offer_types", city_id)
             webServiceGet(url)
             delegate = self
             
@@ -464,7 +502,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
     func webServiceCallingCousines(){
         
         if (isConnectedToNetwork()){
-            let url = String(format: "%@%@", baseUrl, "cuisine")
+            let url = String(format: "%@%@?city_id=%@", baseUrl, "cuisine", city_id)
             
             webServiceGet(url)
             
@@ -483,55 +521,55 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         if (isConnectedToNetwork()){
             var url = ""
             if(cityZone != "" && cusine != "" && cost != "" && offer_types != ""){
-             url = String(format: "%@%@city_zone_id=%@&cuisine=%@&cost=%@&type=%@", baseUrl, "offers?", cityZone, cusine, cost, offer_types)
+             url = String(format: "%@%@city_zone_id=%@&cuisine=%@&cost=%@&type=%@&city_id=%@", baseUrl, "offers?", cityZone, cusine, cost, offer_types, city_id)
             }
             else if(cityZone == "" && cusine != "" && cost != "" && offer_types != ""){
-               url = String(format: "%@%@&cuisine=%@&cost=%@&type=%@", baseUrl, "offers?", cusine, cost, offer_types)
+               url = String(format: "%@%@&cuisine=%@&cost=%@&type=%@&city_id=%@", baseUrl, "offers?", cusine, cost, offer_types, city_id)
             }
             else if(cityZone != "" && cusine == "" && cost != "" && offer_types != ""){
-               url = String(format: "%@%@city_zone_id=%@&cost=%@&type=%@", baseUrl, "offers?", cityZone,  cost, offer_types)
+               url = String(format: "%@%@city_zone_id=%@&cost=%@&type=%@&city_id=%@", baseUrl, "offers?", cityZone,  cost, offer_types, city_id)
             }
             else if(cityZone != "" && cusine != "" && cost == "" && offer_types != ""){
-                url = String(format: "%@%@city_zone_id=%@&cuisine=%@&type=%@", baseUrl, "offers?", cityZone, cusine, offer_types)
+                url = String(format: "%@%@city_zone_id=%@&cuisine=%@&type=%@&city_id=%@", baseUrl, "offers?", cityZone, cusine, offer_types, city_id)
             }
             else if(cityZone != "" && cusine != "" && cost != "" && offer_types == ""){
-                url = String(format: "%@%@city_zone_id=%@&cuisine=%@cost=%@", baseUrl, "offers?", cityZone, cusine, cost)
+                url = String(format: "%@%@city_zone_id=%@&cuisine=%@cost=%@&city_id=%@", baseUrl, "offers?", cityZone, cusine, cost, city_id)
             }
             else if(cityZone != "" && cusine == "" && cost == "" && offer_types == ""){
-                url = String(format: "%@%@city_zone_id=%@", baseUrl, "offers?", cityZone)
+                url = String(format: "%@%@city_zone_id=%@&city_id=%@", baseUrl, "offers?", cityZone, city_id)
             }
             else if(cityZone == "" && cusine != "" && cost == "" && offer_types == ""){
-                url = String(format: "%@%@cuisine=%@", baseUrl, "offers?",  cusine)
+                url = String(format: "%@%@cuisine=%@&city_id=%@", baseUrl, "offers?",  cusine, city_id)
             }
             else if(cityZone == "" && cusine == "" && cost != "" && offer_types == ""){
-                url = String(format: "%@%@cost=%@", baseUrl, "offers?", cost)
+                url = String(format: "%@%@cost=%@&city_id=%@", baseUrl, "offers?", cost, city_id)
             }
             else if(cityZone == "" && cusine == "" && cost == "" && offer_types != ""){
-                url = String(format: "%@%@type=%@", baseUrl, "offers?", offer_types)
+                url = String(format: "%@%@type=%@&city_id=%@", baseUrl, "offers?", offer_types, city_id)
             }
             else if(cityZone != "" && cusine != "" && cost == "" && offer_types == ""){
-                url = String(format: "%@%@city_zone_id=%@&cuisine=%@", baseUrl, "offers?", cityZone, cusine)
+                url = String(format: "%@%@city_zone_id=%@&cuisine=%@&city_id=%@", baseUrl, "offers?", cityZone, cusine, city_id)
             }
             else if(cityZone != "" && cusine == "" && cost != "" && offer_types == ""){
-                url = String(format: "%@%@city_zone_id=%@&cost=%@", baseUrl, "offers?", cityZone, cost)
+                url = String(format: "%@%@city_zone_id=%@&cost=%@&city_id=%@", baseUrl, "offers?", cityZone, cost, city_id)
             }
             else if(cityZone != "" && cusine == "" && cost == "" && offer_types != ""){
-                url = String(format: "%@%@city_zone_id=%@&type=%@", baseUrl, "offers?", cityZone, offer_types)
+                url = String(format: "%@%@city_zone_id=%@&type=%@&city_id=%@", baseUrl, "offers?", cityZone, offer_types, city_id)
             }
             else if(cityZone == "" && cusine != "" && cost != "" && offer_types == ""){
-                url = String(format: "%@%@cuisine=%@&cost=%@", baseUrl, "offers?", cusine, cost)
+                url = String(format: "%@%@cuisine=%@&cost=%@&city_id=%@", baseUrl, "offers?", cusine, cost, city_id)
             }
             else if(cityZone == "" && cusine != "" && cost == "" && offer_types != ""){
-                url = String(format: "%@%@cuisine=%@&type=%@", baseUrl, "offers?", cusine, offer_types)
+                url = String(format: "%@%@cuisine=%@&type=%@&city_id=%@", baseUrl, "offers?", cusine, offer_types, city_id)
             }
             else if(cityZone == "" && cusine == "" && cost != "" && offer_types != ""){
-                url = String(format: "%@%@cost=%@&type=%@", baseUrl, "offers?", cost, offer_types)
+                url = String(format: "%@%@cost=%@&type=%@&city_id=%@", baseUrl, "offers?", cost, offer_types, city_id)
             }
             if(latitude == ""){
                 
             }
             else{
-                url = String(format : "%@&latitude=%@&longitude=%@", url, latitude, longitude)
+                url = String(format : "%@&latitude=%@&longitude=%@&city_id=%@", url, latitude, longitude, city_id)
             }
             let fullNameArr = url.components(separatedBy: "offers?")
             let surname = fullNameArr[1]
@@ -683,7 +721,92 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
             selectFilterLocation(cell.btnCentralDelhi!)
             
         }
+        else if(gestureRecognizer.view?.tag == 8){
+            if(cell.btnCentralDelhi?.backgroundColor == colorSeeweed){
+                arrString.remove((gestureRecognizer.view as! UILabel).text!)
+            }
+            else{
+                arrString.add((gestureRecognizer.view as! UILabel).text!)
+            }
+            selectFilterLocation(cell.btnCentralDelhi!)
+            
+        }
+        else if(gestureRecognizer.view?.tag == 9){
+            if(cell.btnCentralDelhi?.backgroundColor == colorSeeweed){
+                arrString.remove((gestureRecognizer.view as! UILabel).text!)
+            }
+            else{
+                arrString.add((gestureRecognizer.view as! UILabel).text!)
+            }
+            selectFilterLocation(cell.btnCentralDelhi!)
+            
+        }
+        else if(gestureRecognizer.view?.tag == 10){
+            if(cell.btnCentralDelhi?.backgroundColor == colorSeeweed){
+                arrString.remove((gestureRecognizer.view as! UILabel).text!)
+            }
+            else{
+                arrString.add((gestureRecognizer.view as! UILabel).text!)
+            }
+            selectFilterLocation(cell.btnCentralDelhi!)
+            
+        }
+        else if(gestureRecognizer.view?.tag == 11){
+            if(cell.btnCentralDelhi?.backgroundColor == colorSeeweed){
+                arrString.remove((gestureRecognizer.view as! UILabel).text!)
+            }
+            else{
+                arrString.add((gestureRecognizer.view as! UILabel).text!)
+            }
+            selectFilterLocation(cell.btnCentralDelhi!)
+            
+        }
         
+    }
+    
+    func handleTapBombayLocation(_ gestureRecognizer: UIGestureRecognizer) {
+        let indexPath = IndexPath.init(row: 0, section: 0)
+        let cell = tblFilter?.cellForRow(at: indexPath) as! BombayLocationTableViewCell
+        
+        if(gestureRecognizer.view?.tag == 8){
+            if(cell.btnWest?.backgroundColor == colorSeeweed){
+                arrString.remove((gestureRecognizer.view as! UILabel).text!)
+            }
+            else{
+                arrString.add((gestureRecognizer.view as! UILabel).text!)
+            }
+            selectFilterLocation(cell.btnWest!)
+        }
+        else if(gestureRecognizer.view?.tag == 9){
+            if(cell.btnEast?.backgroundColor == colorSeeweed){
+                arrString.remove((gestureRecognizer.view as! UILabel).text!)
+            }
+            else{
+                arrString.add((gestureRecognizer.view as! UILabel).text!)
+            }
+            selectFilterLocation(cell.btnEast!)
+            
+        }
+        else if(gestureRecognizer.view?.tag == 10){
+            if(cell.btnNorth?.backgroundColor == colorSeeweed){
+                arrString.remove((gestureRecognizer.view as! UILabel).text!)
+            }
+            else{
+                arrString.add((gestureRecognizer.view as! UILabel).text!)
+            }
+            selectFilterLocation(cell.btnNorth!)
+            
+        }
+        else if(gestureRecognizer.view?.tag == 11){
+            if(cell.btnSouth?.backgroundColor == colorSeeweed){
+                arrString.remove((gestureRecognizer.view as! UILabel).text!)
+            }
+            else{
+                arrString.add((gestureRecognizer.view as! UILabel).text!)
+            }
+            selectFilterLocation(cell.btnSouth!)
+            
+        }
     }
     
     func handleTapCost(_ gestureRecognizer: UIGestureRecognizer) {

@@ -60,7 +60,7 @@ class BuySignupViewController: UIViewController, WebServiceCallingDelegate, PGTr
     
     override func viewWillAppear(_ animated: Bool) {
         self.title = "FOOD TALK"
-        stopAnimation()
+        stopAnimation(view: self.view)
         self.navigationController?.isNavigationBarHidden = false
         if(isPurchased == true){
             
@@ -104,7 +104,7 @@ class BuySignupViewController: UIViewController, WebServiceCallingDelegate, PGTr
             lblPrivilege?.frame = CGRect(x: 0, y : 10, width : (viewBase?.frame.size.width)!, height : 20)
             lblPrice?.frame = CGRect(x: 0, y: 35, width : (viewPrivilage?.frame.size.width)!, height : 44)
             lblYear?.frame = CGRect(x: 0, y: 81, width : (viewPrivilage?.frame.size.width)!, height : 15)
-            lbl1?.frame = CGRect(x: 10, y : (viewPrivilage?.frame.size.height)! + 70, width : (viewBase?.frame.size.width)! - 20, height : 54)
+            lbl1?.frame = CGRect(x: 20, y : (viewPrivilage?.frame.size.height)! + 70, width : (viewBase?.frame.size.width)! - 40, height : 54)
             lbl2?.frame = CGRect(x: 15, y : (lbl1?.frame.origin.y)! + (lbl1?.frame.size.height)! + 50, width : (viewBase?.frame.size.width)! - 30, height : 60)
             lbl3?.frame = CGRect(x: 10, y : (lbl2?.frame.origin.y)! + (lbl2?.frame.size.height)! + 50, width : (viewBase?.frame.size.width)! - 20, height : 60)
         }
@@ -113,7 +113,7 @@ class BuySignupViewController: UIViewController, WebServiceCallingDelegate, PGTr
             lblPrivilege?.frame = CGRect(x: 0, y : 20, width : (viewBase?.frame.size.width)!, height : 20)
             lblPrice?.frame = CGRect(x: 0, y: 50, width : (viewPrivilage?.frame.size.width)!, height : 44)
             lblYear?.frame = CGRect(x: 0, y: 101, width : (viewPrivilage?.frame.size.width)!, height : 15)
-            lbl1?.frame = CGRect(x: 0, y : (viewPrivilage?.frame.size.height)! + 40, width : (viewBase?.frame.size.width)!, height : 54)
+            lbl1?.frame = CGRect(x: 20, y : (viewPrivilage?.frame.size.height)! + 40, width : ((viewBase?.frame.size.width)! - 40), height : 54)
              lbl2?.frame = CGRect(x: 15, y : (lbl1?.frame.origin.y)! + (lbl1?.frame.size.height)! + 30, width : (viewBase?.frame.size.width)! - 30, height : 60)
             lbl3?.frame = CGRect(x: 0, y : (lbl2?.frame.origin.y)! + (lbl2?.frame.size.height)! + 30, width : (viewBase?.frame.size.width)!, height : 60)
         }
@@ -162,7 +162,7 @@ class BuySignupViewController: UIViewController, WebServiceCallingDelegate, PGTr
             delegate = self
         }
         else{
-            stopAnimation()
+            stopAnimation(view: self.view)
             openAlertScreen(self.view)
             alerButton.addTarget(self, action: #selector(LoginViewController.alertTap), for: .touchUpInside)
         }
@@ -182,7 +182,7 @@ class BuySignupViewController: UIViewController, WebServiceCallingDelegate, PGTr
         }
       }
         else if((dict.object(forKey: "api") as! String).contains("subscribe")){
-            stopAnimation()
+            stopAnimation(view: self.view)
             if(dict.object(forKey: "message") as! String == "Success"){
                 let arrSubscribe = (dict.object(forKey: "result") as! NSDictionary).object(forKey: "subscription") as! NSArray
                 let expiry = (arrSubscribe.object(at: 0) as! NSDictionary).object(forKey: "expiry") as? String
@@ -219,7 +219,7 @@ class BuySignupViewController: UIViewController, WebServiceCallingDelegate, PGTr
     }
     
     func serviceFailedWitherror(_ error : NSError){
-        stopAnimation()
+        stopAnimation(view: self.view)
         self.view.isUserInteractionEnabled = true
         UserDefaults.standard.setValue(nil, forKey: "userDetails")
         UserDefaults.standard.setValue(nil, forKey: "session")

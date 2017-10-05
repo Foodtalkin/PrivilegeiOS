@@ -94,14 +94,14 @@ class FavouritesViewController: UIViewController, UITableViewDelegate, UITableVi
             delegate = self
         }
         else{
-            stopAnimation()
+            stopAnimation(view: self.view)
             openAlertScreen(self.view)
             alerButton.addTarget(self, action: #selector(FavouritesViewController.alertTap), for: .touchUpInside)
         }
     }
     
     func getDataFromWebService(_ dict: NSMutableDictionary) {
-       stopAnimation()
+       stopAnimation(view: self.view)
         if(dict.object(forKey: "status") as! String == "OK"){
           arrFavList = (dict.object(forKey: "result") as! NSArray).mutableCopy() as! NSMutableArray
         }
@@ -114,7 +114,7 @@ class FavouritesViewController: UIViewController, UITableViewDelegate, UITableVi
     }
     
     func serviceFailedWitherror(_ error : NSError){
-        stopAnimation()
+        stopAnimation(view: self.view)
         self.view.isUserInteractionEnabled = true
         UserDefaults.standard.setValue(nil, forKey: "userDetails")
         UserDefaults.standard.setValue(nil, forKey: "session")

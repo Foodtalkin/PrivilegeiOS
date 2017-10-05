@@ -162,25 +162,25 @@ class ViewController: UIViewController, UIScrollViewDelegate {
         if(i == 1){
          
             lblHeader.text = "Privilege Experiences"
-            lblDetails?.text = "Book a seat at the city’s most exciting Food events curated by Food Talk, exclusively for Privilege members"
+            lblDetails?.text = "Book a seat at the most exciting events in the city, curated by Food Talk. Exclusively for Privilege members."
             img.image = UIImage(named : "screen2.png")
         }
         else if(i == 2){
          
             lblHeader.text = "Privilege Dining"
-            lblDetails?.text = "Now unlock minimum 6 coupons per restaurant to enjoy Dining privileges for 1 year"
+            lblDetails?.text = "Choose from six different deals. Unlock minimum six coupons per restaurant. Enjoy a year full of dining privileges."
             img.image = UIImage(named : "screen3.png")
         }
         else if(i == 3){
        
             lblHeader.text = "Browse Offers"
-            lblDetails?.text = "Search for offers at your favourite restaurant or discover new ones using filters"
+            lblDetails?.text = "Search for your favourite restaurants or discover a restaurant you haven’t tried before!"
             img.image = UIImage(named : "screen4.png")
         }
         else if(i == 4){
       
             lblHeader.text = "Redeem"
-            lblDetails?.text = "Redeem an offer of your choice. Ask the Restaurant to enter their PIN."
+            lblDetails?.text = "Just ask your server to enter the unique PIN to redeem your offer."
             img.image = UIImage(named : "screen5.png")
         }
         else if(i == 5){
@@ -211,7 +211,7 @@ class ViewController: UIViewController, UIScrollViewDelegate {
             
             let lblText2 = UILabel(frame : CGRect(x: 30, y: (testView.frame.size.height - lblPeryear.frame.size.height)/2 + 70, width: testView.frame.size.width - 60, height : 20))
             lblText2.textAlignment = .center
-            lblText2.text = "1+1 Deals and discounts to avail"
+            lblText2.text = "1+1 Deals & Discounts to choose from"
             lblText2.textColor = .white
             lblText2.font = UIFont.systemFont(ofSize: 15)
             testView.addSubview(lblText2)
@@ -221,18 +221,18 @@ class ViewController: UIViewController, UIScrollViewDelegate {
                 lblText1.frame = CGRect(x: 40, y: lblText2.frame.origin.y - 50, width: testView.frame.size.width - 80, height : 45)
             }
             else{
-                lblText1.frame = CGRect(x: 20, y: lblText2.frame.origin.y - 40, width: testView.frame.size.width - 40, height : 35)
+                lblText1.frame = CGRect(x: 20, y: lblText2.frame.origin.y - 50, width: testView.frame.size.width - 40, height : 40)
             }
             lblText1.textAlignment = .center
             lblText1.numberOfLines = 0
-            lblText1.text = "Handpicked 100 best restaurants in Delhi NCR"
+            lblText1.text = "A handpicked list of the 100 best restaurants in Delhi NCR"
             lblText1.textColor = .white
             lblText1.font = UIFont.systemFont(ofSize: 15)
             testView.addSubview(lblText1)
             
             let lblText3 = UILabel(frame : CGRect(x: 30, y: lblText2.frame.origin.y + lblText2.frame.size.height + 20, width: testView.frame.size.width - 60, height : 20))
             lblText3.textAlignment = .center
-            lblText3.text = "Access to exclusive experiences"
+            lblText3.text = "Exclusive access to curated experiences"
             lblText3.textColor = .white
             lblText3.font = UIFont.systemFont(ofSize: 15)
             testView.addSubview(lblText3)
@@ -273,7 +273,7 @@ class ViewController: UIViewController, UIScrollViewDelegate {
             lblAlready?.frame = CGRect(x: 20, y : 147, width : 160, height : 20)
             btnSignIn?.frame = CGRect(x: 170, y : 147, width : 80, height : 20)
             btnNext?.frame = CGRect(x: self.view.frame.size.width - 80, y : 147, width : 80, height : 20)
-            lblDetails?.text = "Book a seat at the city’s most exciting Food events curated by Food Talk, exclusively for Privilege members"
+            lblDetails?.text = "Book a seat at the most exciting events in the city, curated by Food Talk. Exclusively for Privilege members."
             
         }
         else if(currentPage == 2){
@@ -284,7 +284,7 @@ class ViewController: UIViewController, UIScrollViewDelegate {
             lblAlready?.frame = CGRect(x: 20, y : 147, width : 160, height : 20)
             btnSignIn?.frame = CGRect(x: 170, y : 147, width : 80, height : 20)
             btnNext?.frame = CGRect(x: self.view.frame.size.width - 80, y : 147, width : 80, height : 20)
-            lblDetails?.text = "Now unlock minimum 6 coupons per restaurant to enjoy Dining privileges for 1 year"
+            lblDetails?.text = "Choose from six different deals. Unlock minimum six coupons per restaurant. Enjoy a year full of dining privileges."
             
         }
         else if(currentPage == 3){
@@ -294,7 +294,7 @@ class ViewController: UIViewController, UIScrollViewDelegate {
             lblAlready?.frame = CGRect(x: 20, y : 147, width : 160, height : 20)
             btnSignIn?.frame = CGRect(x: 170, y : 147, width : 80, height : 20)
             btnNext?.frame = CGRect(x: self.view.frame.size.width - 80, y : 147, width : 80, height : 20)
-            lblDetails?.text = "Search for offers at your favourite restaurant or discover new ones using filters"
+            lblDetails?.text = "Search for your favourite restaurants or discover a restaurant you haven’t tried before!"
             
         }
         else if(currentPage == 4){
@@ -304,7 +304,7 @@ class ViewController: UIViewController, UIScrollViewDelegate {
             lblAlready?.frame = CGRect(x: 20, y : 147, width : 160, height : 20)
             btnSignIn?.frame = CGRect(x: 170, y : 147, width : 80, height : 20)
             btnNext?.frame = CGRect(x: self.view.frame.size.width - 80, y : 147, width : 80, height : 20)
-            lblDetails?.text = "Redeem on an offer of your choice. Ask the restaurant to enter the PIN."
+            lblDetails?.text = "Just ask your server to enter the unique PIN to redeem your offer."
             
         }
         else if(currentPage == 5){

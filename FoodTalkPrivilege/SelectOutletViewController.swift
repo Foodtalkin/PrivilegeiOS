@@ -148,7 +148,7 @@ class SelectOutletViewController: UIViewController, UITableViewDataSource, UITab
             delegate = self
         }
         else{
-            stopAnimation()
+            stopAnimation(view: self.view)
             openAlertScreen(self.view)
             alerButton.addTarget(self, action: #selector(SelectOutletViewController.alertTap), for: .touchUpInside)
         }
@@ -163,7 +163,7 @@ class SelectOutletViewController: UIViewController, UITableViewDataSource, UITab
             delegate = self
         }
         else{
-            stopAnimation()
+            stopAnimation(view: self.view)
             openAlertScreen(self.view)
             alerButton.addTarget(self, action: #selector(SelectOutletViewController.alertTap), for: .touchUpInside)
         }
@@ -172,7 +172,7 @@ class SelectOutletViewController: UIViewController, UITableViewDataSource, UITab
     
     func getDataFromWebService(_ dict: NSMutableDictionary) {
         
-        stopAnimation()
+        stopAnimation(view: self.view)
         if(dict.object(forKey: "status") as! String == "OK"){
             arrOutlets = ((dict.object(forKey: "result") as! NSDictionary).object(forKey: "data") as! NSArray).mutableCopy() as! NSMutableArray
         }
@@ -180,7 +180,7 @@ class SelectOutletViewController: UIViewController, UITableViewDataSource, UITab
     }
     
     func serviceFailedWitherror(_ error : NSError){
-        stopAnimation()
+        stopAnimation(view: self.view)
         self.view.isUserInteractionEnabled = true
         UserDefaults.standard.setValue(nil, forKey: "userDetails")
         UserDefaults.standard.setValue(nil, forKey: "session")

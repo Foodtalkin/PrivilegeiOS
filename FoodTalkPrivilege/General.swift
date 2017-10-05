@@ -10,8 +10,8 @@ import Foundation
 import UIKit
 import SystemConfiguration
 
-//var baseUrl = "http://api.foodtalk.in/"
-var baseUrl = "http://stg-api.foodtalk.in/"
+var baseUrl = "http://api.foodtalk.in/"
+//var baseUrl = "http://stg-api.foodtalk.in/"
 
 var colorBattleShipGray = UIColor(red: 116/255, green: 117/255, blue: 118/255, alpha: 1.0)
 var colorBrightSkyBlue = UIColor(red: 31/255, green: 182/255, blue: 255/255, alpha: 1.0)
@@ -70,7 +70,7 @@ func isConnectedToNetwork() -> Bool {
 }
 
 func openAlertScreen(_ view : UIView){
-    viewAlert.frame = CGRect(x: 0, y: 0, width: view.frame.size.width, height : view.frame.size.height)
+    viewAlert.frame = CGRect(x: 0, y: 95, width: view.frame.size.width, height : view.frame.size.height - 95)
     viewAlert.backgroundColor = .white
     view.addSubview(viewAlert)
     let img = UIImageView(frame : CGRect(x: view.frame.size.width/2 - 50, y: 200, width: 100, height : 80))
@@ -95,7 +95,7 @@ func openAlertScreen(_ view : UIView){
     
     if(problemArise == "internet"){
         img.image = UIImage(named : "wireless3.png")
-        lblMsg.text = "Looks like you’re not connected to the Internet. Check your connection"
+        lblMsg.text = "Uh-oh. Looks like you’re not connected to the Internet. Please check your connection and try again"
         alerButton.setTitle("retry", for: .normal)
     }
     else if(problemArise == "history"){
@@ -110,7 +110,7 @@ func openAlertScreen(_ view : UIView){
     }
     else if(problemArise == "filter"){
         img.image = UIImage(named : "filter3.png")
-        lblMsg.text = "No results for these filters. Please try again with different filters"
+        lblMsg.text = "We couldn’t find any results that match your search. Please try again with different filters."
         alerButton.setTitle("Edit filters", for: .normal)
     }
 }
@@ -163,8 +163,11 @@ func showAnimationWithFrame(x : CGFloat, y : CGFloat, view : UIView){
     viewSpinner.isUserInteractionEnabled = false
 }
 
-func stopAnimation(){
-    indicatorView.removeFromSuperview()
+func stopAnimation(view : UIView){
+    if view.subviews.contains(indicatorView) {
+        indicatorView.removeFromSuperview() // Remove it
+    }
+ //   indicatorView.removeFromSuperview()
     viewSpinner.isUserInteractionEnabled = true
     indicatorView.stopAnimating()
 }

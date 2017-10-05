@@ -24,6 +24,8 @@ class HowItWorkViewController: UIViewController , UIScrollViewDelegate{
         btnCross.addTarget(self, action: #selector(HowItWorkViewController.cross(_:)), for: .touchUpInside)
         self.view.addSubview(btnCross)
         FBSDKAppEvents.logEvent("howitwork_view")
+        
+        self.navigationController?.isNavigationBarHidden = true
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -87,31 +89,31 @@ class HowItWorkViewController: UIViewController , UIScrollViewDelegate{
         
         let lblDescb = UILabel()
         if(UIScreen.main.bounds.size.height < 570){
-            lblDescb.frame = CGRect(x: 10, y: lblHeader.frame.origin.y + lblHeader.frame.size.height + 12, width: testView.frame.size.width - 20, height : 40)
+            lblDescb.frame = CGRect(x: 10, y: lblHeader.frame.origin.y + lblHeader.frame.size.height + 8, width: testView.frame.size.width - 20, height : 48)
         }
         else{
-            lblDescb.frame = CGRect(x: 40, y: lblHeader.frame.origin.y + lblHeader.frame.size.height + 12, width: testView.frame.size.width - 80, height : 40)
+            lblDescb.frame = CGRect(x: 40, y: lblHeader.frame.origin.y + lblHeader.frame.size.height + 8, width: testView.frame.size.width - 80, height : 48)
         }
 
         
         lblDescb.numberOfLines = 0
-        lblDescb.font = UIFont.systemFont(ofSize: 16)
+        lblDescb.font = UIFont.systemFont(ofSize: 14)
         lblDescb.textColor = UIColor.white
         lblDescb.textAlignment = .center
         testView.addSubview(lblDescb)
         
-        let img = UIImageView(frame : CGRect(x: 31, y: lblDescb.frame.origin.y + lblDescb.frame.size.height + 23, width: testView.frame.size.width - 62, height : self.view.frame.size.height - 100))
+        let img = UIImageView(frame : CGRect(x: 31, y: lblDescb.frame.origin.y + lblDescb.frame.size.height + 20, width: testView.frame.size.width - 62, height : self.view.frame.size.height - 100))
         testView.addSubview(img)
         
         if(i == 0){
             lblHeader.text = "EXPLORE"
-            lblDescb.text = "Browse through our list of hand picked restaurants to find a deal"
+            lblDescb.text = "Browse through our list of handpicked restaurants to find an offer you like"
             img.image = UIImage(named : "explore.png")
         }
         else if(i == 1){
             
             lblHeader.text = "SEARCH"
-            lblDescb.text = "Our filters to narrow down on a restaurant based on your preferences"
+            lblDescb.text = "Looking for something specific? Use our filters to find whatever you’re in the mood for"
             img.image = UIImage(named : "Filter.png")
         }
         else if(i == 2){
@@ -121,12 +123,12 @@ class HowItWorkViewController: UIViewController , UIScrollViewDelegate{
         }
         else if(i == 3){
             lblHeader.text = "CONFIRM  OFFER"
-            lblDescb.text = "Present your app to the restaurant & ask them to punch in the PIN"
+            lblDescb.text = "Ask your server to enter the unique PIN to redeem your offer."
             img.image = UIImage(named : "confirm.png")
         }
         else if(i == 4){
             lblHeader.text = "PURCHASE"
-            lblDescb.text = String(format : "Buy Food Talk Privilage for %@ 1200 only to enjoy deals and more for 1 full year.", "\u{20B9}")
+            lblDescb.text = String(format : "Buy the annual subscription for INR 1,200 only and make every meal a Privilege.")
             img.image = UIImage(named : "payment.png")
         }
     }

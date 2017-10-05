@@ -596,7 +596,7 @@ class StoreDetailsViewController: UIViewController, UITableViewDataSource, UITab
             }
         }
         else{
-            stopAnimation()
+            stopAnimation(view: self.view)
             openAlertScreen(self.view)
             alerButton.addTarget(self, action: #selector(StoreDetailsViewController.alertTap), for: .touchUpInside)
         }
@@ -605,7 +605,7 @@ class StoreDetailsViewController: UIViewController, UITableViewDataSource, UITab
     
     func getDataFromWebService(_ dict: NSMutableDictionary) {
         
-        stopAnimation()
+        stopAnimation(view: self.view)
         if((dict.object(forKey: "api") as! String).contains("bookmark")){
             if(dict.object(forKey: "status") as! String == "OK"){
                 
@@ -694,7 +694,7 @@ class StoreDetailsViewController: UIViewController, UITableViewDataSource, UITab
     }
     
     func serviceFailedWitherror(_ error : NSError){
-        stopAnimation()
+        stopAnimation(view: self.view)
         self.view.isUserInteractionEnabled = true
         UserDefaults.standard.setValue(nil, forKey: "userDetails")
         UserDefaults.standard.setValue(nil, forKey: "session")

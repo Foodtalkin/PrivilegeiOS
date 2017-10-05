@@ -54,7 +54,7 @@ class SignUpViewController: UIViewController, WebServiceCallingDelegate, UITextF
             delegate = self
         }
         else{
-            stopAnimation()
+            stopAnimation(view: self.view)
             openAlertScreen(self.view)
             alerButton.addTarget(self, action: #selector(SignUpViewController.alertTap), for: .touchUpInside)
         }
@@ -63,7 +63,7 @@ class SignUpViewController: UIViewController, WebServiceCallingDelegate, UITextF
     
     func getDataFromWebService(_ dict: NSMutableDictionary) {
         
-        stopAnimation()
+        stopAnimation(view: self.view)
         if(dict.object(forKey: "status") as! String == "OK"){
             otpFrom = "signup"
             strOtp = dict.object(forKey: "result") as! String
@@ -107,7 +107,7 @@ class SignUpViewController: UIViewController, WebServiceCallingDelegate, UITextF
     }
     
     func serviceFailedWitherror(_ error : NSError){
-        stopAnimation()
+        stopAnimation(view: self.view)
         self.view.isUserInteractionEnabled = true
         UserDefaults.standard.setValue(nil, forKey: "userDetails")
         UserDefaults.standard.setValue(nil, forKey: "session")

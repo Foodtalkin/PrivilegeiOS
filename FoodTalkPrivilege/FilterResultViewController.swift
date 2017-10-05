@@ -247,7 +247,7 @@ class FilterResultViewController: UIViewController,UICollectionViewDataSource, U
     }
     
     func getDataFromWebService(_ dict : NSMutableDictionary){
-        stopAnimation()
+        stopAnimation(view: self.view)
         
         nextUrlFilter = (dict.object(forKey: "result") as! NSDictionary).object(forKey: "next_page_url") as! String
         let arr = ((dict.object(forKey: "result") as! NSDictionary).object(forKey: "data") as! NSArray).mutableCopy() as! NSMutableArray
@@ -258,7 +258,7 @@ class FilterResultViewController: UIViewController,UICollectionViewDataSource, U
     }
     
     func serviceFailedWitherror(_ error : NSError){
-        stopAnimation()
+        stopAnimation(view: self.view)
         self.view.isUserInteractionEnabled = true
         UserDefaults.standard.setValue(nil, forKey: "userDetails")
         UserDefaults.standard.setValue(nil, forKey: "session")

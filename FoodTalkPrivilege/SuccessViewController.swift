@@ -26,9 +26,9 @@ class SuccessViewController: UIViewController, UIGestureRecognizerDelegate, MFMa
          lblDescribe?.isUserInteractionEnabled = true
          imgSuccess?.image = UIImage(named : "group12.png")
          lblRid?.text = String(format: "RID : %@", rid)
-         lblSuccess?.text = "bon appétit"
-         let describeText = "Offer redemption successful, Please contact us for any queries."
-         let range = (describeText as NSString).range(of: "contact us")
+         lblSuccess?.text = "Bon Appetit!"
+         let describeText = "Offer redemption successful! Contact us for any queries."
+         let range = (describeText as NSString).range(of: "Contact us")
         let attributedString = NSMutableAttributedString(string:(describeText))
         attributedString.addAttribute(NSForegroundColorAttributeName, value: colorBrightSkyBlue , range: range)
         lblDescribe?.attributedText = attributedString
@@ -52,14 +52,15 @@ class SuccessViewController: UIViewController, UIGestureRecognizerDelegate, MFMa
          lblRid?.isHidden = true
             if(transactionResult == "success"){
                lblSuccess?.text = "Welcome aboard"
-               lblDescribe?.text = "You have succefully purchased Food Talk Privilege for 1 year. Thank you!"
+                lblDescribe?.text = "You have successfully purchased Food Talk Privilege. Say hello to a year of endless meals and deals!"
+
                imgSuccess?.image = UIImage(named : "paySuccess.png")
                 btnDone?.setTitle("Done", for: .normal)
                 btnDone?.setTitle("Start Redeeming", for: .normal)
             }
             else{
                lblSuccess?.text = "Something’s wrong"
-               lblDescribe?.text = "The transaction couldn’t complete. Please try again or contact support."
+               lblDescribe?.text = "Oops! The transaction failed. Please try again or contact our support."
                imgSuccess?.image = UIImage(named : "wrong.png")
                 btnDone?.setTitle("Retry Payment", for: .normal)
             }
@@ -183,7 +184,7 @@ class SuccessViewController: UIViewController, UIGestureRecognizerDelegate, MFMa
             delegate = self
         }
         else{
-            stopAnimation()
+            stopAnimation(view: self.view)
             
         }
     }
@@ -196,7 +197,7 @@ class SuccessViewController: UIViewController, UIGestureRecognizerDelegate, MFMa
     }
     
     func serviceFailedWitherror(_ error : NSError){
-        stopAnimation()
+        stopAnimation(view: self.view)
         self.view.isUserInteractionEnabled = true
         UserDefaults.standard.setValue(nil, forKey: "userDetails")
         UserDefaults.standard.setValue(nil, forKey: "session")

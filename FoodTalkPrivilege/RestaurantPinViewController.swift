@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import FBSDKCoreKit
+import Crashlytics
 
 var rid = NSNumber()
 var comingSuccessFrom = ""
@@ -199,14 +201,14 @@ class RestaurantPinViewController: UIViewController, WebServiceCallingDelegate {
         delegate = self
         }
         else{
-            stopAnimation()
+            stopAnimation(view: self.view)
             openAlertScreen(self.view)
             alerButton.addTarget(self, action: #selector(RestaurantPinViewController.alertTap), for: .touchUpInside)
         }
     }
     
     func serviceFailedWitherror(_ error : NSError){
-        stopAnimation()
+        stopAnimation(view: self.view)
         self.view.isUserInteractionEnabled = true
         UserDefaults.standard.setValue(nil, forKey: "userDetails")
         UserDefaults.standard.setValue(nil, forKey: "session")
@@ -219,10 +221,11 @@ class RestaurantPinViewController: UIViewController, WebServiceCallingDelegate {
     }
     
     func getDataFromWebService(_ dict: NSMutableDictionary) {
-        stopAnimation()
+        stopAnimation(view: self.view)
         
         if(dict.object(forKey: "status") as! String == "OK"){
             FBSDKAppEvents.logEvent("Successfully Redeemed")
+            Answers.logCustomEvent(withName: "Redemeed", customAttributes: [:])
             comingSuccessFrom = "Redeem"
             rid = (dict.object(forKey: "result") as! NSDictionary).object(forKey: "id") as! NSNumber
          let openPost = self.storyboard!.instantiateViewController(withIdentifier: "Success") as! SuccessViewController;

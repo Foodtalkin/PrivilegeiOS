@@ -93,14 +93,14 @@ class HistoryViewController: UIViewController, UITableViewDelegate, UITableViewD
             delegate = self
         }
         else{
-            stopAnimation()
+            stopAnimation(view: self.view)
             openAlertScreen(self.view)
             alerButton.addTarget(self, action: #selector(HistoryViewController.alertTap), for: .touchUpInside)
         }
     }
     
     func getDataFromWebService(_ dict: NSMutableDictionary) {
-        stopAnimation()
+        stopAnimation(view: self.view)
         if(dict.object(forKey: "status") as! String == "OK"){
             arrHistory = (dict.object(forKey: "result") as! NSArray).mutableCopy() as! NSMutableArray
             tblHistory?.reloadData()
@@ -113,7 +113,7 @@ class HistoryViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     
     func serviceFailedWitherror(_ error : NSError){
-        stopAnimation()
+        stopAnimation(view: self.view)
         self.view.isUserInteractionEnabled = true
         UserDefaults.standard.setValue(nil, forKey: "userDetails")
         UserDefaults.standard.setValue(nil, forKey: "session")

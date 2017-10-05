@@ -107,7 +107,7 @@ class SelectOfferViewController: UIViewController, UITableViewDataSource, UITabl
             delegate = self
         }
         else{
-            stopAnimation()
+            stopAnimation(view: self.view)
             openAlertScreen(self.view)
             alerButton.addTarget(self, action: #selector(SelectOfferViewController.alertTap), for: .touchUpInside)
         }
@@ -116,7 +116,7 @@ class SelectOfferViewController: UIViewController, UITableViewDataSource, UITabl
     
     func getDataFromWebService(_ dict: NSMutableDictionary) {
         
-        stopAnimation()
+        stopAnimation(view: self.view)
         if((dict.object(forKey: "api") as! String).contains("outletoffer")){
         if(dict.object(forKey: "status") as! String == "OK"){
             arrOffers = ((dict.object(forKey: "result") as! NSDictionary).object(forKey: "offers") as! NSArray).mutableCopy() as! NSMutableArray
@@ -129,7 +129,7 @@ class SelectOfferViewController: UIViewController, UITableViewDataSource, UITabl
     }
     
     func serviceFailedWitherror(_ error : NSError){
-        stopAnimation()
+        stopAnimation(view: self.view)
         self.view.isUserInteractionEnabled = true
         UserDefaults.standard.setValue(nil, forKey: "userDetails")
         UserDefaults.standard.setValue(nil, forKey: "session")

@@ -224,7 +224,7 @@ class LoginViewController: UIViewController, WebServiceCallingDelegate {
             delegate = self
         }
         else{
-            stopAnimation()
+            stopAnimation(view: self.view)
             openAlertScreen(self.view)
             alerButton.addTarget(self, action: #selector(LoginViewController.alertTap), for: .touchUpInside)
         }
@@ -244,7 +244,7 @@ class LoginViewController: UIViewController, WebServiceCallingDelegate {
             delegate = self
         }
         else{
-            stopAnimation()
+            stopAnimation(view: self.view)
             openAlertScreen(self.view)
             alerButton.addTarget(self, action: #selector(LoginViewController.alertTap), for: .touchUpInside)
         }
@@ -260,7 +260,7 @@ class LoginViewController: UIViewController, WebServiceCallingDelegate {
             delegate = self
         }
         else{
-            stopAnimation()
+            stopAnimation(view: self.view)
             openAlertScreen(self.view)
             alerButton.addTarget(self, action: #selector(LoginViewController.alertTap), for: .touchUpInside)
         }
@@ -268,7 +268,7 @@ class LoginViewController: UIViewController, WebServiceCallingDelegate {
     }
     
     func getDataFromWebService(_ dict: NSMutableDictionary) {
-        stopAnimation()
+        stopAnimation(view: self.view)
      //   print(dict)
         if((dict.object(forKey: "api") as! String).contains("userlogin")){
         if(dict.object(forKey: "status") as! String == "OK"){
@@ -431,7 +431,7 @@ class LoginViewController: UIViewController, WebServiceCallingDelegate {
     }
     
     func serviceFailedWitherror(_ error : NSError){
-        stopAnimation()
+        stopAnimation(view: self.view)
         self.view.isUserInteractionEnabled = true
         UserDefaults.standard.setValue(nil, forKey: "userDetails")
         UserDefaults.standard.setValue(nil, forKey: "session")

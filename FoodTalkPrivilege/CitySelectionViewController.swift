@@ -37,7 +37,7 @@ class CitySelectionViewController: UIViewController, UIGestureRecognizerDelegate
         
         let tap2 = UITapGestureRecognizer(target: self, action: #selector(CitySelectionViewController.handleTap(_:)))
         tap2.delegate = self
-        viewBombay?.addGestureRecognizer(tap2)
+     //   viewBombay?.addGestureRecognizer(tap2)
         
         viewSelectNCR?.isHidden = false
         viewSelectBombay?.isHidden = true
@@ -48,7 +48,7 @@ class CitySelectionViewController: UIViewController, UIGestureRecognizerDelegate
                 viewSelectNCR?.isHidden = false
                 viewSelectBombay?.isHidden = true
             }
-            else{
+            else if(city_id == "2"){
                 viewSelectNCR?.isHidden = true
                 viewSelectBombay?.isHidden = false
             }
@@ -91,7 +91,7 @@ class CitySelectionViewController: UIViewController, UIGestureRecognizerDelegate
             delegate = self
         }
         else{
-            stopAnimation()
+            stopAnimation(view: self.view)
             openAlertScreen(self.view)
             alerButton.addTarget(self, action: #selector(AccountViewController.alertTap), for: .touchUpInside)
         }
@@ -100,11 +100,16 @@ class CitySelectionViewController: UIViewController, UIGestureRecognizerDelegate
     //MARK:- SaveButtonClicked
     
     @IBAction func saveClicked(_ sender : UIButton){
+        city_id = selectedCityId
         if(loginAs == "user"){
+            let currentInstallation1 = PFInstallation.current()
+            currentInstallation1.setObject(city_id, forKey: "city_id")
+            currentInstallation1.saveInBackground()
+            print(city_id)
            webServiceCallingCityUpdate()
         }
         else{
-            city_id = selectedCityId
+            
             self.navigationController?.popViewController(animated: true)
         }
       
@@ -117,21 +122,21 @@ class CitySelectionViewController: UIViewController, UIGestureRecognizerDelegate
             viewSelectNCR?.isHidden = false
             viewSelectBombay?.isHidden = true
             selectedCityId = ((dictInfo.object(forKey: "result") as! NSArray).object(at: 0) as! NSDictionary).object(forKey: "id") as! String
-            city_id = ((dictInfo.object(forKey: "result") as! NSArray).object(at: 0) as! NSDictionary).object(forKey: "id") as! String
+            selectedCityId = ((dictInfo.object(forKey: "result") as! NSArray).object(at: 0) as! NSDictionary).object(forKey: "id") as! String
         }
-        else if(gesture.view == viewBombay){
-            viewSelectNCR?.isHidden = true
-            viewSelectBombay?.isHidden = false
-            selectedCityId = ((dictInfo.object(forKey: "result") as! NSArray).object(at: 1) as! NSDictionary).object(forKey: "id") as! String
-            city_id = ((dictInfo.object(forKey: "result") as! NSArray).object(at: 1) as! NSDictionary).object(forKey: "id") as! String
-        }
+//        else if(gesture.view == viewBombay){
+//            viewSelectNCR?.isHidden = true
+//            viewSelectBombay?.isHidden = false
+//            selectedCityId = ((dictInfo.object(forKey: "result") as! NSArray).object(at: 1) as! NSDictionary).object(forKey: "id") as! String
+//            selectedCityId = ((dictInfo.object(forKey: "result") as! NSArray).object(at: 1) as! NSDictionary).object(forKey: "id") as! String
+//        }
     }
     
     //MARK:- webservice delegates
     
     func getDataFromWebService(_ dict: NSMutableDictionary) {
         
-        stopAnimation()
+        stopAnimation(view: self.view)
         if((dict.object(forKey: "api") as! String).contains("user")){
             if(dict.object(forKey: "status") as! String == "OK"){
               let city_id1 = (dict.object(forKey: "result") as! NSDictionary).object(forKey: "city_id") as! String
@@ -147,9 +152,7 @@ class CitySelectionViewController: UIViewController, UIGestureRecognizerDelegate
         if(dict.object(forKey: "status") as! String == "OK"){
             dictInfo = dict
             lblRestCountNCR?.text = String(format : "%@ Restaurants", (((dict.object(forKey: "result") as! NSArray).object(at: 0) as! NSDictionary).object(forKey: "outlet_count") as? String)!)
-            lblRestCountBombay?.text = String(format : "%@ Restaurants", (((dict.object(forKey: "result") as! NSArray).object(at: 1) as! NSDictionary).object(forKey: "outlet_count") as? String)!)
-         //   lblOutletCountNCR?.text = String(format : "%@ Outlets", (((dict.object(forKey: "result") as! NSArray).object(at: 0) as! NSDictionary).object(forKey: "outlet_count") as? String)!)
-        //    lblOutletCountBombay?.text = String(format : "%@ Outlets", (((dict.object(forKey: "result") as! NSArray).object(at: 1) as! NSDictionary).object(forKey: "outlet_count") as? String)!)
+            lblRestCountBombay?.text = "Coming soon"
             
             let isactive = ((dict.object(forKey: "result") as! NSArray).object(at: 1) as! NSDictionary).object(forKey: "is_active") as? String
             if(isactive == "1"){

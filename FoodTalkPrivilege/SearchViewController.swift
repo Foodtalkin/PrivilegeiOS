@@ -479,7 +479,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
                 
             }
         else{
-            stopAnimation()
+            stopAnimation(view: self.view)
             openAlertScreen(self.view)
             alerButton.addTarget(self, action: #selector(SelectOutletViewController.alertTap), for: .touchUpInside)
         }
@@ -493,7 +493,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
             
         }
         else{
-            stopAnimation()
+            stopAnimation(view: self.view)
             openAlertScreen(self.view)
             alerButton.addTarget(self, action: #selector(SelectOutletViewController.alertTap), for: .touchUpInside)
         }
@@ -510,7 +510,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
             
         }
         else{
-            stopAnimation()
+            stopAnimation(view: self.view)
             openAlertScreen(self.view)
             alerButton.addTarget(self, action: #selector(SelectOutletViewController.alertTap), for: .touchUpInside)
         }
@@ -581,7 +581,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
             
         }
         else{
-            stopAnimation()
+            stopAnimation(view: self.view)
             openAlertScreen(self.view)
             alerButton.addTarget(self, action: #selector(SearchViewController.alertTap), for: .touchUpInside)
         }
@@ -589,7 +589,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
     
     func getDataFromWebService(_ dict : NSMutableDictionary){
        
-        stopAnimation()
+        stopAnimation(view: self.view)
         if((dict.object(forKey: "api") as! String).contains("search_restaurant")){
             if(dict.object(forKey: "status") as! String == "OK"){
                 filtered.removeAllObjects()
@@ -628,7 +628,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
     }
     
     func serviceFailedWitherror(_ error : NSError){
-        stopAnimation()
+        stopAnimation(view: self.view)
         self.view.isUserInteractionEnabled = true
         UserDefaults.standard.setValue(nil, forKey: "userDetails")
         UserDefaults.standard.setValue(nil, forKey: "session")
@@ -905,10 +905,21 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         if(sender.backgroundColor == colorSeeweed){
             sender.backgroundColor = UIColor(red: 138/255, green: 179/255, blue: 207/255, alpha: 1.0)
             arrCusine.remove(String(format : "%d", sender.tag))
+            
+            for index in 0..<arrCusinesValues.count{
+                if(Int((arrCusinesValues.object(at: index) as! NSDictionary).object(forKey: "id") as! String)! == sender.tag){
+                    arrString.remove((arrCusinesValues.object(at: index) as! NSDictionary).object(forKey: "title") as! String)
+                }
+            }
         }
         else{
             sender.backgroundColor = colorSeeweed
             arrCusine.add(String(format : "%d", sender.tag))
+            for index in 0..<arrCusine.count{
+                if(Int((arrCusinesValues.object(at: index) as! NSDictionary).object(forKey: "id") as! String)! == sender.tag){
+                    arrString.add((arrCusinesValues.object(at: index) as! NSDictionary).object(forKey: "title") as! String)
+                }
+            }
         }
     }
     
@@ -916,10 +927,21 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         if(sender.backgroundColor == colorSeeweed){
             sender.backgroundColor = UIColor(red: 138/255, green: 179/255, blue: 207/255, alpha: 1.0)
             arrOffer.remove(String(format : "%d", sender.tag))
+            
+            for index in 0..<arrOfferTypes.count{
+                if(Int((arrOfferTypes.object(at: index) as! NSDictionary).object(forKey: "id") as! String)! == sender.tag){
+                    arrString.remove((arrOfferTypes.object(at: index) as! NSDictionary).object(forKey: "title") as! String)
+                }
+            }
         }
         else{
             sender.backgroundColor = colorSeeweed
             arrOffer.add(String(format : "%d", sender.tag))
+            for index in 0..<arrOfferTypes.count{
+                if(Int((arrOfferTypes.object(at: index) as! NSDictionary).object(forKey: "id") as! String)! == sender.tag){
+                    arrString.add((arrOfferTypes.object(at: index) as! NSDictionary).object(forKey: "title") as! String)
+                }
+            }
         }
     }
     
@@ -928,24 +950,30 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
             sender.backgroundColor = UIColor(red: 138/255, green: 179/255, blue: 207/255, alpha: 1.0)
             if(sender.tag == 0){
                 arrCost.remove("budget")
+                arrString.remove("₹ - Budget")
             }
             else if(sender.tag == 1){
                 arrCost.remove("mid")
+                arrString.remove("₹₹ - Budget")
             }
             else{
                 arrCost.remove("splurge")
+                arrString.remove("₹₹₹ - Budget")
             }
         }
         else{
             sender.backgroundColor = colorSeeweed
             if(sender.tag == 0){
                 arrCost.add("budget")
+                arrString.add("₹ - Budget")
             }
             else if(sender.tag == 1){
                 arrCost.add("mid")
+                arrString.add("₹₹ - Budget")
             }
             else{
                 arrCost.add("splurge")
+                arrString.add("₹₹₹ - Budget")
             }
         }
         

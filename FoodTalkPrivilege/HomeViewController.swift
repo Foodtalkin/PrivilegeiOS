@@ -19,7 +19,7 @@ var strOneLiner = ""
 var restaurantName = ""
 
 
-class HomeViewController: UIViewController,UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UITableViewDataSource, UITableViewDelegate, WebServiceCallingDelegate, MFMailComposeViewControllerDelegate, UIScrollViewDelegate, CLLocationManagerDelegate {
+class HomeViewController: UIViewController,UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UITableViewDataSource, UITableViewDelegate, WebServiceCallingDelegate, MFMailComposeViewControllerDelegate, UIScrollViewDelegate, CLLocationManagerDelegate, UIGestureRecognizerDelegate {
     
     fileprivate let barSize : CGFloat = 44.0
     fileprivate let kCellReuse : String = "PackCell"
@@ -34,6 +34,7 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
     @IBOutlet var viewNavigate : UIView?
     @IBOutlet var viewBase : UIView?
     @IBOutlet var lblCity : UILabel?
+    @IBOutlet var lblTitle : UILabel?
     
     var viewMenu = UIView()
     var isMoreTapped : Bool = false
@@ -49,6 +50,8 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
     var isLocationCalled : Bool = false
     var isLocationEnable : Bool = false
     var isLocationKill : Bool = false
+    
+    var lblMenuCity = UILabel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -73,7 +76,7 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.activityType = .automotiveNavigation
 
-        
+        self.collectionView.decelerationRate = UIScrollViewDecelerationRateNormal;
     }
     
     func respondToSwipeGesture(gesture: UIGestureRecognizer) {
@@ -114,7 +117,7 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        
+        stopAnimation(view: self.view)
         if(loginAs == "guest"){
             viewBase?.frame = CGRect(x: 0, y: 114, width: self.view.frame.size.width, height: self.view.frame.size.height - 115)
             createBuyView()
@@ -140,15 +143,30 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
         isMoreTapped = false
         isLocationCalled = false
     //    arrCards.removeAllObjects()
-    //    DispatchQueue.main.async{
-         self.findLocationService()
-   //     }
+        DispatchQueue.main.async{
+        self.findLocationService()
+        }
         
         if(city_id == "1"){
             lblCity?.text = "DELHI NCR"
         }
-        else{
+        else if(city_id == "2"){
             lblCity?.text = "MUMBAI"
+        }
+        lblCity?.isUserInteractionEnabled = true
+        let tap1 = UITapGestureRecognizer(target: self, action: #selector(HomeViewController.handleTap(_:)))
+        tap1.delegate = self
+        lblCity?.addGestureRecognizer(tap1)
+        
+        let tap2 = UITapGestureRecognizer(target: self, action: #selector(HomeViewController.handleTap(_:)))
+        tap2.delegate = self
+        lblTitle?.addGestureRecognizer(tap2)
+    }
+    
+    func handleTap(_ gesture : UIGestureRecognizer){
+        if(gesture.view == lblCity){
+            let openPost = self.storyboard!.instantiateViewController(withIdentifier: "CitySelection") as! CitySelectionViewController;
+            self.navigationController!.visibleViewController!.navigationController!.pushViewController(openPost, animated:true);
         }
     }
     
@@ -292,7 +310,7 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
            //     collectionView.frame.size.height = (viewBase?.frame.size.height)!
             }
             
-                    locationManager.startUpdatingLocation()
+            locationManager.startUpdatingLocation()
             isLocationCalled = true
         }
     }
@@ -352,14 +370,14 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
         self.view.addSubview(viewBuy)
         
         let lblText = UILabel(frame : CGRect(x: 20, y : 0, width: self.view.frame.size.width/2 + 15, height: 40))
-        lblText.text = "Get access to all these offers for one year at \u{20B9} 1200 only."
+        lblText.text = "Gain access to all these offers and experiences for 1 year at INR 1,200"
         lblText.textColor = .white
         lblText.numberOfLines = 0
         if(UIScreen.main.bounds.size.height < 570){
-           lblText.font = UIFont(name: "Futura-Medium", size: 12)
+           lblText.font = UIFont(name: "Futura-Medium", size: 10)
         }
         else{
-           lblText.font = UIFont(name: "Futura-Medium", size: 14)
+           lblText.font = UIFont(name: "Futura-Medium", size: 12)
         }
         viewBuy.addSubview(lblText)
         
@@ -396,7 +414,6 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
         viewMenu.layer.shadowOpacity = 0.5
         
         self.view.addSubview(viewMenu)
-        
         
         let lblFoodTalk = UILabel(frame: CGRect(x: 46, y: 31, width: 170, height: 24))
         if(loginAs == "guest"){
@@ -446,6 +463,45 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
         tblMenu.delegate = self
         viewMenu.addSubview(tblMenu)
         
+        let viewCity = UIView(frame : CGRect(x: 0, y : viewMenu.frame.size.height - 45, width: viewMenu.frame.size.width, height: 45))
+        viewCity.backgroundColor = .black
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(HomeViewController.handleTap1(_:)))
+        tap.delegate = self
+        viewCity.addGestureRecognizer(tap)
+        
+        let imgViewIcon = UIImageView()
+        imgViewIcon.frame = CGRect(x: 46, y: 45/2 - 11, width: 17, height : 22)
+        imgViewIcon.image = UIImage(named : "location_on.png")
+        viewCity.addSubview(imgViewIcon)
+        
+        let lblTap = UILabel()
+        lblMenuCity.frame = CGRect(x: 94, y: 5, width: 170, height: 22)
+        lblTap.frame = CGRect(x: 94, y: viewCity.frame.size.height - 17, width : 120, height : 15)
+        lblTap.text = "TAP TO CHANGE CITY"
+        lblTap.textColor = UIColor.lightGray
+        lblTap.font = UIFont.boldSystemFont(ofSize: 10)
+        lblTap.tag = 12321
+        viewCity.addSubview(lblTap)
+        
+        let lblVersion = UILabel(frame : CGRect(x: 46, y: viewMenu.frame.size.height - 85, width: 170, height: 30))
+        lblVersion.textColor = UIColor.lightGray
+        if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
+            lblVersion.text = String(format : "version : %@", version)
+        }
+        viewMenu.addSubview(lblVersion)
+        
+        if(city_id == "1"){
+            lblMenuCity.text = "DELHI NCR"
+        }
+        else if(city_id == "2"){
+            lblMenuCity.text = "MUMBAI"
+        }
+        
+        lblMenuCity.textColor = .white
+        lblMenuCity.font = UIFont.boldSystemFont(ofSize: 17)
+        viewCity.addSubview(lblMenuCity)
+        
         if((viewMenu.viewWithTag(12321)) != nil){
             viewMenu.viewWithTag(12321)?.removeFromSuperview()
             viewMenu.viewWithTag(12345)?.removeFromSuperview()
@@ -455,6 +511,12 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
         viewMenu.addSubview(lblFoodTalk)
         viewMenu.addSubview(lblPrevilege)
         viewMenu.addSubview(lblSaved)
+        viewMenu.addSubview(viewCity)
+    }
+    
+    func handleTap1(_ sender: UITapGestureRecognizer) {
+        let openPost = self.storyboard!.instantiateViewController(withIdentifier: "CitySelection") as! CitySelectionViewController;
+        self.navigationController!.visibleViewController!.navigationController!.pushViewController(openPost, animated:true);
     }
     
     func setCollectionView(){
@@ -518,23 +580,30 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
                 let cell : PackCollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: kCellReuse, for: indexPath) as! PackCollectionViewCell
                 cell.backgroundColor = .white
                 
+                if(arrCards.count > 0){
                 cell.lblMoney?.text = String(format : "\u{20B9} %@", (arrCards.object(at: indexPath.row) as! NSDictionary).object(forKey: "cost") as! String)
-                
                 let imgCell = (arrCards.object(at: indexPath.row) as! NSDictionary).object(forKey: "card_image") as! String
                 cell.lblDistance?.layer.cornerRadius = 9.5
                 cell.lblDistance?.layer.masksToBounds = false
                 dropShadow(color: .darkGray, opacity: 1.0, offSet: CGSize(width: -1, height: 1), radius: 1, scale: true, lbl: cell.lblDistance!)
+                
                 if(((arrCards.object(at: indexPath.row) as! NSDictionary).object(forKey: "distance")) != nil){
                     cell.lblDistance?.isHidden = false
                     var distance = ((arrCards.object(at: indexPath.row) as! NSDictionary).object(forKey: "distance") as! NSString).doubleValue
                     distance = distance / 1000
+                    if(distance > 100){
+                       cell.lblDistance?.isHidden = true
+                    }
+                    else{
+                        cell.lblDistance?.isHidden = false
                     cell.lblDistance?.text = String(format : "%.1f KM", distance)
+                    }
                 }
                 else{
                     cell.lblDistance?.isHidden = true
                 }
             
-            
+            cell.packCellImage?.image = nil
                 DispatchQueue.main.async{
                     
                     setImageWithUrl(imgCell, imgView: cell.packCellImage!)
@@ -558,6 +627,7 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
                 else{
                     cell.lblMoney?.text = String(format : "%@%@%@", "\u{20B9}", "\u{20B9}", "\u{20B9}")
                 }
+                }
                 
                 cell.layer.shadowColor = colorDarkGray.cgColor
                 cell.layer.shadowOpacity = 0.2
@@ -577,7 +647,7 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
         else{
         let cell : PackCollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: kCellReuse, for: indexPath) as! PackCollectionViewCell
         cell.backgroundColor = .white
-        
+            if(arrCards.count > 0){
         cell.lblMoney?.text = String(format : "\u{20B9} %@", (arrCards.object(at: indexPath.row - 1) as! NSDictionary).object(forKey: "cost") as! String)
         cell.lblDistance?.layer.cornerRadius = 9.5
             cell.lblDistance?.layer.masksToBounds = false
@@ -595,7 +665,7 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
                 cell.lblDistance?.isHidden = true
             }
             
-  
+        cell.packCellImage?.image = nil
         DispatchQueue.main.async{
        
             setImageWithUrl(imgCell, imgView: cell.packCellImage!)
@@ -619,6 +689,7 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
         else{
             cell.lblMoney?.text = String(format : "%@%@%@", "\u{20B9}", "\u{20B9}", "\u{20B9}")
         }
+            }
         
         cell.layer.shadowColor = colorDarkGray.cgColor
         cell.layer.shadowOpacity = 0.2
@@ -633,7 +704,7 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
         else{
             let cell : PackCollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: kCellReuse, for: indexPath) as! PackCollectionViewCell
             cell.backgroundColor = .white
-            
+            if(arrCards.count > 0){
             cell.lblMoney?.text = String(format : "\u{20B9} %@", (arrCards.object(at: indexPath.row) as! NSDictionary).object(forKey: "cost") as! String)
             
             let imgCell = (arrCards.object(at: indexPath.row) as! NSDictionary).object(forKey: "card_image") as! String
@@ -673,7 +744,7 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
             else{
                 cell.lblMoney?.text = String(format : "%@%@%@", "\u{20B9}", "\u{20B9}", "\u{20B9}")
             }
-            
+            }
             cell.layer.shadowColor = colorDarkGray.cgColor
             cell.layer.shadowOpacity = 0.2
             cell.layer.opacity = 1
@@ -918,37 +989,37 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if(loginAs == "guest"){
-            return 13
+            return 9
         }
         else{
-            return 15
+            return 7
         }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        var cell = tableView.dequeueReusableCell(withIdentifier: "CELL") as UITableViewCell!
-         if (cell == nil) {
-           cell = UITableViewCell(style:.default, reuseIdentifier: "CELL")
-           }
-        cell?.selectionStyle = .none
-        cell?.backgroundColor = .clear
+        let cell = UITableViewCell(style:.default, reuseIdentifier: "CELL")
+//         if (cell == nil) {
+//           cell = UITableViewCell(style:.default, reuseIdentifier: "CELL")
+//           }
+        cell.selectionStyle = .none
+        cell.backgroundColor = .clear
         if(loginAs == "guest"){
-           if((indexPath.row == 1) || (indexPath.row == 5) || (indexPath.row == 9)){
+           if((indexPath.row == 1) || (indexPath.row == 3) || (indexPath.row == 5) || (indexPath.row == 7)){
             
            }
            else{
-             addSubViewOnCell(cell!, indexPath: indexPath)
+             addSubViewOnCell(cell, indexPath: indexPath)
            }
         }
         else{
-            if((indexPath.row == 1) || (indexPath.row == 6) || (indexPath.row == 10) || (indexPath.row == 13)){
+            if((indexPath.row == 1) || (indexPath.row == 3) || (indexPath.row == 5)){
                 
             }
             else{
-                addSubViewOnCell(cell!, indexPath: indexPath)
+                addSubViewOnCell(cell, indexPath: indexPath)
             }
         }
-        return cell!
+        return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -956,16 +1027,10 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
             if(indexPath.row == 0){
                 viewMenu.removeFromSuperview()
                 tblMenu.removeFromSuperview()
-                let openPost = self.storyboard!.instantiateViewController(withIdentifier: "CitySelection") as! CitySelectionViewController;
-                self.navigationController!.visibleViewController!.navigationController!.pushViewController(openPost, animated:true);
-            }
-            else if(indexPath.row == 2){
-                viewMenu.removeFromSuperview()
-                tblMenu.removeFromSuperview()
                 let openPost = self.storyboard!.instantiateViewController(withIdentifier: "LoginNumber") as! LoginNumberViewController;
                 self.navigationController!.visibleViewController!.navigationController!.pushViewController(openPost, animated:true);
             }
-            else if(indexPath.row == 3){
+            else if(indexPath.row == 2){
                 let openPost = self.storyboard!.instantiateViewController(withIdentifier: "BuySignup") as! BuySignupViewController;
                 self.navigationController!.pushViewController(openPost, animated: true)
             }
@@ -974,73 +1039,39 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
                 self.navigationController!.pushViewController(openPost, animated: true)
             }
             else if(indexPath.row == 6){
-                let openPost = self.storyboard!.instantiateViewController(withIdentifier: "HowItWork") as! HowItWorkViewController;
-                self.navigationController!.pushViewController(openPost, animated: true)
-            }
-            else if(indexPath.row == 7){
-                selectedWebType = "faq"
-                let openPost = self.storyboard!.instantiateViewController(withIdentifier: "Web") as! WebViewController;
+                let openPost = self.storyboard!.instantiateViewController(withIdentifier: "Help&Support") as! Help_SupportViewController;
                 self.navigationController!.visibleViewController!.navigationController!.pushViewController(openPost, animated:true);
             }
             else if(indexPath.row == 8){
-                selectedWebType = "legal"
-                let openPost = self.storyboard!.instantiateViewController(withIdentifier: "Web") as! WebViewController;
-                self.navigationController!.visibleViewController!.navigationController!.pushViewController(openPost, animated:true);
-            }
-            else if(indexPath.row == 10){
                 contactUs()
             }
         }
         else{
+            
             if(indexPath.row == 0){
-                
-                let openPost = self.storyboard!.instantiateViewController(withIdentifier: "CitySelection") as! CitySelectionViewController;
-                self.navigationController!.visibleViewController!.navigationController!.pushViewController(openPost, animated:true);
-            }
-            if(indexPath.row == 2){
                 let openPost = self.storyboard!.instantiateViewController(withIdentifier: "Account") as! AccountViewController;
                 self.navigationController!.visibleViewController!.navigationController!.pushViewController(openPost, animated:true);
             }
-            else if(indexPath.row == 3){
-                let openPost = self.storyboard!.instantiateViewController(withIdentifier: "History") as! HistoryViewController;
-                self.navigationController!.visibleViewController!.navigationController!.pushViewController(openPost, animated:true);
-            }
-            else if(indexPath.row == 4){
-                let openPost = self.storyboard!.instantiateViewController(withIdentifier: "Favourites") as! FavouritesViewController;
-                self.navigationController!.visibleViewController!.navigationController!.pushViewController(openPost, animated:true);
-            }
-            else if(indexPath.row == 5){
+            else if(indexPath.row == 2){
                 selectedWebType = "exp"
                 if(city_id == "1"){
                 let openPost = self.storyboard!.instantiateViewController(withIdentifier: "Web") as! WebViewController;
                 self.navigationController!.visibleViewController!.navigationController!.pushViewController(openPost, animated:true);
                 }
-                else{
+                else if(city_id == "2"){
                     let openPost = self.storyboard!.instantiateViewController(withIdentifier: "ComingSoonCity") as! ComingSoonCityViewController;
                     self.navigationController!.visibleViewController!.navigationController!.pushViewController(openPost, animated:true);
                 }
             }
-            else if(indexPath.row == 7){
-                let openPost = self.storyboard!.instantiateViewController(withIdentifier: "HowItWork") as! HowItWorkViewController;
+            else if(indexPath.row == 4){
+                let openPost = self.storyboard!.instantiateViewController(withIdentifier: "Help&Support") as! Help_SupportViewController;
                 self.navigationController!.visibleViewController!.navigationController!.pushViewController(openPost, animated:true);
             }
-            else if(indexPath.row == 8){
-                selectedWebType = "faq"
-                let openPost = self.storyboard!.instantiateViewController(withIdentifier: "Web") as! WebViewController;
-                self.navigationController!.visibleViewController!.navigationController!.pushViewController(openPost, animated:true);
-            }
-            else if(indexPath.row == 9){
-                selectedWebType = "legal"
-                let openPost = self.storyboard!.instantiateViewController(withIdentifier: "Web") as! WebViewController;
-                self.navigationController!.visibleViewController!.navigationController!.pushViewController(openPost, animated:true);
-            }
-            else if(indexPath.row == 11){
+            else if(indexPath.row == 6){
                 FBSDKAppEvents.logEvent("contact_us_view")
                 contactUs()
             }
-            else if(indexPath.row == 12){
-                showAlert()
-            }
+            
         }
     }
     
@@ -1088,19 +1119,11 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
     func addSubViewOnCell(_ cell: UITableViewCell, indexPath : IndexPath){
         let imgViewIcon = UIImageView()
         let lblValue = UILabel()
+        lblValue.tag = 29
+        let lblTap = UILabel()
         if(loginAs == "guest"){
             
         if(indexPath.row == 0){
-                imgViewIcon.frame = CGRect(x: 46, y: 45/2 - 11, width: 17, height : 22)
-                imgViewIcon.image = UIImage(named : "location_on.png")
-                
-                lblValue.frame = CGRect(x: 94, y: imgViewIcon.frame.origin.y, width: 170, height: 22)
-                lblValue.text = "DELHI NCR"
-                lblValue.textColor = .white
-                lblValue.font = UIFont.boldSystemFont(ofSize: 17)
-        }
-            
-        else if(indexPath.row == 2){
             imgViewIcon.frame = CGRect(x: 46, y: 45/2 - 11, width: 17, height : 22)
             imgViewIcon.image = UIImage(named : "fill131.png")
             
@@ -1109,7 +1132,7 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
             lblValue.textColor = .white
             lblValue.font = UIFont.boldSystemFont(ofSize: 17)
         }
-        else if(indexPath.row == 3){
+        else if(indexPath.row == 2){
             imgViewIcon.frame = CGRect(x: 46, y: 45/2 - 11, width: 22.8, height : 22)
             imgViewIcon.image = UIImage(named : "fill7.png")
             
@@ -1132,29 +1155,11 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
             imgViewIcon.image = UIImage(named : "fill86.png")
             
             lblValue.frame = CGRect(x: 94, y: imgViewIcon.frame.origin.y, width: 170, height: 22)
-            lblValue.text = "HOW IT WORKS"
-            lblValue.textColor = .white
-            lblValue.font = UIFont.boldSystemFont(ofSize: 17)
-        }
-        else if(indexPath.row == 7){
-            imgViewIcon.frame = CGRect(x: 46, y: 45/2 - 11, width: 17.7, height : 22)
-            imgViewIcon.image = UIImage(named : "fill41.png")
-            
-            lblValue.frame = CGRect(x: 94, y: imgViewIcon.frame.origin.y, width: 170, height: 22)
-            lblValue.text = "FAQ"
+            lblValue.text = "HELP & SUPPORT"
             lblValue.textColor = .white
             lblValue.font = UIFont.boldSystemFont(ofSize: 17)
         }
         else if(indexPath.row == 8){
-            imgViewIcon.frame = CGRect(x: 46, y: 45/2 - 11, width: 19.6, height : 22)
-            imgViewIcon.image = UIImage(named : "fill3.png")
-            
-            lblValue.frame = CGRect(x: 94, y: imgViewIcon.frame.origin.y, width: 170, height: 22)
-            lblValue.text = "LEGAL"
-            lblValue.textColor = .white
-            lblValue.font = UIFont.boldSystemFont(ofSize: 17)
-        }
-        else if(indexPath.row == 10){
             imgViewIcon.frame = CGRect(x: 46, y: 45/2 - 11, width: 21.6, height : 22)
             imgViewIcon.image = UIImage(named : "fill76.png")
             
@@ -1163,63 +1168,18 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
             lblValue.textColor = .white
             lblValue.font = UIFont.boldSystemFont(ofSize: 17)
         }
-        else if(indexPath.row == 12){
-            imgViewIcon.frame = CGRect(x: 0, y: 0, width: 0, height : 0)
-            
-            lblValue.frame = CGRect(x: 46, y: 0, width: 200, height: 44)
-            if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
-                lblValue.text = String(format : "version : %@", version)
-            }
-            
-            lblValue.textColor = UIColor(red: 100/255, green: 100/255, blue: 100/255, alpha: 1.0)
-            lblValue.font = UIFont.boldSystemFont(ofSize: 17)
-            }
         }
         else{
             if(indexPath.row == 0){
-                imgViewIcon.frame = CGRect(x: 46, y: 45/2 - 11, width: 17, height : 22)
-                imgViewIcon.image = UIImage(named : "location_on.png")
-                
-                lblValue.frame = CGRect(x: 94, y: imgViewIcon.frame.origin.y, width: 170, height: 22)
-                if(city_id == "1"){
-                   lblValue.text = "DELHI NCR"
-                }
-                else{
-                   lblValue.text = "MUMBAI"
-                }
-                
-                lblValue.textColor = .white
-                lblValue.font = UIFont.boldSystemFont(ofSize: 17)
-            }
-            
-            else if(indexPath.row == 2){
                 imgViewIcon.frame = CGRect(x: 46, y: 45/2 - 11, width: 22, height : 22)
                 imgViewIcon.image = UIImage(named : "fill9.png")
                 
                 lblValue.frame = CGRect(x: 94, y: imgViewIcon.frame.origin.y, width: 170, height: 22)
-                lblValue.text = "PROFILE"
+                lblValue.text = "ACCOUNT"
                 lblValue.textColor = .white
                 lblValue.font = UIFont.boldSystemFont(ofSize: 17)
             }
-            else if(indexPath.row == 3){
-                imgViewIcon.frame = CGRect(x: 46, y: 45/2 - 11, width: 21, height : 21)
-                imgViewIcon.image = UIImage(named : "history.png")
-                
-                lblValue.frame = CGRect(x: 94, y: imgViewIcon.frame.origin.y, width: 170, height: 22)
-                lblValue.text = "HISTORY"
-                lblValue.textColor = .white
-                lblValue.font = UIFont.boldSystemFont(ofSize: 17)
-            }
-            else if(indexPath.row == 4){
-                imgViewIcon.frame = CGRect(x: 46, y: 45/2 - 11, width: 16.1, height : 22)
-                imgViewIcon.image = UIImage(named : "fav.png")
-                
-                lblValue.frame = CGRect(x: 94, y: imgViewIcon.frame.origin.y, width: 170, height: 22)
-                lblValue.text = "FAVOURITES"
-                lblValue.textColor = .white
-                lblValue.font = UIFont.boldSystemFont(ofSize: 17)
-            }
-            else if(indexPath.row == 5){
+            else if(indexPath.row == 2){
                 imgViewIcon.frame = CGRect(x: 46, y: 45/2 - 11, width: 16.1, height : 22)
                 imgViewIcon.image = UIImage(named : "exp.png")
                 
@@ -1228,59 +1188,22 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
                 lblValue.textColor = .white
                 lblValue.font = UIFont.boldSystemFont(ofSize: 17)
             }
-            else if(indexPath.row == 7){
+            else if(indexPath.row == 4){
                 imgViewIcon.frame = CGRect(x: 46, y: 45/2 - 11, width: 17.7, height : 22)
                 imgViewIcon.image = UIImage(named : "fill86.png")
                 
                 lblValue.frame = CGRect(x: 94, y: imgViewIcon.frame.origin.y, width: 170, height: 22)
-                lblValue.text = "HOW IT WORKS"
+                lblValue.text = "HELP & SUPPORT"
                 lblValue.textColor = .white
                 lblValue.font = UIFont.boldSystemFont(ofSize: 17)
             }
-            else if(indexPath.row == 8){
-                imgViewIcon.frame = CGRect(x: 46, y: 45/2 - 11, width: 17.7, height : 22)
-                imgViewIcon.image = UIImage(named : "fill41.png")
-                
-                lblValue.frame = CGRect(x: 94, y: imgViewIcon.frame.origin.y, width: 170, height: 22)
-                lblValue.text = "FAQ"
-                lblValue.textColor = .white
-                lblValue.font = UIFont.boldSystemFont(ofSize: 17)
-            }
-            else if(indexPath.row == 9){
-                imgViewIcon.frame = CGRect(x: 46, y: 45/2 - 11, width: 19.6, height : 22)
-                imgViewIcon.image = UIImage(named : "fill3.png")
-                
-                lblValue.frame = CGRect(x: 94, y: imgViewIcon.frame.origin.y, width: 170, height: 22)
-                lblValue.text = "LEGAL"
-                lblValue.textColor = .white
-                lblValue.font = UIFont.boldSystemFont(ofSize: 17)
-            }
-            else if(indexPath.row == 11){
+            else if(indexPath.row == 6){
                 imgViewIcon.frame = CGRect(x: 46, y: 45/2 - 11, width: 21.6, height : 22)
                 imgViewIcon.image = UIImage(named : "fill76.png")
                 
                 lblValue.frame = CGRect(x: 94, y: imgViewIcon.frame.origin.y, width: 170, height: 22)
                 lblValue.text = "CONTACT US"
                 lblValue.textColor = .white
-                lblValue.font = UIFont.boldSystemFont(ofSize: 17)
-            }
-            else if(indexPath.row == 12){
-                imgViewIcon.frame = CGRect(x: 46, y: 45/2 - 11, width: 21.6, height : 22)
-                imgViewIcon.image = UIImage(named : "fill131.png")
-                
-                lblValue.frame = CGRect(x: 94, y: imgViewIcon.frame.origin.y, width: 170, height: 22)
-                lblValue.text = "LOGOUT"
-                lblValue.textColor = .white
-                lblValue.font = UIFont.boldSystemFont(ofSize: 17)
-            }
-            else if(indexPath.row == 14){
-                imgViewIcon.frame = CGRect(x: 0, y: 0, width: 0, height : 0)
-                
-                lblValue.frame = CGRect(x: 46, y: 0, width: 200, height: 30)
-                if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
-                    lblValue.text = String(format : "Version : %@", version)
-                }
-                lblValue.textColor = UIColor(red: 100/255, green: 100/255, blue: 100/255, alpha: 1.0)
                 lblValue.font = UIFont.boldSystemFont(ofSize: 17)
             }
         }
@@ -1290,13 +1213,15 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
         imgViewIcon.tintColor = colorLightGold
         
         imgViewIcon.tag = 22
-        lblValue.tag = 29
+        
         
         if((cell.contentView.viewWithTag(22)) != nil){
             cell.contentView.viewWithTag(22)?.removeFromSuperview()
             cell.contentView.viewWithTag(29)?.removeFromSuperview()
+            cell.contentView.viewWithTag(12321)?.removeFromSuperview()
         }
         
+        cell.contentView.addSubview(lblTap)
         cell.contentView.addSubview(imgViewIcon)
         cell.contentView.addSubview(lblValue)
     }
@@ -1354,7 +1279,7 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
             delegate = self
         }
         else{
-         stopAnimation()
+         stopAnimation(view: self.view)
          openAlertScreen(self.view)
             alerButton.addTarget(self, action: #selector(HomeViewController.alertTap), for: .touchUpInside)
         }
@@ -1369,7 +1294,7 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
             delegate = self
         }
         else{
-            stopAnimation()
+            stopAnimation(view: self.view)
             openAlertScreen(self.view)
             alerButton.addTarget(self, action: #selector(HomeViewController.alertTap), for: .touchUpInside)
         }
@@ -1413,7 +1338,7 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
             delegate = self
         }
         else{
-            stopAnimation()
+            stopAnimation(view: self.view)
             openAlertScreen(self.view)
             alerButton.addTarget(self, action: #selector(HomeViewController.alertTap), for: .touchUpInside)
         }
@@ -1422,20 +1347,29 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
     
     func getDataFromWebService(_ dict: NSMutableDictionary) {
         
-        stopAnimation()
-        if((dict.object(forKey: "api") as! String).contains("profile?")){
+        stopAnimation(view: self.view)
+        if((dict.object(forKey: "api") as! String).contains("profile")){
             savingValue = (dict.object(forKey: "result") as! NSDictionary).object(forKey: "saving") as! String
             let city_id1 = (dict.object(forKey: "result") as! NSDictionary).object(forKey: "city_id") as! String
             if(city_id1 == ""){
-                let openPost = self.storyboard!.instantiateViewController(withIdentifier: "CitySelection") as! CitySelectionViewController;
-                self.navigationController!.visibleViewController!.navigationController!.pushViewController(openPost, animated:true);
+                self.perform(#selector(HomeViewController.callwithdelay), with: nil, afterDelay: 1.0)
             }
             else{
                 if(loginAs == "user"){
+                
                  UserDefaults.standard.set(city_id1, forKey: "city_id")
                 }
             }
             city_id = city_id1
+            if(city_id == "1"){
+                lblCity?.text = "DELHI NCR"
+                lblMenuCity.text = "DELHI NCR"
+            }
+            else if(city_id == "2"){
+                lblCity?.text = "MUMBAI"
+                lblMenuCity.text = "MUMBAI"
+            }
+         //  self.findLocationService()
         }
         else if((dict.object(forKey: "api") as! String).contains("offers")){
         if(dict.object(forKey: "status") as! String == "OK"){
@@ -1446,20 +1380,25 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
             nextPageUrl = (dict.object(forKey: "result") as! NSDictionary).object(forKey: "next_page_url") as! String
         }
         }
-   //     DispatchQueue.main.async{
-    //     self.collectionView.reloadSections(NSIndexSet(index: 0) as IndexSet)
-            self.collectionView.reloadData()
-   //     }
-   //     stopAnimation()
+        UIView.performWithoutAnimation {
+            self.collectionView.reloadSections(NSIndexSet(index: 0) as IndexSet)
+        }
+   
+    }
+    
+    func callwithdelay(){
+        let openPost = self.storyboard!.instantiateViewController(withIdentifier: "CitySelection") as! CitySelectionViewController;
+        self.navigationController!.visibleViewController!.navigationController!.pushViewController(openPost, animated:true);
     }
     
     func serviceFailedWitherror(_ error : NSError){
-        stopAnimation()
+      //  stopAnimation()
         self.view.isUserInteractionEnabled = true
         UserDefaults.standard.setValue(nil, forKey: "userDetails")
         UserDefaults.standard.setValue(nil, forKey: "session")
         UserDefaults.standard.setValue(nil, forKey: "expiry")
-        self.navigationController?.popToRootViewController(animated: true)
+        let openPost = self.storyboard!.instantiateViewController(withIdentifier: "LoginNumber") as! LoginNumberViewController;
+        self.navigationController!.visibleViewController!.navigationController!.pushViewController(openPost, animated:true);
     }
     
     func serviceUploadProgress(_ myprogress : float_t){
@@ -1469,64 +1408,6 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
     //MARK:- scrollview delegate
     
     
-//    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-//            if(isMoreTapped == false){
-//            if(nextPageUrl.characters.count > 0){
-//             //   callWebNextUrl()
-//                if CLLocationManager.locationServicesEnabled() {
-//                    switch(CLLocationManager.authorizationStatus()) {
-//                    case .notDetermined, .restricted, .denied:
-//                        DispatchQueue.main.async{
-//                            self.callWebNextUrl()
-//                        }
-//    
-//                    case .authorizedAlways, .authorizedWhenInUse:
-//                        viewBottom.isHidden = true
-//                        locationManager.startUpdatingLocation()
-//                        DispatchQueue.main.async{
-//                            self.callWebNextLocationUrl()
-//                        }
-//    
-//                    }
-//                    
-//                } else {
-//                    DispatchQueue.main.async{
-//                     self.callWebNextUrl()
-//                    }
-//                }
-//            }
-//            }
-//    }
-    
-//    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
-//        if(isMoreTapped == false){
-//            if(nextPageUrl.characters.count > 0){
-//                //   callWebNextUrl()
-//                if CLLocationManager.locationServicesEnabled() {
-//                    switch(CLLocationManager.authorizationStatus()) {
-//                    case .notDetermined, .restricted, .denied:
-//                        DispatchQueue.main.async{
-//                            self.callWebNextUrl()
-//                        }
-//                        
-//                    case .authorizedAlways, .authorizedWhenInUse:
-//                        viewBottom.isHidden = true
-//                        locationManager.startUpdatingLocation()
-//                        DispatchQueue.main.async{
-//                            self.callWebNextLocationUrl()
-//                        }
-//                        
-//                    }
-//                    
-//                } else {
-//                    DispatchQueue.main.async{
-//                        self.callWebNextUrl()
-//                    }
-//                }
-//            }
-//        }
-//        
-//    }
     
     //MARK:- contactUS
     

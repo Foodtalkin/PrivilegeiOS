@@ -210,6 +210,7 @@ class LoginNumberViewController: UIViewController, WebServiceCallingDelegate {
         }
         else{
             if(dict.object(forKey: "code") as! String == "404"){
+                loginAs = "guest"
                 let openPost = self.storyboard!.instantiateViewController(withIdentifier: "SignUp") as! SignUpViewController;
                 self.navigationController!.visibleViewController!.navigationController!.pushViewController(openPost, animated:true);
             }

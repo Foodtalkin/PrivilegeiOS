@@ -34,7 +34,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
            
         }
         else{
-            loginAs = "user"
+    //        loginAs = "user"
             dictUserDetails = UserDefaults.standard.object(forKey: "userDetails") as! NSDictionary
             dictSessionInfo = UserDefaults.standard.object(forKey: "session") as! NSDictionary
             

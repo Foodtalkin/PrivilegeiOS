@@ -19,17 +19,31 @@ class SignUpViewController: UIViewController, WebServiceCallingDelegate, UITextF
     @IBOutlet var lineEmail : UIView?
     
     @IBOutlet var btnVerify : UIButton?
+    @IBOutlet var lblTop : UILabel?
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        if(loginAs == "trail"){
+          lblTop?.text = "Sign up to start your 7 day free trial. Access deals, discount and experiences"
+        }
+        else{
+          lblTop?.text = "Make every meal a Privilege, for only INR 1,200 for an entire year"
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
         self.navigationController?.isNavigationBarHidden = true
     }
     
+    override func viewWillDisappear(_ animated : Bool) {
+        super.viewWillDisappear(animated)
+        
+        if self.isMovingFromParentViewController {
+            loginAs = "guest"
+        }
+    }
     
     //MARK:- alertTapped
     
@@ -62,7 +76,7 @@ class SignUpViewController: UIViewController, WebServiceCallingDelegate, UITextF
     
     
     func getDataFromWebService(_ dict: NSMutableDictionary) {
-        
+        print(dict)
         stopAnimation(view: self.view)
         if(dict.object(forKey: "status") as! String == "OK"){
             otpFrom = "signup"

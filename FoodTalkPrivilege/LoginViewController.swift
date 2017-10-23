@@ -267,9 +267,25 @@ class LoginViewController: UIViewController, WebServiceCallingDelegate {
 
     }
     
+    func webServiceTrail(){
+        if (isConnectedToNetwork() == true){
+            let dictSessionId = UserDefaults.standard.object(forKey: "session") as! NSDictionary
+            let session = dictSessionId.object(forKey: "session_id") as! String
+            let url = String(format: "%@%@sessionid=%@", baseUrl,"trial?",session)
+            
+            webServiceGet(url)
+            delegate = self
+        }
+        else{
+            stopAnimation(view: self.view)
+            openAlertScreen(self.view)
+            alerButton.addTarget(self, action: #selector(LoginViewController.alertTap), for: .touchUpInside)
+        }
+    }
+    
     func getDataFromWebService(_ dict: NSMutableDictionary) {
         stopAnimation(view: self.view)
-     //   print(dict)
+        
         if((dict.object(forKey: "api") as! String).contains("userlogin")){
         if(dict.object(forKey: "status") as! String == "OK"){
             
@@ -290,14 +306,17 @@ class LoginViewController: UIViewController, WebServiceCallingDelegate {
                 let savedMoney = dictUserDetails.object(forKey: "saving") as! String
                 UserDefaults.standard.set(savedMoney, forKey: "saved")
 
-                loginAs = "user"
+                
                 let expiry = (arrSubscribe.object(at: 0) as! NSDictionary).object(forKey: "expiry") as? String
                 let dateFormatter = DateFormatter()
                 dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
                 let s = dateFormatter.date(from:expiry!)
                 
+                let subscribeType = (arrSubscribe.object(at: 0) as! NSDictionary).object(forKey: "subscription_type_id") as? String
+                
                 let currentInstallation = PFInstallation.current()
                 currentInstallation.setObject(s!, forKey: "expiry")
+                currentInstallation.setObject(subscribeType!, forKey: "subscription_type_id")
                 currentInstallation.saveInBackground()
                 
                 let token = dictSessionInfo.object(forKey: "refresh_token") as! String
@@ -309,12 +328,27 @@ class LoginViewController: UIViewController, WebServiceCallingDelegate {
                 UserDefaults.standard.setValue(newInfo, forKey: "userDetails")
                 UserDefaults.standard.setValue(dictSessionInfo, forKey: "session")
                 UserDefaults.standard.setValue(token, forKey: "token")
-           //     counterSessionExpire = 0
-           //     UserDefaults.standard.setValue(counterSessionExpire, forKey: "counterSessionExpire")
+           
+                
+                
+                
+                if(subscribeType == "3"){
+                    loginAs = "trail"
+                }
+                else{
+                    loginAs = "user"
+                }
                 let openPost = self.storyboard!.instantiateViewController(withIdentifier: "Home") as! HomeViewController;
                 self.navigationController!.visibleViewController!.navigationController!.pushViewController(openPost, animated:true);
             }
             else{
+                if(loginAs == "trail"){
+                    let token = dictSessionInfo.object(forKey: "refresh_token") as! String
+                    UserDefaults.standard.setValue(dictSessionInfo, forKey: "session")
+                    UserDefaults.standard.setValue(token, forKey: "token")
+                    webServiceTrail()
+                }
+                else{
                 if(otpFrom == "login"){
                 let msg = "Profile is already registered, would you like to proceed to Payment?"
                 
@@ -329,9 +363,17 @@ class LoginViewController: UIViewController, WebServiceCallingDelegate {
                     let openPost = self.storyboard!.instantiateViewController(withIdentifier: "BuySignup") as! BuySignupViewController;
                     self.navigationController!.visibleViewController!.navigationController!.pushViewController(openPost, animated:true);
                 }
+                    let trialAction = UIAlertAction(title: "START TRIAL", style: UIAlertActionStyle.default) {
+                        UIAlertAction in
+                        loginAs = "trail"
+                        let token = dictSessionInfo.object(forKey: "refresh_token") as! String
+                        UserDefaults.standard.setValue(dictSessionInfo, forKey: "session")
+                        UserDefaults.standard.setValue(token, forKey: "token")
+                        self.webServiceTrail()
+                    }
                 let cancelAction = UIAlertAction(title: "LOGOUT", style: UIAlertActionStyle.cancel) {
                     UIAlertAction in
-                    loginAs = "guest"
+                 //   loginAs = "guest"
                     UserDefaults.standard.setValue(nil, forKey: "userDetails")
                     UserDefaults.standard.setValue(nil, forKey: "session")
                     self.navigationController?.popToRootViewController(animated: true)
@@ -339,6 +381,7 @@ class LoginViewController: UIViewController, WebServiceCallingDelegate {
                 
                 // Add the actions
                 alertController.addAction(okAction)
+                alertController.addAction(trialAction)
                 alertController.addAction(cancelAction)
                 
                 // Present the controller
@@ -356,6 +399,7 @@ class LoginViewController: UIViewController, WebServiceCallingDelegate {
                     self.navigationController!.visibleViewController!.navigationController!.pushViewController(openPost, animated:true);
                 }
             }
+            }
            // callWebServiceSubscribe()
         }
         else if(dict.object(forKey: "status") as! String == "ERROR"){
@@ -369,6 +413,47 @@ class LoginViewController: UIViewController, WebServiceCallingDelegate {
                 timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(LoginViewController.counter), userInfo: nil, repeats: true)
             }
         }
+        }
+        else if((dict.object(forKey: "api") as! String).contains("trial")){
+            if(dict.object(forKey: "status") as! String == "OK"){
+                let arrSubscribe = (dict.object(forKey: "result") as! NSDictionary).object(forKey: "subscription") as! NSArray
+                if(arrSubscribe.count > 0){
+                    
+                    loginAs = "trail"
+                    let newInfo = NSMutableDictionary()
+                    newInfo.setObject(dictUserDetails.object(forKey: "name") as! String, forKey: "name" as NSCopying)
+                    newInfo.setObject(dictUserDetails.object(forKey: "phone") as! String, forKey: "phone" as NSCopying)
+                    newInfo.setObject(dictUserDetails.object(forKey: "dob") as! String, forKey: "dob" as NSCopying)
+                    newInfo.setObject(dictUserDetails.object(forKey: "email") as! String, forKey: "email" as NSCopying)
+                    newInfo.setObject(dictUserDetails.object(forKey: "gender") as! String, forKey: "gender" as NSCopying)
+                    newInfo.setObject(dictUserDetails.object(forKey: "preference") as! String, forKey: "preference" as NSCopying)
+                    
+                    let expiry = (arrSubscribe.object(at: 0) as! NSDictionary).object(forKey: "expiry") as? String
+                    let dateFormatter = DateFormatter()
+                    dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+                    let s = dateFormatter.date(from:expiry!)
+                    
+                    let subscribeType = (arrSubscribe.object(at: 0) as! NSDictionary).object(forKey: "subscription_type_id") as? String
+                    
+                    let currentInstallation = PFInstallation.current()
+                    currentInstallation.setObject(s!, forKey: "expiry")
+                    currentInstallation.setObject(subscribeType!, forKey: "subscription_type_id")
+                    currentInstallation.saveInBackground()
+                    
+                    let token = dictSessionInfo.object(forKey: "refresh_token") as! String
+                    let userId = dictSessionInfo.object(forKey: "user_id") as! String
+                    let currentInstallation1 = PFInstallation.current()
+                    currentInstallation1.setObject(userId, forKey: "userId")
+                    currentInstallation1.saveInBackground()
+                    UserDefaults.standard.setValue(expiry, forKey: "expiry")
+                    UserDefaults.standard.setValue(newInfo, forKey: "userDetails")
+                    UserDefaults.standard.setValue(dictSessionInfo, forKey: "session")
+                    UserDefaults.standard.setValue(token, forKey: "token")
+                    
+                    let openPost = self.storyboard!.instantiateViewController(withIdentifier: "Home") as! HomeViewController;
+                    self.navigationController!.visibleViewController!.navigationController!.pushViewController(openPost, animated:true);
+                }
+            }
         }
         
         else{

@@ -343,7 +343,8 @@ class StoreDetailsViewController: UIViewController, UITableViewDataSource, UITab
     }
     
     @IBAction func redeemAction(_ sender : UIButton){
-        if(loginAs == "user"){
+        if(loginAs == "user" || loginAs == "trail"){
+            if(isTrailExpired == false){
             tblStore?.alpha = 0.09
             tblStore?.tintColor = UIColor.lightGray
             if(arrTableRedeem.count > 0){
@@ -358,6 +359,10 @@ class StoreDetailsViewController: UIViewController, UITableViewDataSource, UITab
             }
         btnCancel?.isHidden = false
         btnNext?.isHidden = false
+            }
+            else{
+              buyClicked()
+            }
         }
         else{
             buyClicked()
@@ -384,8 +389,14 @@ class StoreDetailsViewController: UIViewController, UITableViewDataSource, UITab
             lblCoupons?.isHidden = true
         }
         else{
+            if(isTrailExpired == true){
+                lblRedeem?.text = "BUY NOW"
+                lblCoupons?.isHidden = true
+            }
+            else{
             lblRedeem?.text = "REDEEM"
             lblCoupons?.isHidden = false
+            }
         }
         
         lineHr?.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 1)
@@ -481,7 +492,7 @@ class StoreDetailsViewController: UIViewController, UITableViewDataSource, UITab
     }
     
     @IBAction func nextTapped(_ sender : UIButton){
-        if(loginAs == "user"){
+        if(loginAs == "user" || loginAs == "trail"){
          
             numberRedeem = (lblNumber?.text)!
             let openPost = self.storyboard!.instantiateViewController(withIdentifier: "RestaurantPin") as! RestaurantPinViewController;
@@ -509,7 +520,7 @@ class StoreDetailsViewController: UIViewController, UITableViewDataSource, UITab
     
     @IBAction func favTapped(_ sender : UIButton){
         if(isBookmark == "0"){
-        if(loginAs == "user"){
+        if(loginAs == "user" || loginAs == "trail"){
         let origImage = UIImage(named: "favWhite.png")
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         sender.setImage(tintedImage, for: .normal)
@@ -523,7 +534,7 @@ class StoreDetailsViewController: UIViewController, UITableViewDataSource, UITab
         }
         }
         else{
-            if(loginAs == "user"){
+            if(loginAs == "user" || loginAs == "trail"){
                 let origImage = UIImage(named: "favWhite.png")
                 let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
                 sender.setImage(tintedImage, for: .normal)
@@ -581,7 +592,7 @@ class StoreDetailsViewController: UIViewController, UITableViewDataSource, UITab
     func callWebServiceForDeatils(){
         showActivityIndicator(view: self.view)
         if (isConnectedToNetwork() == true){
-            if(loginAs == "user"){
+            if(loginAs == "user" || loginAs == "trail"){
             let dictSessionId = UserDefaults.standard.object(forKey: "session") as! NSDictionary
             let session = dictSessionId.object(forKey: "session_id") as! String
             let url = String(format: "%@%@%@/%@%@?sessionid=%@", baseUrl,"outlet/",outletId,"offer/",offerIds, session)
@@ -710,7 +721,7 @@ class StoreDetailsViewController: UIViewController, UITableViewDataSource, UITab
     //MARK:- Call Restaurant
     
     @IBAction func callRestaurant(_ sender : UIButton){
-        if(loginAs == "user"){
+        if(loginAs == "user" || loginAs == "trail"){
         let phoneNumber = dictDetails.object(forKey: "phone") as! String
         if(phoneNumber.contains(",")){
             let fullNameArr : [String] = phoneNumber.components(separatedBy: ", ")
@@ -749,7 +760,7 @@ class StoreDetailsViewController: UIViewController, UITableViewDataSource, UITab
     
     func call(_ number : String){
         
-        if(loginAs == "user"){
+        if(loginAs == "user" || loginAs == "trail"){
         guard let number = URL(string: "telprompt://" + number) else { return }
         if #available(iOS 10.0, *) {
             UIApplication.shared.open(number)
@@ -766,7 +777,7 @@ class StoreDetailsViewController: UIViewController, UITableViewDataSource, UITab
     }
     
     @IBAction func openMap(_ sender : UIButton){
-        if(loginAs == "user"){
+        if(loginAs == "user" || loginAs == "trail"){
         let latitude: CLLocationDegrees = 28.5678
         let longitude: CLLocationDegrees = 77.3258
         

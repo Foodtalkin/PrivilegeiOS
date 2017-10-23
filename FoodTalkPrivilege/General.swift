@@ -33,6 +33,7 @@ var problemArise = ""
 var latitude = ""
 var longitude = ""
 var city_id = ""
+var isTrailExpired : Bool = false
 
 func isConnectedToNetwork() -> Bool {
     

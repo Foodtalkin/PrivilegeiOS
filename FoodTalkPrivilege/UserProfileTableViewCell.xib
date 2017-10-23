@@ -15,7 +15,7 @@
             <rect key="frame" x="0.0" y="0.0" width="339" height="538"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="339" height="538"/>
+                <rect key="frame" x="0.0" y="0.0" width="339" height="537.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gN3-ho-fbd">
@@ -231,6 +231,16 @@
                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         </state>
                     </button>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="V : 1.50" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Cee-BX-qz2">
+                        <rect key="frame" x="58.5" y="519" width="222" height="14"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="14" id="2pU-hq-0zd"/>
+                            <constraint firstAttribute="width" constant="222" id="C1A-Cp-1fK"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                 </subviews>
                 <constraints>
                     <constraint firstItem="fHO-Ex-nHd" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="6" id="0Jq-0o-QH0"/>
@@ -254,6 +264,7 @@
                     <constraint firstItem="J9d-oY-ibB" firstAttribute="top" secondItem="zHA-xW-b0U" secondAttribute="bottom" constant="23" id="Ksy-h7-j6I"/>
                     <constraint firstItem="1HN-vN-lWz" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="6" id="LFa-KO-yyS"/>
                     <constraint firstAttribute="trailingMargin" secondItem="zHA-xW-b0U" secondAttribute="trailing" constant="7" id="Lc1-bf-YuJ"/>
+                    <constraint firstItem="Cee-BX-qz2" firstAttribute="centerX" secondItem="H2p-sc-9uM" secondAttribute="centerX" id="M7c-2h-Zb5"/>
                     <constraint firstItem="eVj-T9-CTS" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="6" id="MT8-kH-d0g"/>
                     <constraint firstAttribute="trailingMargin" secondItem="eVj-T9-CTS" secondAttribute="trailing" constant="7" id="QEW-xn-VYK"/>
                     <constraint firstItem="gO4-Pp-MHG" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="6" id="QEf-ej-VQI"/>
@@ -267,6 +278,7 @@
                     <constraint firstItem="J9d-oY-ibB" firstAttribute="leading" secondItem="nNe-HS-kFV" secondAttribute="trailing" constant="33" id="V5k-3c-YZU"/>
                     <constraint firstItem="gN3-ho-fbd" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="6" id="XGQ-Oo-aq6"/>
                     <constraint firstItem="nNe-HS-kFV" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="6" id="ZAZ-3i-vwT"/>
+                    <constraint firstAttribute="bottom" secondItem="Cee-BX-qz2" secondAttribute="bottom" constant="4.5" id="ZHl-gg-zyb"/>
                     <constraint firstItem="3dY-QG-Zqv" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="6" id="a1u-ut-kZw"/>
                     <constraint firstItem="zHA-xW-b0U" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="6" id="bh9-aB-TCJ"/>
                     <constraint firstItem="QLr-n9-QGN" firstAttribute="top" secondItem="eVj-T9-CTS" secondAttribute="bottom" constant="24" id="cPH-32-vQV"/>
@@ -299,7 +311,7 @@
                 <outlet property="txtEmail" destination="jXP-Kh-iFw" id="8QF-0H-vYb"/>
                 <outlet property="txtName" destination="VEQ-Se-38i" id="Udf-4Z-LZM"/>
             </connections>
-            <point key="canvasLocation" x="44.5" y="97"/>
+            <point key="canvasLocation" x="-140.5" y="100"/>
         </tableViewCell>
     </objects>
 </document>

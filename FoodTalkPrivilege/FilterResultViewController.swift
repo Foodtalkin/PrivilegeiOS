@@ -156,10 +156,10 @@ class FilterResultViewController: UIViewController,UICollectionViewDataSource, U
             return CGSize(width: 170, height: 220)
         }
         else if(UIScreen.main.bounds.size.height < 570){
-        return CGSize(width: 140, height: 190);
+            return CGSize(width: 140, height: 190);
         }
         else{
-         return CGSize(width: 160, height: 210);
+            return CGSize(width: 160, height: 210);
         }
     }
     
@@ -248,13 +248,14 @@ class FilterResultViewController: UIViewController,UICollectionViewDataSource, U
     
     func getDataFromWebService(_ dict : NSMutableDictionary){
         stopAnimation(view: self.view)
-        
+        if(dict.object(forKey: "status") as! String == "OK"){
         nextUrlFilter = (dict.object(forKey: "result") as! NSDictionary).object(forKey: "next_page_url") as! String
         let arr = ((dict.object(forKey: "result") as! NSDictionary).object(forKey: "data") as! NSArray).mutableCopy() as! NSMutableArray
         for index in 0..<arr.count{
             arrFilteredData.add(arr[index] as! NSDictionary)
         }
         collectionView.reloadData()
+        }
     }
     
     func serviceFailedWitherror(_ error : NSError){

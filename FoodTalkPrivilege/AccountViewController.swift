@@ -89,7 +89,7 @@ class AccountViewController: UIViewController, UITextFieldDelegate,UIActionSheet
                         DispatchQueue.main.async{
                             self.callWebServiceForFavDeatils()
                         }
-                        viewMarker?.frame.origin.x = self.view.frame.size.width - 120
+                        viewMarker?.frame.origin.x = self.view.frame.size.width - 115
                         selectedScreen = "3"
                     }
                 }
@@ -97,6 +97,7 @@ class AccountViewController: UIViewController, UITextFieldDelegate,UIActionSheet
                 break
             }
         }
+        viewAlert.removeFromSuperview()
         tblScreen?.reloadData()
     }
     
@@ -130,6 +131,10 @@ class AccountViewController: UIViewController, UITextFieldDelegate,UIActionSheet
             cell.txtName?.delegate = self
             cell.txtEmail?.delegate = self
             
+            if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
+                cell.lblVersion?.text = String(format : "V : %@", version)
+            }
+            
         if((dictUserDetails.object(forKey: "dob") as! String).characters.count > 0){
             cell.btnDOB?.setTitle((dictUserDetails.object(forKey: "dob") as! String), for: .normal)
         }
@@ -139,7 +144,25 @@ class AccountViewController: UIViewController, UITextFieldDelegate,UIActionSheet
         if((dictUserDetails.object(forKey: "preference") as! String).characters.count > 0){
                 cell.btnVegNonVeg?.setTitle((dictUserDetails.object(forKey: "preference") as! String), for: .normal)
         }
-        
+        let expire = UserDefaults.standard.object(forKey: "expiry") as! String
+            let fullNameArr1 = expire.components(separatedBy: " ")
+            
+            let date2    = fullNameArr1[0]
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyy-MM-dd"
+            let s = dateFormatter.date(from:date2)
+            
+            let dateFormatter1 = DateFormatter()
+            dateFormatter1.dateFormat = "dd-MMM-yyyy"
+            
+            
+            let dte = dateFormatter1.string(from: s!)
+            if(loginAs == "trail"){
+                cell.lblExpire?.isHidden = true
+            }
+            else{
+                cell.lblExpire?.text = String(format : "Membership valid till %@", dte)
+            }
         
             createDatePicker(cell)
             cell.btnDOB?.addTarget(self, action: #selector(AccountViewController.selectDOB(_:)), for: .touchUpInside)
@@ -200,12 +223,14 @@ class AccountViewController: UIViewController, UITextFieldDelegate,UIActionSheet
     //MARK:- ButtonActions
     
     @IBAction func ProfileTap(_ sender : UIButton){
+        viewAlert.removeFromSuperview()
         viewMarker?.frame.origin.x = 20
         selectedScreen = "1"
         tblScreen?.reloadData()
     }
     
     @IBAction func HistoryTap(_ sender : UIButton){
+        viewAlert.removeFromSuperview()
         DispatchQueue.main.async{
             self.callWebServiceForHistory()
         }
@@ -215,10 +240,11 @@ class AccountViewController: UIViewController, UITextFieldDelegate,UIActionSheet
     }
     
     @IBAction func BookmarkTap(_ sender : UIButton){
+        viewAlert.removeFromSuperview()
         DispatchQueue.main.async{
             self.callWebServiceForFavDeatils()
         }
-        viewMarker?.frame.origin.x = self.view.frame.size.width - 120
+        viewMarker?.frame.origin.x = self.view.frame.size.width - 115
         selectedScreen = "3"
         tblScreen?.reloadData()
     }
@@ -340,11 +366,13 @@ class AccountViewController: UIViewController, UITextFieldDelegate,UIActionSheet
     //MARK:- alertTapped
     
     func alertTap(_ sender : UIButton){
+        if (isConnectedToNetwork() == true){
         let indexPath = IndexPath.init(row: 0, section: 0)
         let cell = tblScreen?.cellForRow(at: indexPath) as! UserProfileTableViewCell
         viewAlert.removeFromSuperview()
         DispatchQueue.main.async{
             self.webServiceUpdate(cell: cell)
+        }
         }
     }
     
@@ -363,7 +391,7 @@ class AccountViewController: UIViewController, UITextFieldDelegate,UIActionSheet
         else{
             stopAnimation(view: self.view)
             openAlertScreen(self.view)
-            alerButton.addTarget(self, action: #selector(HistoryViewController.alertTap), for: .touchUpInside)
+            alerButton.addTarget(self, action: #selector(AccountViewController.alertTap), for: .touchUpInside)
         }
     }
     
@@ -382,7 +410,7 @@ class AccountViewController: UIViewController, UITextFieldDelegate,UIActionSheet
         else{
             stopAnimation(view: self.view)
             openAlertScreen(self.view)
-            alerButton.addTarget(self, action: #selector(FavouritesViewController.alertTap), for: .touchUpInside)
+            alerButton.addTarget(self, action: #selector(AccountViewController.alertTap), for: .touchUpInside)
         }
     }
     

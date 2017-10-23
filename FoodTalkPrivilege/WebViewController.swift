@@ -18,7 +18,7 @@ class WebViewController: UIViewController, UIWebViewDelegate, WebServiceCallingD
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        showActivityIndicator(view: self.view)
+     //   showActivityIndicator(view: self.view)
         // Do any additional setup after loading the view.
         URLCache.shared.removeAllCachedResponses()
         URLCache.shared.diskCapacity = 0
@@ -56,7 +56,7 @@ class WebViewController: UIViewController, UIWebViewDelegate, WebServiceCallingD
             }
         }
         else{
-            stopAnimation(view: self.view)
+        //    stopAnimation(view: self.view)
             openAlertScreen(self.view)
             alerButton.addTarget(self, action: #selector(WebViewController.alertTap), for: .touchUpInside)
         }
@@ -90,11 +90,11 @@ class WebViewController: UIViewController, UIWebViewDelegate, WebServiceCallingD
     }
     
     func webViewDidFinishLoad(_ webView: UIWebView) {
-        stopAnimation(view: self.view)
+     //   stopAnimation(view: self.view)
     }
     
     func webServiceUpdate(){
-        showActivityIndicator(view: self.view)
+     //   showActivityIndicator(view: self.view)
         if (isConnectedToNetwork() == true){
             let dictSessionId = UserDefaults.standard.object(forKey: "session") as! NSDictionary
             let session = dictSessionId.object(forKey: "session_id") as! String
@@ -110,7 +110,7 @@ class WebViewController: UIViewController, UIWebViewDelegate, WebServiceCallingD
     }
     
     func getDataFromWebService(_ dict: NSMutableDictionary) {
-        stopAnimation(view: self.view)
+      //  stopAnimation(view: self.view)
         if((dict.object(forKey: "status") as! String) == "OK"){
             let dictSessionId = UserDefaults.standard.object(forKey: "session") as! NSDictionary
             let session = dictSessionId.object(forKey: "session_id") as! String
@@ -146,7 +146,7 @@ class WebViewController: UIViewController, UIWebViewDelegate, WebServiceCallingD
     }
     
     func serviceFailedWitherror(_ error : NSError){
-        stopAnimation(view: self.view)
+    //    stopAnimation(view: self.view)
         self.view.isUserInteractionEnabled = true
         UserDefaults.standard.setValue(nil, forKey: "userDetails")
         UserDefaults.standard.setValue(nil, forKey: "session")

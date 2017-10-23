@@ -74,7 +74,7 @@ class CitySelectionViewController: UIViewController, UIGestureRecognizerDelegate
         }
         else{
             openAlertScreen(self.view)
-            alerButton.addTarget(self, action: #selector(HomeViewController.alertTap), for: .touchUpInside)
+            alerButton.addTarget(self, action: #selector(CitySelectionViewController.alertTap), for: .touchUpInside)
         }
     }
     
@@ -93,7 +93,14 @@ class CitySelectionViewController: UIViewController, UIGestureRecognizerDelegate
         else{
             stopAnimation(view: self.view)
             openAlertScreen(self.view)
-            alerButton.addTarget(self, action: #selector(AccountViewController.alertTap), for: .touchUpInside)
+            alerButton.addTarget(self, action: #selector(CitySelectionViewController.alertTap), for: .touchUpInside)
+        }
+    }
+    
+    func alertTap(_ sender : UIButton){
+        if (isConnectedToNetwork() == true){
+           viewAlert.removeFromSuperview()
+           webServiceCallingCity()
         }
     }
     
@@ -101,11 +108,10 @@ class CitySelectionViewController: UIViewController, UIGestureRecognizerDelegate
     
     @IBAction func saveClicked(_ sender : UIButton){
         city_id = selectedCityId
-        if(loginAs == "user"){
+        if(loginAs == "user" || loginAs == "trail"){
             let currentInstallation1 = PFInstallation.current()
             currentInstallation1.setObject(city_id, forKey: "city_id")
             currentInstallation1.saveInBackground()
-            print(city_id)
            webServiceCallingCityUpdate()
         }
         else{
@@ -139,8 +145,9 @@ class CitySelectionViewController: UIViewController, UIGestureRecognizerDelegate
         stopAnimation(view: self.view)
         if((dict.object(forKey: "api") as! String).contains("user")){
             if(dict.object(forKey: "status") as! String == "OK"){
+                
               let city_id1 = (dict.object(forKey: "result") as! NSDictionary).object(forKey: "city_id") as! String
-            if(loginAs == "user"){
+            if(loginAs == "user" || loginAs == "trail"){
               UserDefaults.standard.set(city_id1, forKey: "city_id")
                 
             }

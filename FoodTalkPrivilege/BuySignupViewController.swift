@@ -73,7 +73,7 @@ class BuySignupViewController: UIViewController, WebServiceCallingDelegate, PGTr
         super.viewWillDisappear(animated)
         
         if (self.isMovingFromParentViewController){
-            loginAs = "guest"
+           // loginAs = "guest"
         }
     }
     
@@ -132,7 +132,7 @@ class BuySignupViewController: UIViewController, WebServiceCallingDelegate, PGTr
     }
     
     @IBAction func buyTapped(_ sender : UIButton){
-        if(loginAs == "user"){
+        if(loginAs == "user" || loginAs == "trail"){
             showActivityIndicator(view: self.view)
          //   callPayment()
             webCallForPaytm()
@@ -187,8 +187,11 @@ class BuySignupViewController: UIViewController, WebServiceCallingDelegate, PGTr
                 let arrSubscribe = (dict.object(forKey: "result") as! NSDictionary).object(forKey: "subscription") as! NSArray
                 let expiry = (arrSubscribe.object(at: 0) as! NSDictionary).object(forKey: "expiry") as? String
                 
+                let subscribeType = (arrSubscribe.object(at: 0) as! NSDictionary).object(forKey: "subscription_type_id") as? String
+                
                 let currentInstallation = PFInstallation.current()
                 currentInstallation.setObject(expiry!, forKey: "expiry")
+                currentInstallation.setObject(subscribeType, forKey: "subscription_type_id")
                 currentInstallation.saveInBackground()
                 UserDefaults.standard.setValue(expiry, forKey: "expiry")
                 transactionResult = "success"
@@ -241,9 +244,6 @@ class BuySignupViewController: UIViewController, WebServiceCallingDelegate, PGTr
         self.callWebServiceSubscribe()
         
     }
-    
-
-    
     
     //MARK:- PayTm Methods
     

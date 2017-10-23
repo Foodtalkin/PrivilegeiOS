@@ -1196,6 +1196,7 @@ number above. You’ll need to enter the OTP in next step.</string>
                     </view>
                     <connections>
                         <outlet property="btnVerify" destination="Y1v-ya-Y3I" id="byu-SR-zm1"/>
+                        <outlet property="lblTop" destination="viF-FU-8jO" id="DEk-ny-vXh"/>
                         <outlet property="lineEmail" destination="lPS-YH-fyt" id="gQv-dQ-kxa"/>
                         <outlet property="lineName" destination="kOg-Y0-2rB" id="fFC-NM-WY1"/>
                         <outlet property="linePhone" destination="bjo-We-qAy" id="P1J-XG-OXS"/>

@@ -23,6 +23,8 @@ class UserProfileTableViewCell: UITableViewCell {
     
     var datePicker = UIDatePicker()
     @IBOutlet var doneButton : UIButton?
+    
+    @IBOutlet var lblVersion : UILabel?
 
     override func awakeFromNib() {
         super.awakeFromNib()

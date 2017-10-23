@@ -53,7 +53,6 @@ class ViewController: UIViewController, UIScrollViewDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         self.navigationController?.isNavigationBarHidden = true
-        
     }
     
     override func viewDidAppear(_ animated: Bool) {

@@ -33,34 +33,28 @@ class WebViewController: UIViewController, UIWebViewDelegate, WebServiceCallingD
            url = rules
         }
         
-        if(selectedWebType == "exp"){
-//            let dictSessionId = UserDefaults.standard.object(forKey: "session") as! NSDictionary
-//            let session = dictSessionId.object(forKey: "session_id") as! String
-//            url = String(format : "http://foodtalk.in/pe/#!/app/%@", session)
+        else if(selectedWebType == "exp"){
+           url = rules
             
-            webServiceUpdate()
-            delegate = self
-        }
-        else{
-        var  urlString = ""
-        if(selectedWebType != "exp"){
-        urlString = url.addingPercentEncoding( withAllowedCharacters: CharacterSet.urlQueryAllowed)!
-        }
-        else{
-        urlString = url
         }
         
+        var  urlString = ""
+        
+        urlString = url.addingPercentEncoding( withAllowedCharacters: CharacterSet.urlQueryAllowed)!
+        
+        
         if(isConnectedToNetwork()){
+            showActivityIndicator(view: self.view)
             DispatchQueue.main.async {
                 self.webView!.loadRequest(URLRequest(url: URL(string: urlString)!))
             }
         }
         else{
-        //    stopAnimation(view: self.view)
+        
             openAlertScreen(self.view)
             alerButton.addTarget(self, action: #selector(WebViewController.alertTap), for: .touchUpInside)
         }
-        }
+        
         
     }
     
@@ -90,7 +84,7 @@ class WebViewController: UIViewController, UIWebViewDelegate, WebServiceCallingD
     }
     
     func webViewDidFinishLoad(_ webView: UIWebView) {
-     //   stopAnimation(view: self.view)
+        stopAnimation(view: self.view)
     }
     
     func webServiceUpdate(){

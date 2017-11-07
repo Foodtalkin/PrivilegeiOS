@@ -65,6 +65,23 @@ class SuccessViewController: UIViewController, UIGestureRecognizerDelegate, MFMa
                 btnDone?.setTitle("Retry Payment", for: .normal)
             }
         }
+        else if(comingSuccessFrom == "Event"){
+            lblRid?.isHidden = true
+            if(transactionResult == "success"){
+                lblSuccess?.text = "SUCCESS"
+                lblDescribe?.text = String(format : "You have successfully purchased %@ Tickets for event %@." , totalGuest,eventNamePurchased)
+                
+                imgSuccess?.image = UIImage(named : "paySuccess.png")
+                btnDone?.setTitle("Done", for: .normal)
+                btnDone?.setTitle("Go to tickets", for: .normal)
+            }
+            else{
+                lblSuccess?.text = "Something’s wrong"
+                lblDescribe?.text = "Oops! The transaction failed. Please try again or contact our support."
+                imgSuccess?.image = UIImage(named : "wrong.png")
+                btnDone?.setTitle("Retry Payment", for: .normal)
+            }
+        }
         setDownLine(btnDone!)
     }
     

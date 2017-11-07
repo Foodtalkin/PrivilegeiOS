@@ -50,8 +50,14 @@ class FullImageViewController: UIViewController, iCarouselDataSource, iCarouselD
             itemView.addSubview(img)
             var url = ""
             if(arrImages.count > 0){
+                if(arrImages.contains(NSDictionary.self)){
                 url = (arrImages.object(at: index) as! NSDictionary).object(forKey: "url") as! String
                 setImageWithUrl(url, imgView: img)
+                }
+                else{
+                    url = arrImages.object(at: index) as! String
+                    setImageWithUrl(url, imgView: img)
+                }
             }
             
         }
@@ -64,8 +70,14 @@ class FullImageViewController: UIViewController, iCarouselDataSource, iCarouselD
             itemView.addSubview(img)
             var url = ""
             if(arrImages.count > 0){
-                url = (arrImages.object(at: index) as! NSDictionary).object(forKey: "url") as! String
-                setImageWithUrl(url, imgView: img)
+                if(arrImages.contains(NSDictionary.self)){
+                    url = (arrImages.object(at: index) as! NSDictionary).object(forKey: "url") as! String
+                    setImageWithUrl(url, imgView: img)
+                }
+                else{
+                    url = arrImages.object(at: index) as! String
+                    setImageWithUrl(url, imgView: img)
+                }
             }
         }
         return itemView

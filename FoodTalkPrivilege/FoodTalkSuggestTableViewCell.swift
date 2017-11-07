@@ -11,6 +11,7 @@ import UIKit
 class FoodTalkSuggestTableViewCell: UITableViewCell {
     
     @IBOutlet var tblSuggest : UITableView?
+    @IBOutlet var lblTitle : UILabel?
 
     override func awakeFromNib() {
         super.awakeFromNib()

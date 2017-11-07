@@ -80,6 +80,19 @@
 		756C9E671F27575C00C25220 /* exp@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 756C9E651F27575C00C25220 /* exp@2x.png */; };
 		756C9E681F27575C00C25220 /* exp@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 756C9E661F27575C00C25220 /* exp@3x.png */; };
 		757F5E801F05247A00D9C1EF /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 757F5E7F1F05247A00D9C1EF /* GoogleService-Info.plist */; };
+		758787081F9F5ED100303190 /* ExperienceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 758787061F9F5ED100303190 /* ExperienceTableViewCell.swift */; };
+		758787091F9F5ED100303190 /* ExperienceTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 758787071F9F5ED100303190 /* ExperienceTableViewCell.xib */; };
+		758787141FA0841000303190 /* mapE@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 758787121FA0840F00303190 /* mapE@2x.png */; };
+		758787151FA0841100303190 /* mapE@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 758787131FA0841000303190 /* mapE@3x.png */; };
+		758787211FA0846B00303190 /* clock@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7587871D1FA0846B00303190 /* clock@2x.png */; };
+		758787221FA0846B00303190 /* clock@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7587871E1FA0846B00303190 /* clock@3x.png */; };
+		758787231FA0846B00303190 /* Rupee@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7587871F1FA0846B00303190 /* Rupee@2x.png */; };
+		758787241FA0846B00303190 /* Rupee@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 758787201FA0846B00303190 /* Rupee@3x.png */; };
+		758787271FA1DAA200303190 /* ExperienceDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 758787261FA1DAA100303190 /* ExperienceDetailsViewController.swift */; };
+		758787311FA207D800303190 /* ExperienceDetailsImageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7587872F1FA207D800303190 /* ExperienceDetailsImageTableViewCell.swift */; };
+		758787321FA207D800303190 /* ExperienceDetailsImageTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 758787301FA207D800303190 /* ExperienceDetailsImageTableViewCell.xib */; };
+		758787351FA20C9600303190 /* VideoExperienceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 758787331FA20C9600303190 /* VideoExperienceTableViewCell.swift */; };
+		758787361FA20C9600303190 /* VideoExperienceTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 758787341FA20C9600303190 /* VideoExperienceTableViewCell.xib */; };
 		75895A0F1EB7037200B82CF6 /* WebServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75895A0E1EB7037200B82CF6 /* WebServices.swift */; };
 		75895A521EB7212300B82CF6 /* AFIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75895A481EB7212300B82CF6 /* AFIError.swift */; };
 		75895A531EB7212300B82CF6 /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75895A4A1EB7212300B82CF6 /* Image.swift */; };
@@ -196,6 +209,9 @@
 		75D72B121EE97070005A7830 /* favBlack@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 75D72B101EE97070005A7830 /* favBlack@3x.png */; };
 		75D72B1C1EE97406005A7830 /* filter3@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 75D72B1A1EE97406005A7830 /* filter3@2x.png */; };
 		75D72B1D1EE97406005A7830 /* filter3@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 75D72B1B1EE97406005A7830 /* filter3@3x.png */; };
+		75E2B4101FAC518C00B25092 /* InvoiceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E2B40F1FAC518C00B25092 /* InvoiceViewController.swift */; };
+		75E2B41A1FAC542200B25092 /* InvoiceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E2B4181FAC542200B25092 /* InvoiceTableViewCell.swift */; };
+		75E2B41B1FAC542200B25092 /* InvoiceTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 75E2B4191FAC542200B25092 /* InvoiceTableViewCell.xib */; };
 		75E845521F7CF31F0031DFA0 /* UserProfileTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E845501F7CF31F0031DFA0 /* UserProfileTableViewCell.swift */; };
 		75E845531F7CF31F0031DFA0 /* UserProfileTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 75E845511F7CF31F0031DFA0 /* UserProfileTableViewCell.xib */; };
 		75F170ED1EADCBF600012CA7 /* SelectOutletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F170EC1EADCBF600012CA7 /* SelectOutletViewController.swift */; };
@@ -383,6 +399,19 @@
 		756C9E651F27575C00C25220 /* exp@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "exp@2x.png"; path = "FoodTalkPrivilege/Images/exp@2x.png"; sourceTree = "<group>"; };
 		756C9E661F27575C00C25220 /* exp@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "exp@3x.png"; path = "FoodTalkPrivilege/Images/exp@3x.png"; sourceTree = "<group>"; };
 		757F5E7F1F05247A00D9C1EF /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		758787061F9F5ED100303190 /* ExperienceTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExperienceTableViewCell.swift; sourceTree = "<group>"; };
+		758787071F9F5ED100303190 /* ExperienceTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExperienceTableViewCell.xib; sourceTree = "<group>"; };
+		758787121FA0840F00303190 /* mapE@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "mapE@2x.png"; path = "FoodTalkPrivilege/Images/mapE@2x.png"; sourceTree = "<group>"; };
+		758787131FA0841000303190 /* mapE@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "mapE@3x.png"; path = "FoodTalkPrivilege/Images/mapE@3x.png"; sourceTree = "<group>"; };
+		7587871D1FA0846B00303190 /* clock@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "clock@2x.png"; path = "FoodTalkPrivilege/Images/clock@2x.png"; sourceTree = "<group>"; };
+		7587871E1FA0846B00303190 /* clock@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "clock@3x.png"; path = "FoodTalkPrivilege/Images/clock@3x.png"; sourceTree = "<group>"; };
+		7587871F1FA0846B00303190 /* Rupee@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Rupee@2x.png"; path = "FoodTalkPrivilege/Images/Rupee@2x.png"; sourceTree = "<group>"; };
+		758787201FA0846B00303190 /* Rupee@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Rupee@3x.png"; path = "FoodTalkPrivilege/Images/Rupee@3x.png"; sourceTree = "<group>"; };
+		758787261FA1DAA100303190 /* ExperienceDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExperienceDetailsViewController.swift; sourceTree = "<group>"; };
+		7587872F1FA207D800303190 /* ExperienceDetailsImageTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExperienceDetailsImageTableViewCell.swift; sourceTree = "<group>"; };
+		758787301FA207D800303190 /* ExperienceDetailsImageTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExperienceDetailsImageTableViewCell.xib; sourceTree = "<group>"; };
+		758787331FA20C9600303190 /* VideoExperienceTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoExperienceTableViewCell.swift; sourceTree = "<group>"; };
+		758787341FA20C9600303190 /* VideoExperienceTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VideoExperienceTableViewCell.xib; sourceTree = "<group>"; };
 		75895A0E1EB7037200B82CF6 /* WebServices.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebServices.swift; sourceTree = "<group>"; };
 		75895A481EB7212300B82CF6 /* AFIError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AFIError.swift; path = Source/AFIError.swift; sourceTree = "<group>"; };
 		75895A491EB7212300B82CF6 /* AlamofireImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AlamofireImage.h; path = Source/AlamofireImage.h; sourceTree = "<group>"; };
@@ -504,6 +533,9 @@
 		75D72B101EE97070005A7830 /* favBlack@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "favBlack@3x.png"; path = "FoodTalkPrivilege/Images/favBlack@3x.png"; sourceTree = "<group>"; };
 		75D72B1A1EE97406005A7830 /* filter3@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "filter3@2x.png"; path = "FoodTalkPrivilege/Images/filter3@2x.png"; sourceTree = "<group>"; };
 		75D72B1B1EE97406005A7830 /* filter3@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "filter3@3x.png"; path = "FoodTalkPrivilege/Images/filter3@3x.png"; sourceTree = "<group>"; };
+		75E2B40F1FAC518C00B25092 /* InvoiceViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InvoiceViewController.swift; sourceTree = "<group>"; };
+		75E2B4181FAC542200B25092 /* InvoiceTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InvoiceTableViewCell.swift; sourceTree = "<group>"; };
+		75E2B4191FAC542200B25092 /* InvoiceTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InvoiceTableViewCell.xib; sourceTree = "<group>"; };
 		75E845501F7CF31F0031DFA0 /* UserProfileTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfileTableViewCell.swift; sourceTree = "<group>"; };
 		75E845511F7CF31F0031DFA0 /* UserProfileTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserProfileTableViewCell.xib; sourceTree = "<group>"; };
 		75F170EC1EADCBF600012CA7 /* SelectOutletViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectOutletViewController.swift; sourceTree = "<group>"; };
@@ -580,6 +612,12 @@
 		753F667C1EA89AA3009B68A9 = {
 			isa = PBXGroup;
 			children = (
+				7587871D1FA0846B00303190 /* clock@2x.png */,
+				7587871E1FA0846B00303190 /* clock@3x.png */,
+				7587871F1FA0846B00303190 /* Rupee@2x.png */,
+				758787201FA0846B00303190 /* Rupee@3x.png */,
+				758787121FA0840F00303190 /* mapE@2x.png */,
+				758787131FA0841000303190 /* mapE@3x.png */,
 				753DE8BB1F6941230008961F /* location_on@2x.png */,
 				753DE8BC1F6941230008961F /* location_on@3x.png */,
 				753DE8AF1F69366F0008961F /* goi@2x.png */,
@@ -744,6 +782,16 @@
 				758F26FC1F3B178900D0A31E /* SavingCollectionViewCell.swift */,
 				758F26FD1F3B178900D0A31E /* SavingCollectionViewCell.xib */,
 				753F66C11EA8B96C009B68A9 /* HomeViewController.swift */,
+				758787261FA1DAA100303190 /* ExperienceDetailsViewController.swift */,
+				75E2B40F1FAC518C00B25092 /* InvoiceViewController.swift */,
+				75E2B4181FAC542200B25092 /* InvoiceTableViewCell.swift */,
+				75E2B4191FAC542200B25092 /* InvoiceTableViewCell.xib */,
+				758787061F9F5ED100303190 /* ExperienceTableViewCell.swift */,
+				758787071F9F5ED100303190 /* ExperienceTableViewCell.xib */,
+				7587872F1FA207D800303190 /* ExperienceDetailsImageTableViewCell.swift */,
+				758787301FA207D800303190 /* ExperienceDetailsImageTableViewCell.xib */,
+				758787331FA20C9600303190 /* VideoExperienceTableViewCell.swift */,
+				758787341FA20C9600303190 /* VideoExperienceTableViewCell.xib */,
 				75F170EC1EADCBF600012CA7 /* SelectOutletViewController.swift */,
 				75895AC91EC3077E00B82CF6 /* SearchViewController.swift */,
 				7526FAF61EF282880052DD09 /* StoreDetailsViewController.swift */,
@@ -1042,6 +1090,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				758787231FA0846B00303190 /* Rupee@2x.png in Resources */,
 				758F26A51F33308C00D0A31E /* Info.plist in Resources */,
 				75A3CA6A1EA9E4B4002DBA57 /* fill86@3x.png in Resources */,
 				758F270A1F3B18A600D0A31E /* piggy-bank@3x.png in Resources */,
@@ -1079,6 +1128,7 @@
 				75A0814C1EB0C38D00FC2244 /* group12@3x.png in Resources */,
 				75F171061EAE24A300012CA7 /* map@2x.png in Resources */,
 				75F170FA1EAE226100012CA7 /* favWhite@2x.png in Resources */,
+				758787361FA20C9600303190 /* VideoExperienceTableViewCell.xib in Resources */,
 				756B07131EAF302C00E682F3 /* StoreImageTableViewCell.xib in Resources */,
 				75AC9F751ED8694E009DDCF9 /* Filter@3x.png in Resources */,
 				75A3CA771EA9F57A002DBA57 /* fill81@2x.png in Resources */,
@@ -1100,11 +1150,15 @@
 				75A3CA6C1EA9E4B4002DBA57 /* fill131@2x.png in Resources */,
 				75A3CA5E1EA9E4B4002DBA57 /* fill3@3x.png in Resources */,
 				75B086AB1EE830A100FE64B1 /* Untitled-1.png in Resources */,
+				758787241FA0846B00303190 /* Rupee@3x.png in Resources */,
+				75E2B41B1FAC542200B25092 /* InvoiceTableViewCell.xib in Resources */,
 				758F26271F2B578300D0A31E /* screen5.png in Resources */,
 				7540DCDE1ECF1A0000102692 /* cancelMaterial@3x.png in Resources */,
 				758F26E61F348F3000D0A31E /* FacebookSDKStrings.bundle in Resources */,
 				75AC1B871EE5861200B41FDF /* wrong@2x.png in Resources */,
 				75D72B1D1EE97406005A7830 /* filter3@3x.png in Resources */,
+				758787141FA0841000303190 /* mapE@2x.png in Resources */,
+				758787151FA0841100303190 /* mapE@3x.png in Resources */,
 				7562F31F1F14CB78009F71AD /* OfferTypeTableViewCell.xib in Resources */,
 				75A3CA8C1EAA238D002DBA57 /* fill9@3x.png in Resources */,
 				75A3CA691EA9E4B4002DBA57 /* fill86@2x.png in Resources */,
@@ -1113,12 +1167,16 @@
 				756B071F1EAF5B6B00E682F3 /* ImagesTableViewCell.xib in Resources */,
 				75D72B111EE97070005A7830 /* favBlack@2x.png in Resources */,
 				7540DCEB1ED2C61E00102692 /* wireless3@2x.png in Resources */,
+				758787091F9F5ED100303190 /* ExperienceTableViewCell.xib in Resources */,
 				758F26E41F348F3000D0A31E /* AccountKitStrings.bundle in Resources */,
 				75A3CA8D1EAA238D002DBA57 /* about@2x.png in Resources */,
 				75A3CA7C1EAA085C002DBA57 /* fill301.png in Resources */,
 				75AC9F711ED8694E009DDCF9 /* Dine@3x.png in Resources */,
+				758787221FA0846B00303190 /* clock@3x.png in Resources */,
 				75A3CA8E1EAA238D002DBA57 /* fill9@2x.png in Resources */,
 				75A3CA7E1EAA085C002DBA57 /* fill301@3x.png in Resources */,
+				758787211FA0846B00303190 /* clock@2x.png in Resources */,
+				758787321FA207D800303190 /* ExperienceDetailsImageTableViewCell.xib in Resources */,
 				75A3CA971EAA2836002DBA57 /* fill444@2x.png in Resources */,
 				757F5E801F05247A00D9C1EF /* GoogleService-Info.plist in Resources */,
 				756B071B1EAF569600E682F3 /* DescriptionTableViewCell.xib in Resources */,
@@ -1260,12 +1318,14 @@
 				75895AF71EC5A7D700B82CF6 /* AccountViewController.swift in Sources */,
 				75895A5A1EB7212300B82CF6 /* UIImageView+AlamofireImage.swift in Sources */,
 				75F170F31EAE116C00012CA7 /* SelectOfferViewController.swift in Sources */,
+				758787271FA1DAA200303190 /* ExperienceDetailsViewController.swift in Sources */,
 				75895AD41EC32AB100B82CF6 /* FilterLocationTableViewCell.swift in Sources */,
 				75D674AD1F84D92C00368B97 /* Help&SupportViewController.swift in Sources */,
 				75895ABC1EBC56A400B82CF6 /* HistoryViewController.swift in Sources */,
 				75A3CA721EA9E7D8002DBA57 /* LoginViewController.swift in Sources */,
 				758F26FE1F3B178900D0A31E /* SavingCollectionViewCell.swift in Sources */,
 				7563FDA31F7284C900EF2756 /* ComingSoonCityViewController.swift in Sources */,
+				758787081F9F5ED100303190 /* ExperienceTableViewCell.swift in Sources */,
 				753F66B71EA89C50009B68A9 /* General.swift in Sources */,
 				753DE8A71F69007D0008961F /* CitySelectionViewController.swift in Sources */,
 				75A3CA801EAA096D002DBA57 /* LoginNumberViewController.swift in Sources */,
@@ -1278,6 +1338,7 @@
 				75895A0F1EB7037200B82CF6 /* WebServices.swift in Sources */,
 				753F668B1EA89AA3009B68A9 /* ViewController.swift in Sources */,
 				75895AD81EC3330C00B82CF6 /* FilterCostTableViewCell.swift in Sources */,
+				75E2B41A1FAC542200B25092 /* InvoiceTableViewCell.swift in Sources */,
 				75895AC61EBC5A0F00B82CF6 /* HistoryCellTableViewCell.swift in Sources */,
 				75895A521EB7212300B82CF6 /* AFIError.swift in Sources */,
 				7526FAF71EF282880052DD09 /* StoreDetailsViewController.swift in Sources */,
@@ -1290,6 +1351,8 @@
 				756B07121EAF302C00E682F3 /* StoreImageTableViewCell.swift in Sources */,
 				756B07161EAF53F400E682F3 /* AddressCussineTableViewCell.swift in Sources */,
 				7562F31E1F14CB78009F71AD /* OfferTypeTableViewCell.swift in Sources */,
+				758787351FA20C9600303190 /* VideoExperienceTableViewCell.swift in Sources */,
+				75E2B4101FAC518C00B25092 /* InvoiceViewController.swift in Sources */,
 				75895A571EB7212300B82CF6 /* Request+AlamofireImage.swift in Sources */,
 				756B071E1EAF5B6B00E682F3 /* ImagesTableViewCell.swift in Sources */,
 				75AC9F671ED85FF7009DDCF9 /* HowItWorkViewController.swift in Sources */,
@@ -1309,6 +1372,7 @@
 				756B07261EAF646400E682F3 /* FoodTalkSuggestTableViewCell.swift in Sources */,
 				75A081441EB0764800FC2244 /* RestaurantPinViewController.swift in Sources */,
 				756B071A1EAF569600E682F3 /* DescriptionTableViewCell.swift in Sources */,
+				758787311FA207D800303190 /* ExperienceDetailsImageTableViewCell.swift in Sources */,
 				753F66C21EA8B96C009B68A9 /* HomeViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

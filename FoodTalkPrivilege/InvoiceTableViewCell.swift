@@ -1,19 +1,23 @@
 //
-//  DescriptionTableViewCell.swift
+//  InvoiceTableViewCell.swift
 //  FoodTalkPrivilege
 //
-//  Created by Ashish on 25/04/17.
+//  Created by Ashish on 03/11/17.
 //  Copyright © 2017 FoodTalkIndia. All rights reserved.
 //
 
 import UIKit
 
-class DescriptionTableViewCell: UITableViewCell {
+class InvoiceTableViewCell: UITableViewCell {
     
-    @IBOutlet var lblDescribe : UILabel?
-    @IBOutlet var btnReadMore : UIButton?
-    @IBOutlet var lblTitle : UILabel?
-
+    @IBOutlet var lblVegNonVeg : UILabel?
+    @IBOutlet var lblSubtottal : UILabel?
+    @IBOutlet var lblSubtotalValue : UILabel?
+    @IBOutlet var lblConvinienceFee : UILabel?
+    @IBOutlet var lblTaxesValue : UILabel?
+    @IBOutlet var lblTotal : UILabel?
+    
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

@@ -1,17 +1,16 @@
 //
-//  DescriptionTableViewCell.swift
+//  VideoExperienceTableViewCell.swift
 //  FoodTalkPrivilege
 //
-//  Created by Ashish on 25/04/17.
+//  Created by Ashish on 26/10/17.
 //  Copyright © 2017 FoodTalkIndia. All rights reserved.
 //
 
 import UIKit
 
-class DescriptionTableViewCell: UITableViewCell {
+class VideoExperienceTableViewCell: UITableViewCell {
     
-    @IBOutlet var lblDescribe : UILabel?
-    @IBOutlet var btnReadMore : UIButton?
+    @IBOutlet var webView : UIWebView?
     @IBOutlet var lblTitle : UILabel?
 
     override func awakeFromNib() {

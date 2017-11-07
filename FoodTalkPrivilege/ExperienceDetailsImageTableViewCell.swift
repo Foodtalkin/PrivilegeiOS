@@ -1,18 +1,21 @@
 //
-//  DescriptionTableViewCell.swift
+//  ExperienceDetailsImageTableViewCell.swift
 //  FoodTalkPrivilege
 //
-//  Created by Ashish on 25/04/17.
+//  Created by Ashish on 26/10/17.
 //  Copyright © 2017 FoodTalkIndia. All rights reserved.
 //
 
 import UIKit
 
-class DescriptionTableViewCell: UITableViewCell {
+class ExperienceDetailsImageTableViewCell: UITableViewCell {
     
-    @IBOutlet var lblDescribe : UILabel?
-    @IBOutlet var btnReadMore : UIButton?
-    @IBOutlet var lblTitle : UILabel?
+    @IBOutlet var imgView : UIImageView?
+    @IBOutlet var imgMap : UIImageView?
+    @IBOutlet var imgClock : UIImageView?
+    @IBOutlet var lblDate : UILabel?
+    @IBOutlet var lblAddress : UILabel?
+    @IBOutlet var lblName : UILabel?
 
     override func awakeFromNib() {
         super.awakeFromNib()

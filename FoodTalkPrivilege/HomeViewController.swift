@@ -17,7 +17,7 @@ var restaurantId = String()
 var selectedWebType = ""
 var strOneLiner = ""
 var restaurantName = ""
-
+var idExperience = ""
 
 class HomeViewController: UIViewController,UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UITableViewDataSource, UITableViewDelegate, WebServiceCallingDelegate, MFMailComposeViewControllerDelegate, UIScrollViewDelegate, CLLocationManagerDelegate, UIGestureRecognizerDelegate {
     
@@ -28,6 +28,7 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
     fileprivate let kCellSavingheaderReuse : String = "SavingHeader"
     var collectionView : UICollectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: UICollectionViewFlowLayout())
     var tblMenu = UITableView()
+    var tblExperience = UITableView()
     
     @IBOutlet var btnMore : UIButton?
     @IBOutlet var btnSearch : UIButton?
@@ -55,6 +56,12 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
     
     var todayDate = String()
     
+    var arrExperience = NSMutableArray()
+    @IBOutlet var viewChoice : UIView?
+    @IBOutlet var btnOffer : UIButton?
+    @IBOutlet var btnExperience : UIButton?
+    @IBOutlet var viewMarker : UIView?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -70,7 +77,7 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
         swipeDown.direction = UISwipeGestureRecognizerDirection.left
         self.view.addGestureRecognizer(swipeDown)
         
-        
+        viewChoiceCreate()
       //  Analytics.setScreenName("Home", screenClass: "Home")
         FBSDKAppEvents.logEvent("First_Enter")
 
@@ -79,6 +86,7 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
         locationManager.activityType = .automotiveNavigation
 
         self.collectionView.decelerationRate = UIScrollViewDecelerationRateNormal;
+        
     }
     
     func respondToSwipeGesture(gesture: UIGestureRecognizer) {
@@ -95,6 +103,10 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
                        let btn = UIButton()
                        openMenu(btn)
                     }
+                    else{
+                        let btn = UIButton()
+                        offerChoice(btn)
+                        }
                     }
                 }
             
@@ -109,6 +121,14 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
                         let btn = UIButton()
                         openMenu(btn)
                     }
+                    else{
+                        let btn = UIButton()
+                        experienceChoice(btn)
+                        }
+                    }
+                    else{
+                        let btn = UIButton()
+                        experienceChoice(btn)
                     }
                 }
             
@@ -122,16 +142,18 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
         stopAnimation(view: self.view)
         if(loginAs == "guest"){
             viewBase?.frame = CGRect(x: 0, y: 114, width: self.view.frame.size.width, height: self.view.frame.size.height - 115)
-            createBuyView()
+       //     createBuyView()
             if(city_id == ""){
                 let openPost = self.storyboard!.instantiateViewController(withIdentifier: "CitySelection") as! CitySelectionViewController;
                 self.navigationController!.visibleViewController!.navigationController!.pushViewController(openPost, animated:true);
             }
             
             setCollectionView()
+            setExperienceTable()
             createMenuView()
             tblMenu.reloadData()
-            
+            collectionView.isHidden = false
+            tblExperience.isHidden = true
         }
         else if(loginAs == "trail"){
             webServiceForProfile()
@@ -141,8 +163,8 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
         }
         else{
             webServiceForProfile()
-            viewBuy.isHidden = true
-            viewBase?.frame = CGRect(x: 0, y: 64, width: self.view.frame.size.width, height: self.view.frame.size.height - 65)
+         //   viewBuy.isHidden = true
+            viewBase?.frame = CGRect(x: 0, y: 114, width: self.view.frame.size.width, height: self.view.frame.size.height - 115)
             
         }
         
@@ -176,6 +198,11 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
         let tap2 = UITapGestureRecognizer(target: self, action: #selector(HomeViewController.handleTap(_:)))
         tap2.delegate = self
         lblTitle?.addGestureRecognizer(tap2)
+        
+        DispatchQueue.main.async{
+            self.webServiceForExperience()
+        }
+
     }
     
     func handleTap(_ gesture : UIGestureRecognizer){
@@ -183,6 +210,104 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
             let openPost = self.storyboard!.instantiateViewController(withIdentifier: "CitySelection") as! CitySelectionViewController;
             self.navigationController!.visibleViewController!.navigationController!.pushViewController(openPost, animated:true);
         }
+    }
+    
+    func viewChoiceCreate(){
+        viewChoice?.frame = CGRect(x: 0, y: (viewNavigate?.frame.size.height)!, width: self.view.frame.size.width, height: 52)
+        
+        btnOffer?.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width/2, height: (viewChoice?.frame.size.height)!)
+        
+        btnExperience?.frame = CGRect(x: self.view.frame.size.width/2, y: 0, width: self.view.frame.size.width/2, height: (viewChoice?.frame.size.height)!)
+        
+        viewMarker?.frame = CGRect(x: 7, y: (viewChoice?.frame.size.height)! - 7, width: self.view.frame.size.width/2 - 14, height: 7)
+        
+        btnOffer?.setTitleColor(colorLightGold, for: .normal)
+        btnExperience?.setTitleColor(.white, for: .normal)
+    }
+    
+    @IBAction func offerChoice(_ sender : UIButton){
+        viewMarker?.frame = CGRect(x: 7, y: (viewChoice?.frame.size.height)! - 7, width: self.view.frame.size.width/2 - 14, height: 7)
+        UIView.animate(withDuration: 0.50, delay: 0.0, options: [], animations: {
+            if(UIScreen.main.bounds.size.height > 670){
+                self.collectionView.frame = CGRect(x: 20, y: 25, width: self.view.frame.size.width - 40,height: (self.viewBase?.frame.size.height)!)
+            }
+            else if(UIScreen.main.bounds.size.height < 500){
+                if(loginAs == "guest"){
+                    self.collectionView.frame = CGRect(x: 10, y: 5, width: self.view.frame.size.width - 20,height: (self.viewBase?.frame.size.height)!)
+                }
+                else{
+                    self.collectionView.frame = CGRect(x: 10, y: 5, width: self.view.frame.size.width - 20,height: (self.viewBase?.frame.size.height)!)
+                }
+            }
+            else if(UIScreen.main.bounds.size.height < 570){
+                if(loginAs == "guest"){
+                    self.collectionView.frame = CGRect(x: 10, y: 5, width: self.view.frame.size.width - 20,height: (self.viewBase?.frame.size.height)!)
+                }
+                else{
+                    self.collectionView.frame = CGRect(x: 10, y: 5, width: self.view.frame.size.width - 20,height: (self.viewBase?.frame.size.height)!)
+                }
+            }
+            else{
+                if(loginAs == "guest"){
+                    self.collectionView.frame = CGRect(x: 20, y: 15, width: self.view.frame.size.width - 40,height: (self.viewBase?.frame.size.height)!)
+                }
+                else{
+                    self.collectionView.frame = CGRect(x: 20, y: 15, width: self.view.frame.size.width - 40,height: (self.viewBase?.frame.size.height)!)
+                }
+            }
+            self.tblExperience.frame.origin.x = self.view.frame.size.width
+        }, completion: { (finished: Bool) in
+            
+            self.tblExperience.isHidden = true
+        })
+        btnOffer?.setTitleColor(colorLightGold, for: .normal)
+        btnExperience?.setTitleColor(.white, for: .normal)
+        collectionView.isHidden = false
+        
+        collectionView.reloadData()
+    }
+    
+    @IBAction func experienceChoice(_ sender : UIButton){
+        viewMarker?.frame = CGRect(x: self.view.frame.size.width/2 + 7, y: (viewChoice?.frame.size.height)! - 7, width: self.view.frame.size.width/2 - 14, height: 7)
+        UIView.animate(withDuration: 0.50, delay: 0.0, options: [], animations: {
+            if(UIScreen.main.bounds.size.height > 670){
+                self.tblExperience.frame = CGRect(x: 20, y: 2, width: self.view.frame.size.width - 40,height: (self.viewBase?.frame.size.height)! - 5)
+            }
+            else if(UIScreen.main.bounds.size.height < 500){
+                if(loginAs == "guest"){
+                    self.tblExperience.frame = CGRect(x: 10, y: 2, width: self.view.frame.size.width - 20,height: (self.viewBase?.frame.size.height)! - 5)
+                }
+                else{
+                    self.tblExperience.frame = CGRect(x: 10, y: 2, width: self.view.frame.size.width - 20,height: (self.viewBase?.frame.size.height)! - 5)
+                }
+            }
+            else if(UIScreen.main.bounds.size.height < 570){
+                if(loginAs == "guest"){
+                    self.tblExperience.frame = CGRect(x: 10, y: 2, width: self.view.frame.size.width - 20,height: (self.viewBase?.frame.size.height)! - 40)
+                }
+                else{
+                    self.tblExperience.frame = CGRect(x: 10, y: 2, width: self.view.frame.size.width - 20,height: (self.viewBase?.frame.size.height)! - 5)
+                }
+            }
+            else{
+                if(loginAs == "guest"){
+                    self.tblExperience.frame = CGRect(x: 20, y: 10, width: self.view.frame.size.width - 40,height: (self.viewBase?.frame.size.height)! - 15)
+                }
+                else{
+                    self.tblExperience.frame = CGRect(x: 20, y: 10, width: self.view.frame.size.width - 40,height: (self.viewBase?.frame.size.height)! - 15)
+                }
+            }
+            self.collectionView.frame.origin.x = -(self.view.frame.size.width)
+        }, completion: { (finished: Bool) in
+            
+            self.collectionView.isHidden = true
+        })
+
+        btnExperience?.setTitleColor(colorLightGold, for: .normal)
+        btnOffer?.setTitleColor(.white, for: .normal)
+        
+        tblExperience.isHidden = false
+        tblExperience.reloadData()
     }
     
     func createBottomView(){
@@ -447,7 +572,7 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
     func buyClicked(_ sender : UIButton){
         
         viewMenu.removeFromSuperview()
-        viewBuy.removeFromSuperview()
+    //    viewBuy.removeFromSuperview()
         tblMenu.removeFromSuperview()
         if(loginAs == "guest"){
             loginAs = "trail"
@@ -628,6 +753,47 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
         // UICollectionReusableView
         
         viewBase?.addSubview(self.collectionView)
+    }
+    
+    //MARK:- setExperienceTableView
+    
+    func setExperienceTable(){
+        if(UIScreen.main.bounds.size.height > 670){
+            self.tblExperience.frame = CGRect(x: self.view.frame.size.width, y: 25, width: self.view.frame.size.width - 40,height: (viewBase?.frame.size.height)! - 25)
+        }
+        else if(UIScreen.main.bounds.size.height < 500){
+            if(loginAs == "guest"){
+                self.tblExperience.frame = CGRect(x: self.view.frame.size.width, y: 5, width: self.view.frame.size.width - 20,height: (viewBase?.frame.size.height)! - 5)
+            }
+            else{
+                self.tblExperience.frame = CGRect(x: self.view.frame.size.width, y: 5, width: self.view.frame.size.width - 20,height: (viewBase?.frame.size.height)! - 5)
+            }
+        }
+        else if(UIScreen.main.bounds.size.height < 570){
+            if(loginAs == "guest"){
+                self.tblExperience.frame = CGRect(x: self.view.frame.size.width, y: 5, width: self.view.frame.size.width - 20,height: (viewBase?.frame.size.height)! - 5)
+            }
+            else{
+                self.tblExperience.frame = CGRect(x: self.view.frame.size.width, y: 5, width: self.view.frame.size.width - 20,height: (viewBase?.frame.size.height)! - 5)
+            }
+        }
+        else{
+            if(loginAs == "guest"){
+                self.tblExperience.frame = CGRect(x: self.view.frame.size.width, y: 15, width: self.view.frame.size.width - 40,height: (viewBase?.frame.size.height)! - 15)
+            }
+            else{
+                self.tblExperience.frame = CGRect(x: self.view.frame.size.width, y: 15, width: self.view.frame.size.width - 40,height: (viewBase?.frame.size.height)! - 15)
+            }
+        }
+        self.tblExperience.register(UINib(nibName: "ExperienceTableViewCell", bundle: nil), forCellReuseIdentifier: "ExperienceTableViewCell")
+        self.tblExperience.showsVerticalScrollIndicator = false
+        self.tblExperience.delegate = self
+        self.tblExperience.dataSource = self
+        self.tblExperience.backgroundColor = UIColor.clear
+        
+        // UICollectionReusableView
+        
+        viewBase?.addSubview(self.tblExperience)
     }
     
     // MARK:- UICollectionViewDelegate, UICollectionViewDataSource
@@ -1058,15 +1224,21 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
     //MARK:- TableViewDelegates and Datasource
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if(tableView == tblExperience){
+            return arrExperience.count
+        }
+        else{
         if(loginAs == "guest"){
             return 9
         }
         else{
             return 7
         }
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if(tableView == tblMenu){
         let cell = UITableViewCell(style:.default, reuseIdentifier: "CELL")
 //         if (cell == nil) {
 //           cell = UITableViewCell(style:.default, reuseIdentifier: "CELL")
@@ -1090,9 +1262,23 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
             }
         }
         return cell
+        }
+        else{
+           let cell = tableView.dequeueReusableCell(withIdentifier: "ExperienceTableViewCell", for: indexPath) as! ExperienceTableViewCell
+            cell.btnDetails?.addTarget(self, action: #selector(HomeViewController.detailsExp(_:)), for: .touchUpInside)
+            cell.lblEventName?.text = (arrExperience.object(at: indexPath.row) as! NSDictionary).object(forKey: "title") as? String
+            cell.lblTime?.text = (arrExperience.object(at: indexPath.row) as! NSDictionary).object(forKey: "start_time") as? String
+            cell.lblPrice?.text = String(format : "Starting at %@/Person", ((arrExperience.object(at: indexPath.row) as! NSDictionary).object(forKey: "cost") as? String)!)
+            setImageWithUrl(((arrExperience.object(at: indexPath.row) as! NSDictionary).object(forKey: "card_image") as? String)!, imgView: cell.imgView!)
+            cell.btnDetails?.tag = indexPath.row
+            setDownLine(cell.btnDetails!)
+            cell.selectionStyle = .none
+            return cell
+        }
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if(tableView == tblMenu){
         if(loginAs == "guest"){
             if(indexPath.row == 0){
                 viewMenu.removeFromSuperview()
@@ -1143,13 +1329,31 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
             }
             
         }
+        }
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if(tableView == tblMenu){
         if(indexPath.row == 1){
             return 25
         }
         return 45
+        }
+        else{
+            if(self.view.frame.size.height < 570){
+            return 520
+            }
+            else if(self.view.frame.size.height < 670){
+             return 540
+            }
+            return 580
+        }
+    }
+    
+    func detailsExp(_ sender : UIButton){
+        idExperience = ((arrExperience.object(at: sender.tag) as! NSDictionary).object(forKey: "id") as? String)!
+        let openPost = self.storyboard!.instantiateViewController(withIdentifier: "ExperienceDetails") as! ExperienceDetailsViewController;
+        self.navigationController!.visibleViewController!.navigationController!.pushViewController(openPost, animated:true);
     }
     
     //MARK:- showAlert of yes no
@@ -1309,7 +1513,7 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
         if(isMoreTapped == false){
         UIView.animate(withDuration: 0.3, delay: 0.0, options: .curveEaseOut, animations: {
             self.viewMenu.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width/2 + 100, height: self.view.frame.size.height)
-            self.viewBuy.frame = CGRect(x: self.view.frame.size.width/2 + 100, y: (self.viewNavigate?.frame.size.height)!, width: self.view.frame.size.width, height: 50)
+            self.viewChoice?.frame = CGRect(x: self.view.frame.size.width/2 + 100, y: (self.viewNavigate?.frame.size.height)!, width: self.view.frame.size.width, height: 52)
             self.viewNavigate?.frame = CGRect(x: self.view.frame.size.width/2 + 100, y: (self.viewNavigate?.frame.origin.y)!, width: (self.viewNavigate?.frame.size.width)!, height: (self.viewNavigate?.frame.size.height)!)
             self.viewBase?.frame = CGRect(x: self.view.frame.size.width/2 + 100, y: (self.viewBase?.frame.origin.y)!, width: (self.viewBase?.frame.size.width)!, height: (self.viewBase?.frame.size.height)!)
             self.viewBottom.frame = CGRect(x: self.view.frame.size.width/2 + 100, y: (self.viewBottom.frame.origin.y), width: (self.viewBottom.frame.size.width), height: (self.viewBottom.frame.size.height))
@@ -1319,7 +1523,7 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
         else{
             UIView.animate(withDuration: 0.3, delay: 0.0, options: .curveEaseOut, animations: {
                 self.viewMenu.frame = CGRect(x: -(self.view.frame.size.width/2 + 110), y: 0, width: self.view.frame.size.width/2 + 100, height: self.view.frame.size.height)
-                self.viewBuy.frame = CGRect(x: 0, y: (self.viewNavigate?.frame.size.height)!, width: self.view.frame.size.width, height: 50)
+                self.viewChoice?.frame = CGRect(x: 0, y: (self.viewNavigate?.frame.size.height)!, width: self.view.frame.size.width, height: 52)
                 self.viewNavigate?.frame = CGRect(x: 0, y: (self.viewNavigate?.frame.origin.y)!, width: (self.viewNavigate?.frame.size.width)!, height: (self.viewNavigate?.frame.size.height)!)
                 self.viewBase?.frame = CGRect(x: 0, y: (self.viewBase?.frame.origin.y)!, width: (self.viewBase?.frame.size.width)!, height: (self.viewBase?.frame.size.height)!)
                 self.viewBottom.frame = CGRect(x: 0, y: (self.viewBottom.frame.origin.y), width: (self.viewBottom.frame.size.width), height: (self.viewBottom.frame.size.height))
@@ -1419,6 +1623,20 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
         }
     }
     
+    func webServiceForExperience(){
+        
+            if (isConnectedToNetwork() == true){
+                let url = String(format: "%@%@", baseUrl,"experiences")
+                webServiceGet(url)
+                delegate = self
+            }
+            else{
+                stopAnimation(view: self.view)
+                openAlertScreen(self.view)
+                alerButton.addTarget(self, action: #selector(HomeViewController.alertTap), for: .touchUpInside)
+            }
+    }
+    
     
     func getDataFromWebService(_ dict: NSMutableDictionary) {
         
@@ -1436,7 +1654,7 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
                 if(subType == "3"){
                     loginAs = "trail"
                     viewBase?.frame = CGRect(x: 0, y: 114, width: self.view.frame.size.width, height: self.view.frame.size.height - 115)
-                    createBuyView()
+               //     createBuyView()
                 }
                 else{
                     loginAs = "user"
@@ -1461,6 +1679,9 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
                 lblMenuCity.text = "MUMBAI"
             }
             setCollectionView()
+            setExperienceTable()
+            collectionView.isHidden = false
+            tblExperience.isHidden = true
             createMenuView()
             tblMenu.reloadData()
         }
@@ -1472,6 +1693,12 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
             }
             nextPageUrl = (dict.object(forKey: "result") as! NSDictionary).object(forKey: "next_page_url") as! String
         }
+        }
+        else if((dict.object(forKey: "api") as! String).contains("experiences")){
+            if(dict.object(forKey: "status") as! String == "OK"){
+               arrExperience = ((dict.object(forKey: "result") as! NSDictionary).object(forKey: "data") as! NSArray).mutableCopy() as! NSMutableArray
+            }
+            tblExperience.reloadData()
         }
         UIView.performWithoutAnimation {
             self.collectionView.reloadSections(NSIndexSet(index: 0) as IndexSet)

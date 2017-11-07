@@ -11,6 +11,7 @@ import UIKit
 class ImagesTableViewCell: UITableViewCell {
     
     @IBOutlet var carousal : iCarousel?
+    @IBOutlet var lblTitle : UILabel?
 
     override func awakeFromNib() {
         super.awakeFromNib()

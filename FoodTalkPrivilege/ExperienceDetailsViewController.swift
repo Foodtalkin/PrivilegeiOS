@@ -11,6 +11,7 @@ import UIKit
 var totalGuest = ""
 var nonVegNumber = ""
 var dictExp = NSDictionary()
+var non_veg_pref = "0"
 
 class ExperienceDetailsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, iCarouselDelegate, iCarouselDataSource, WebServiceCallingDelegate {
     
@@ -48,6 +49,9 @@ class ExperienceDetailsViewController: UIViewController, UITableViewDataSource, 
     @IBOutlet var btnContinueVeg : UIButton?
     
     var couponCounter : Int = 1
+    var available_seats = ""
+    
+    var counter = 0
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -66,17 +70,21 @@ class ExperienceDetailsViewController: UIViewController, UITableViewDataSource, 
         
         tblExperience?.tableFooterView = UIView()
         tblExperience?.backgroundColor = colorDarkGray
+        tblExperience?.estimatedRowHeight = 200
+        tblExperience?.rowHeight = UITableViewAutomaticDimension
         
         setBase()
         setBaseVeg()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
+        
         arrSuggest = NSArray()
         arrSugestMulti = NSMutableArray()
         DispatchQueue.main.async{
             self.webServiceForExperience()
         }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        
         UIApplication.shared.statusBarStyle = .lightContent
         self.navigationController?.isNavigationBarHidden = true
     }
@@ -108,11 +116,28 @@ class ExperienceDetailsViewController: UIViewController, UITableViewDataSource, 
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if(tableView == tblExperience){
+            tblExperience?.separatorColor = .clear
         if(indexPath.row == 0){
            let cell = tableView.dequeueReusableCell(withIdentifier: "ExperienceDetailsImageTableViewCell", for: indexPath) as! ExperienceDetailsImageTableViewCell
             cell.lblName?.text = dictExp.object(forKey: "title") as? String
             cell.lblAddress?.text = dictExp.object(forKey: "address") as? String
-            cell.lblDate?.text = dictExp.object(forKey: "start_time") as? String
+          //  cell.lblDate?.text = dictExp.object(forKey: "display_time") as? String
+            
+            let str = dictExp.object(forKey: "display_time") as? String
+            
+            if let range = str?.range(of: "\n") {
+                let startPos = str?.distance(from: (str?.startIndex)!, to: range.lowerBound)
+                let myMutableString = NSMutableAttributedString(string: str!, attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 15)])
+                myMutableString.addAttribute(NSForegroundColorAttributeName, value: UIColor.gray, range: NSRange(location:startPos!,length: (str?.characters.count)! - startPos!))
+                
+                myMutableString.addAttribute(NSFontAttributeName, value : UIFont.systemFont(ofSize: 13), range: NSRange(location:startPos!,length: (str?.characters.count)! - startPos!))
+                
+                cell.lblDate?.attributedText = myMutableString
+            }
+            else {
+             //   print("String not present")
+                cell.lblDate?.text = dictExp.object(forKey: "display_time") as? String
+            }
             
             let origImage = UIImage(named: "mapE.png")
             let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
@@ -130,6 +155,11 @@ class ExperienceDetailsViewController: UIViewController, UITableViewDataSource, 
         }
         else if((arrExp.object(at: indexPath.row - 1) as! NSDictionary).object(forKey: "type") as! String == "TEXT"){
             let cell = tableView.dequeueReusableCell(withIdentifier: "DescriptionCell", for: indexPath) as! DescriptionTableViewCell
+            cell.lblTitle?.font = UIFont(name: fontFuture, size: 18)
+            cell.lblTitle?.textColor = colorDarkGray
+            
+            cell.lblDescribe?.textColor = UIColor.lightGray
+            
             cell.lblTitle?.text = (arrExp.object(at: indexPath.row - 1) as! NSDictionary).object(forKey: "title") as? String
             cell.lblDescribe?.text = (arrExp.object(at: indexPath.row - 1) as! NSDictionary).object(forKey: "content") as? String
             cell.btnReadMore?.addTarget(self, action: #selector(ExperienceDetailsViewController.btnReadMore(_:)), for: .touchUpInside)
@@ -141,6 +171,8 @@ class ExperienceDetailsViewController: UIViewController, UITableViewDataSource, 
         }
         else if(((arrExp.object(at: indexPath.row - 1) as! NSDictionary).object(forKey: "type") as! String).contains("LIST")){
             let cell = tableView.dequeueReusableCell(withIdentifier: "FoodSugestionCell", for: indexPath) as! FoodTalkSuggestTableViewCell
+            cell.lblTitle?.font = UIFont(name: fontFuture, size: 18)
+            cell.lblTitle?.textColor = colorDarkGray
             cell.lblTitle?.text = (arrExp.object(at: indexPath.row - 1) as! NSDictionary).object(forKey: "title") as? String
             cell.selectionStyle = .none
             
@@ -149,25 +181,27 @@ class ExperienceDetailsViewController: UIViewController, UITableViewDataSource, 
                 isSuggestArrayMultiple = false
             }
             else{
-                
+                arrSugestMulti = NSMutableArray()
                 for ind in 0..<arrSuggest.count {
                     arrSugestMulti.add(((arrSuggest.object(at: ind) as! NSDictionary).object(forKey: "title") as? String)!)
                     
                     arrSugestMulti.add(((arrSuggest.object(at: ind) as! NSDictionary).object(forKey: "data") as? String)!)
                 }
                 isSuggestArrayMultiple = true
-                
             }
-            
+            cell.tblSuggest?.estimatedRowHeight = 80
+            cell.tblSuggest?.rowHeight = UITableViewAutomaticDimension
             cell.tblSuggest?.separatorColor = .clear
             cell.tblSuggest?.dataSource = self
             cell.tblSuggest?.delegate = self
             cell.selectionStyle = .none
             return cell
         }
-        else if(((arrExp.object(at: indexPath.row - 1) as! NSDictionary).object(forKey: "type") as! String).contains("IMAGE")){
+        else if((arrExp.object(at: indexPath.row - 1) as! NSDictionary).object(forKey: "type") as! String == "IMAGE"){
             let cell = tableView.dequeueReusableCell(withIdentifier: "ImagesCell", for: indexPath) as! ImagesTableViewCell
             cell.selectionStyle = .none
+            cell.lblTitle?.font = UIFont(name: fontFuture, size: 18)
+            cell.lblTitle?.textColor = colorDarkGray
             cell.lblTitle?.text = (arrExp.object(at: indexPath.row - 1) as! NSDictionary).object(forKey: "title") as? String
             arrImages1 = ((arrExp.object(at: indexPath.row - 1) as! NSDictionary).object(forKey: "content") as? NSArray)!
             cell.carousal?.frame = CGRect(x: 0, y: 52, width: self.view.frame.size.width, height : 90)
@@ -181,6 +215,8 @@ class ExperienceDetailsViewController: UIViewController, UITableViewDataSource, 
         }
         else if(((arrExp.object(at: indexPath.row - 1) as! NSDictionary).object(forKey: "type") as! String).contains("VIDEO")){
             let cell = tableView.dequeueReusableCell(withIdentifier: "VideoExperienceTableViewCell", for: indexPath) as! VideoExperienceTableViewCell
+            cell.lblTitle?.font = UIFont(name: fontFuture, size: 18)
+            cell.lblTitle?.textColor = colorDarkGray
             cell.lblTitle?.text = (arrExp.object(at: indexPath.row - 1) as! NSDictionary).object(forKey: "title") as? String
             loadWeView(web: cell.webView!, url: ((arrExp.object(at: indexPath.row - 1) as! NSDictionary).object(forKey: "content") as? String)!)
             cell.selectionStyle = .none
@@ -188,7 +224,7 @@ class ExperienceDetailsViewController: UIViewController, UITableViewDataSource, 
         }
         else{
            let cell = UITableViewCell(style:.default, reuseIdentifier: "CELL")
-            cell.textLabel?.text = "RULE OF USE"
+            cell.textLabel?.text = (arrExp.object(at: indexPath.row - 1) as! NSDictionary).object(forKey: "title") as? String
             cell.textLabel?.textColor = colorBrightSkyBlue
             cell.textLabel?.font = UIFont.boldSystemFont(ofSize: 15)
             cell.selectionStyle = .none
@@ -200,51 +236,76 @@ class ExperienceDetailsViewController: UIViewController, UITableViewDataSource, 
             if(arrSuggest.count > 0){
                 if(isSuggestArrayMultiple == true){
                     if(indexPath.row % 2 == 0){
-                        cell.textLabel?.text = arrSugestMulti.object(at: indexPath.row) as? String
+                        cell.textLabel?.textColor = colorDarkGray
+                        cell.textLabel?.font = UIFont.boldSystemFont(ofSize: 17)
+                        cell.textLabel?.text = String(format : "- %@", (arrSugestMulti.object(at: indexPath.row) as? String)!)
                     }
                     else{
-                        cell.textLabel?.text = String(format : "  %@", arrSugestMulti.object(at: indexPath.row) as! String)
+                        
+                        cell.textLabel?.textColor = UIColor.lightGray
+                        cell.textLabel?.font = UIFont.systemFont(ofSize: 17)
+                        cell.textLabel?.text = String(format : "%@", arrSugestMulti.object(at: indexPath.row) as! String)
                     }
                 }
                 else{
-               cell.textLabel?.text = arrSuggest.object(at: indexPath.row) as? String
+                    cell.textLabel?.textColor = UIColor.lightGray
+                    cell.textLabel?.font = UIFont.systemFont(ofSize: 17)
+                    cell.textLabel?.text = String(format : "- %@", (arrSuggest.object(at: indexPath.row) as? String)!)
+                    cell.textLabel?.sizeToFit()
                 }
             }
+            cell.textLabel?.numberOfLines = 0
             cell.selectionStyle = .none
             return cell
         }
     }
     
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if(tableView == tblExperience){
+          if(indexPath.row != 0){
             if ((arrExp.object(at: indexPath.row - 1) as! NSDictionary).object(forKey: "type") as! String).contains("URL"){
                 selectedWebType = "exp"
                 rules = (arrExp.object(at: indexPath.row - 1) as! NSDictionary).object(forKey: "content") as! String
                 let openPost = self.storyboard!.instantiateViewController(withIdentifier: "Web") as! WebViewController;
                 self.navigationController!.visibleViewController!.navigationController!.pushViewController(openPost, animated:true);
             }
+          }
         }
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if(tableView == tblExperience){
         if(indexPath.row == 0){
-            return 228
+            return 244
         }
         else if((arrExp.object(at: indexPath.row - 1) as! NSDictionary).object(forKey: "type") as! String == "TEXT"){
             if(isReadMore == false){
-                return 155
+                return 180
             }
             else{
-                return 175
+                return UITableViewAutomaticDimension
             }
         }
         else if(((arrExp.object(at: indexPath.row - 1) as! NSDictionary).object(forKey: "type") as! String).contains("LIST")){
             if(isSuggestArrayMultiple == true){
-                return  40 + CGFloat(arrSuggest.count * 88)
+                
+                if(arrSuggest.count > 0){
+                    var length = CGFloat()
+                    length = CGFloat(0)
+                    for index in 0..<arrSugestMulti.count {
+                        let heightI = heightForView(text: arrSugestMulti.object(at: index) as! String, font: UIFont.systemFont(ofSize: 17), width: (tblExperience?.frame.size.width)! - 20)
+                      length = length + heightI
+                    }
+                return length + 20
+                }
+                else{
+                    return 40
+                }
             }
             else{
-                return CGFloat(40 + arrSuggest.count * 44)
+                
+                return CGFloat(50 + arrSuggest.count * 25)
             }
         }
         else if(((arrExp.object(at: indexPath.row - 1) as! NSDictionary).object(forKey: "type") as! String).contains("IMAGE")){
@@ -258,8 +319,30 @@ class ExperienceDetailsViewController: UIViewController, UITableViewDataSource, 
         }
         }
         else{
-            return 40
+            if(isSuggestArrayMultiple == true){
+                if(indexPath.row % 2 == 0){
+                    return 25
+                }
+                if(arrSuggest.count > 0){
+              return UITableViewAutomaticDimension
+                }
+                return 40
+            }
+            return 25
         }
+    }
+    
+    //MARK:- find Number of lines
+    
+    func heightForView(text:String, font:UIFont, width:CGFloat) -> CGFloat{
+        let label:UILabel = UILabel(frame: CGRect(x: 0, y: 0, width: width, height: CGFloat.greatestFiniteMagnitude))
+        label.numberOfLines = 0
+        label.lineBreakMode = NSLineBreakMode.byWordWrapping
+        label.font = font
+        label.text = text
+        label.sizeToFit()
+        
+        return label.frame.height + 25
     }
     
     //MARK:- carousal delegates
@@ -336,7 +419,7 @@ class ExperienceDetailsViewController: UIViewController, UITableViewDataSource, 
     }
     
     func getDataFromWebService(_ dict: NSMutableDictionary) {
-        
+       
         stopAnimation(view: self.view)
        if((dict.object(forKey: "api") as! String).contains("experiences/")){
           if(dict.object(forKey: "status") as! String == "OK"){
@@ -346,7 +429,21 @@ class ExperienceDetailsViewController: UIViewController, UITableViewDataSource, 
             lblSpots?.text = String(format : "%@ Spots", dictExp.object(forKey: "avilable_seats") as! String)
             lblTitle?.text = String(format: "  %@", (dictExp.object(forKey: "title") as? String)!)
             lblCostDown?.text = String(format : "%@ %@", "\u{20B9}", dictExp.object(forKey: "cost") as! String)
+            non_veg_pref = dictExp.object(forKey: "nonveg_preference") as! String
+            available_seats = dictExp.object(forKey: "avilable_seats") as! String
+            if(available_seats == "0"){
+             btnBook?.setTitle("SOLD OUT", for: .normal)
+             btnBook?.backgroundColor = UIColor(red: 350/255, green: 75/255, blue: 100/255, alpha: 1.0)
+             btnBook?.isEnabled = false
+            }
+            let isDisable = dictExp.object(forKey: "is_disabled") as! String
+            let isActive = dictExp.object(forKey: "is_active") as! String
             
+            if(isDisable == "0" && isActive == "0"){
+                btnBook?.setTitle("CLOSED", for: .normal)
+                btnBook?.backgroundColor = UIColor(red: 350/255, green: 75/255, blue: 100/255, alpha: 1.0)
+                btnBook?.isEnabled = false
+            }
         }
         tblExperience?.reloadData()
         }
@@ -451,7 +548,11 @@ class ExperienceDetailsViewController: UIViewController, UITableViewDataSource, 
     }
     
     @IBAction func add(_ sender : UIButton){
-        if(couponCounter < 10){
+        var max = 10
+        if(Int(available_seats)! < 10){
+            max = Int(available_seats)!
+        }
+        if(couponCounter < max){
             
             couponCounter = couponCounter + 1
             lblNumber?.text = String(format : "%d", couponCounter)
@@ -473,6 +574,7 @@ class ExperienceDetailsViewController: UIViewController, UITableViewDataSource, 
     }
     
     @IBAction func nextTap(_ sender : UIButton){
+        if(non_veg_pref == "1"){
         UIView.animate(withDuration: 0.50, delay: 0.0, options: [], animations: {
             self.viewVegNonVeg?.frame.origin.x = 0
         })
@@ -490,6 +592,13 @@ class ExperienceDetailsViewController: UIViewController, UITableViewDataSource, 
         sliderVeg?.minimumValue = 0
         sliderVeg?.value = 0
         nonVegNumber = (lblNumber?.text)!
+        }
+        else{
+            nonVegNumber = "0"
+            totalGuest = (lblNumber?.text)!
+            let openPost = self.storyboard!.instantiateViewController(withIdentifier: "Invoice") as! InvoiceViewController;
+            self.navigationController!.visibleViewController!.navigationController!.pushViewController(openPost, animated:true);
+        }
     }
     
     @IBAction func sliderAction(_ sender : UISlider){
@@ -498,8 +607,12 @@ class ExperienceDetailsViewController: UIViewController, UITableViewDataSource, 
         let vegNum = String(format: "%d / %d", (max - val), val)
         let myMutableString = NSMutableAttributedString(string: vegNum, attributes: [NSFontAttributeName: UIFont.boldSystemFont(ofSize: 20)])
         myMutableString.addAttribute(NSForegroundColorAttributeName, value: UIColor.red, range: NSRange(location:0,length:2))
-        
+        if(val < 10){
         myMutableString.addAttribute(NSForegroundColorAttributeName, value: UIColor.green, range: NSRange(location:3,length:2))
+        }
+        else{
+         myMutableString.addAttribute(NSForegroundColorAttributeName, value: UIColor.green, range: NSRange(location:3,length:3))
+        }
         // set label Attribute
         lblSelectedVeg?.attributedText = myMutableString
         nonVegNumber = String(format : "%d", (max - val))

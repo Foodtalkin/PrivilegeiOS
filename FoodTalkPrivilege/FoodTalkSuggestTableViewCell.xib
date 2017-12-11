@@ -19,7 +19,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Foodtalk Suggests" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2qE-ve-1Ky">
-                        <rect key="frame" x="18" y="16" width="165" height="21"/>
+                        <rect key="frame" x="18" y="16" width="318" height="21"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="21" id="lQI-f1-4YP"/>
                         </constraints>
@@ -36,7 +36,7 @@
                     <constraint firstItem="2qE-ve-1Ky" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="8" id="4VE-5k-U8v"/>
                     <constraint firstItem="2qE-ve-1Ky" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="10" id="OYH-2I-h4s"/>
                     <constraint firstItem="OMh-cM-Z7g" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="8" id="QAi-Q8-Rwx"/>
-                    <constraint firstAttribute="trailingMargin" secondItem="2qE-ve-1Ky" secondAttribute="trailing" constant="159" id="V33-Bm-5w3"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="2qE-ve-1Ky" secondAttribute="trailing" constant="6" id="V33-Bm-5w3"/>
                     <constraint firstAttribute="bottom" secondItem="OMh-cM-Z7g" secondAttribute="bottom" constant="8" id="bC6-6J-jUI"/>
                     <constraint firstItem="OMh-cM-Z7g" firstAttribute="top" secondItem="2qE-ve-1Ky" secondAttribute="bottom" constant="8" id="nq8-Oq-C9T"/>
                     <constraint firstAttribute="trailing" secondItem="OMh-cM-Z7g" secondAttribute="trailing" constant="8" id="pEo-x8-zCZ"/>

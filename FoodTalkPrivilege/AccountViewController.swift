@@ -144,6 +144,7 @@ class AccountViewController: UIViewController, UITextFieldDelegate,UIActionSheet
         if((dictUserDetails.object(forKey: "preference") as! String).characters.count > 0){
                 cell.btnVegNonVeg?.setTitle((dictUserDetails.object(forKey: "preference") as! String), for: .normal)
         }
+            if((UserDefaults.standard.object(forKey: "expiry")) != nil){
         let expire = UserDefaults.standard.object(forKey: "expiry") as! String
             let fullNameArr1 = expire.components(separatedBy: " ")
             
@@ -157,13 +158,13 @@ class AccountViewController: UIViewController, UITextFieldDelegate,UIActionSheet
             
             
             let dte = dateFormatter1.string(from: s!)
-            if(loginAs == "trail"){
+            if(loginAs != "user"){
                 cell.lblExpire?.isHidden = true
             }
             else{
                 cell.lblExpire?.text = String(format : "Membership valid till %@", dte)
             }
-        
+            }
             createDatePicker(cell)
             cell.btnDOB?.addTarget(self, action: #selector(AccountViewController.selectDOB(_:)), for: .touchUpInside)
             

@@ -79,14 +79,14 @@ class ViewController: UIViewController, UIScrollViewDelegate {
         
         // Set the scrollview content size.
         //        scrollView!.contentSize = CGSizeMake(scrollView!.frame.size.width * CGFloat(totalPages), scrollView!.frame.size.height)
-        scrollView!.contentSize = CGSize(width: scrollView!.frame.size.width * CGFloat(6),height: 0);
+        scrollView!.contentSize = CGSize(width: scrollView!.frame.size.width * CGFloat(4),height: 0);
         
         // Set self as the delegate of the scrollview.
         scrollView!.delegate = self
         
         // Load the TestView view from the TestView.xib file and configure it properly.
-        if(6 > 0){
-            for i in 0..<6 {
+        if(4 > 0){
+            for i in 0..<4 {
                 // Load the TestView view.
                 let testView = UIView()
                 
@@ -170,19 +170,19 @@ class ViewController: UIViewController, UIScrollViewDelegate {
             lblDetails?.text = "Choose from six different deals. Unlock minimum six coupons per restaurant. Enjoy a year full of dining privileges."
             img.image = UIImage(named : "screen3.png")
         }
+//        else if(i == 3){
+//       
+//            lblHeader.text = "Browse Offers"
+//            lblDetails?.text = "Search for your favourite restaurants or discover a restaurant you haven’t tried before!"
+//            img.image = UIImage(named : "screen4.png")
+//        }
+//        else if(i == 4){
+//      
+//            lblHeader.text = "Redeem"
+//            lblDetails?.text = "Just ask your server to enter the unique PIN to redeem your offer."
+//            img.image = UIImage(named : "screen5.png")
+//        }
         else if(i == 3){
-       
-            lblHeader.text = "Browse Offers"
-            lblDetails?.text = "Search for your favourite restaurants or discover a restaurant you haven’t tried before!"
-            img.image = UIImage(named : "screen4.png")
-        }
-        else if(i == 4){
-      
-            lblHeader.text = "Redeem"
-            lblDetails?.text = "Just ask your server to enter the unique PIN to redeem your offer."
-            img.image = UIImage(named : "screen5.png")
-        }
-        else if(i == 5){
             testView.frame.size.height = self.view.frame.size.height - 250
             lblHeader.text = "Enter Privilege"
             lblDetails?.text = "Swipe to know more"
@@ -224,14 +224,14 @@ class ViewController: UIViewController, UIScrollViewDelegate {
             }
             lblText1.textAlignment = .center
             lblText1.numberOfLines = 0
-            lblText1.text = "A handpicked list of the 100 best restaurants in Delhi NCR"
+            lblText1.text = "A handpicked list of the best restaurants & bars"
             lblText1.textColor = .white
             lblText1.font = UIFont.systemFont(ofSize: 15)
             testView.addSubview(lblText1)
             
             let lblText3 = UILabel(frame : CGRect(x: 30, y: lblText2.frame.origin.y + lblText2.frame.size.height + 20, width: testView.frame.size.width - 60, height : 20))
             lblText3.textAlignment = .center
-            lblText3.text = "Exclusive access to curated experiences"
+            lblText3.text = "Book curated food experiences"
             lblText3.textColor = .white
             lblText3.font = UIFont.systemFont(ofSize: 15)
             testView.addSubview(lblText3)
@@ -241,7 +241,7 @@ class ViewController: UIViewController, UIScrollViewDelegate {
     
     func configurePageControl() {
         // Set the total pages to the page control.
-        pageControl!.numberOfPages = 6
+        pageControl!.numberOfPages = 4
         
         // Set the initial page.
         pageControl!.currentPage = 0
@@ -286,27 +286,27 @@ class ViewController: UIViewController, UIScrollViewDelegate {
             lblDetails?.text = "Choose from six different deals. Unlock minimum six coupons per restaurant. Enjoy a year full of dining privileges."
             
         }
+//        else if(currentPage == 3){
+//            viewDetails?.frame = CGRect(x: 0, y : self.view.frame.size.height - 170, width : self.view.frame.size.width, height : 170)
+//            lblDetails?.frame = CGRect(x: 20, y : 0, width : self.view.frame.size.width - 40, height : 110)
+//            pageControl?.frame = CGRect(x: 20, y: 110, width : 100, height : 37)
+//            lblAlready?.frame = CGRect(x: 20, y : 147, width : 160, height : 20)
+//            btnSignIn?.frame = CGRect(x: 170, y : 147, width : 80, height : 20)
+//            btnNext?.frame = CGRect(x: self.view.frame.size.width - 80, y : 147, width : 80, height : 20)
+//            lblDetails?.text = "Search for your favourite restaurants or discover a restaurant you haven’t tried before!"
+//            
+//        }
+//        else if(currentPage == 4){
+//            viewDetails?.frame = CGRect(x: 0, y : self.view.frame.size.height - 170, width : self.view.frame.size.width, height : 170)
+//            lblDetails?.frame = CGRect(x: 20, y : 0, width : self.view.frame.size.width - 40, height : 110)
+//            pageControl?.frame = CGRect(x: 20, y: 110, width : 100, height : 37)
+//            lblAlready?.frame = CGRect(x: 20, y : 147, width : 160, height : 20)
+//            btnSignIn?.frame = CGRect(x: 170, y : 147, width : 80, height : 20)
+//            btnNext?.frame = CGRect(x: self.view.frame.size.width - 80, y : 147, width : 80, height : 20)
+//            lblDetails?.text = "Just ask your server to enter the unique PIN to redeem your offer."
+//            
+//        }
         else if(currentPage == 3){
-            viewDetails?.frame = CGRect(x: 0, y : self.view.frame.size.height - 170, width : self.view.frame.size.width, height : 170)
-            lblDetails?.frame = CGRect(x: 20, y : 0, width : self.view.frame.size.width - 40, height : 110)
-            pageControl?.frame = CGRect(x: 20, y: 110, width : 100, height : 37)
-            lblAlready?.frame = CGRect(x: 20, y : 147, width : 160, height : 20)
-            btnSignIn?.frame = CGRect(x: 170, y : 147, width : 80, height : 20)
-            btnNext?.frame = CGRect(x: self.view.frame.size.width - 80, y : 147, width : 80, height : 20)
-            lblDetails?.text = "Search for your favourite restaurants or discover a restaurant you haven’t tried before!"
-            
-        }
-        else if(currentPage == 4){
-            viewDetails?.frame = CGRect(x: 0, y : self.view.frame.size.height - 170, width : self.view.frame.size.width, height : 170)
-            lblDetails?.frame = CGRect(x: 20, y : 0, width : self.view.frame.size.width - 40, height : 110)
-            pageControl?.frame = CGRect(x: 20, y: 110, width : 100, height : 37)
-            lblAlready?.frame = CGRect(x: 20, y : 147, width : 160, height : 20)
-            btnSignIn?.frame = CGRect(x: 170, y : 147, width : 80, height : 20)
-            btnNext?.frame = CGRect(x: self.view.frame.size.width - 80, y : 147, width : 80, height : 20)
-            lblDetails?.text = "Just ask your server to enter the unique PIN to redeem your offer."
-            
-        }
-        else if(currentPage == 5){
             btnNext?.isHidden = true
             viewDetails?.frame = CGRect(x: 0, y : self.view.frame.size.height - 220, width : self.view.frame.size.width, height : 250)
             

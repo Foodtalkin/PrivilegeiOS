@@ -19,10 +19,10 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Description" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vha-Ii-kxC">
-                        <rect key="frame" x="19" y="12" width="123" height="21"/>
+                        <rect key="frame" x="19" y="12" width="329" height="21"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="21" id="0TV-AS-HQA"/>
-                            <constraint firstAttribute="width" constant="123" id="3Uj-9Q-UFx"/>
+                            <constraint firstAttribute="width" constant="329" id="3Uj-9Q-UFx"/>
                         </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <color key="textColor" red="0.54901960780000003" green="0.54901960780000003" blue="0.54901960780000003" alpha="1" colorSpace="calibratedRGB"/>

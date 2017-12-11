@@ -204,16 +204,33 @@
 		75AC9F761ED8694E009DDCF9 /* payment@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 75AC9F6E1ED8694E009DDCF9 /* payment@2x.png */; };
 		75AC9F771ED8694E009DDCF9 /* payment@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 75AC9F6F1ED8694E009DDCF9 /* payment@3x.png */; };
 		75B086AB1EE830A100FE64B1 /* Untitled-1.png in Resources */ = {isa = PBXBuildFile; fileRef = 75B086AA1EE830A100FE64B1 /* Untitled-1.png */; };
+		75C29AF31FB9ADA50012C934 /* People@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 75C29AEF1FB9ADA50012C934 /* People@2x.png */; };
+		75C29AF41FB9ADA50012C934 /* People@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 75C29AF01FB9ADA50012C934 /* People@3x.png */; };
+		75C29AF51FB9ADA50012C934 /* ticket@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 75C29AF11FB9ADA50012C934 /* ticket@2x.png */; };
+		75C29AF61FB9ADA50012C934 /* ticket@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 75C29AF21FB9ADA50012C934 /* ticket@3x.png */; };
+		75C29AFC1FBAED420012C934 /* ticketBlack@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 75C29AF81FBAED420012C934 /* ticketBlack@2x.png */; };
+		75C29AFD1FBAED420012C934 /* ticketBlack@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 75C29AF91FBAED420012C934 /* ticketBlack@3x.png */; };
+		75C29AFE1FBAED420012C934 /* wine@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 75C29AFA1FBAED420012C934 /* wine@2x.png */; };
+		75C29AFF1FBAED420012C934 /* wine@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 75C29AFB1FBAED420012C934 /* wine@3x.png */; };
 		75D674AD1F84D92C00368B97 /* Help&SupportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75D674AC1F84D92C00368B97 /* Help&SupportViewController.swift */; };
 		75D72B111EE97070005A7830 /* favBlack@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 75D72B0F1EE97070005A7830 /* favBlack@2x.png */; };
 		75D72B121EE97070005A7830 /* favBlack@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 75D72B101EE97070005A7830 /* favBlack@3x.png */; };
 		75D72B1C1EE97406005A7830 /* filter3@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 75D72B1A1EE97406005A7830 /* filter3@2x.png */; };
 		75D72B1D1EE97406005A7830 /* filter3@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 75D72B1B1EE97406005A7830 /* filter3@3x.png */; };
+		75E005D51FB2FDD3001C4360 /* TicketsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E005D41FB2FDD2001C4360 /* TicketsViewController.swift */; };
+		75E005DF1FB302A5001C4360 /* TicketsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E005DD1FB302A5001C4360 /* TicketsTableViewCell.swift */; };
+		75E005E01FB302A5001C4360 /* TicketsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 75E005DE1FB302A5001C4360 /* TicketsTableViewCell.xib */; };
+		75E1730B1FC43E8F008586ED /* placeholder.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 75E1730A1FC43E8F008586ED /* placeholder.jpg */; };
 		75E2B4101FAC518C00B25092 /* InvoiceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E2B40F1FAC518C00B25092 /* InvoiceViewController.swift */; };
 		75E2B41A1FAC542200B25092 /* InvoiceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E2B4181FAC542200B25092 /* InvoiceTableViewCell.swift */; };
 		75E2B41B1FAC542200B25092 /* InvoiceTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 75E2B4191FAC542200B25092 /* InvoiceTableViewCell.xib */; };
 		75E845521F7CF31F0031DFA0 /* UserProfileTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E845501F7CF31F0031DFA0 /* UserProfileTableViewCell.swift */; };
 		75E845531F7CF31F0031DFA0 /* UserProfileTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 75E845511F7CF31F0031DFA0 /* UserProfileTableViewCell.xib */; };
+		75EA25CF1FD520FB001AF49A /* FloatRatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75EA25CE1FD520FB001AF49A /* FloatRatingView.swift */; };
+		75EA25D91FD523F4001AF49A /* stars-01@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 75EA25D71FD523F4001AF49A /* stars-01@2x.png */; };
+		75EA25DA1FD523F4001AF49A /* stars-02@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 75EA25D81FD523F4001AF49A /* stars-02@2x.png */; };
+		75EE86B31FB6F7B40043796C /* TopUpCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75EE86B11FB6F7B40043796C /* TopUpCollectionViewCell.swift */; };
+		75EE86B41FB6F7B40043796C /* TopUpCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 75EE86B21FB6F7B40043796C /* TopUpCollectionViewCell.xib */; };
 		75F170ED1EADCBF600012CA7 /* SelectOutletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F170EC1EADCBF600012CA7 /* SelectOutletViewController.swift */; };
 		75F170F31EAE116C00012CA7 /* SelectOfferViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F170F21EAE116C00012CA7 /* SelectOfferViewController.swift */; };
 		75F170F61EAE1A9800012CA7 /* SelectOfferTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F170F41EAE1A9800012CA7 /* SelectOfferTableViewCell.swift */; };
@@ -528,16 +545,33 @@
 		75AC9F6E1ED8694E009DDCF9 /* payment@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "payment@2x.png"; path = "FoodTalkPrivilege/Images/payment@2x.png"; sourceTree = "<group>"; };
 		75AC9F6F1ED8694E009DDCF9 /* payment@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "payment@3x.png"; path = "FoodTalkPrivilege/Images/payment@3x.png"; sourceTree = "<group>"; };
 		75B086AA1EE830A100FE64B1 /* Untitled-1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Untitled-1.png"; path = "FoodTalkPrivilege/Images/Untitled-1.png"; sourceTree = "<group>"; };
+		75C29AEF1FB9ADA50012C934 /* People@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "People@2x.png"; path = "FoodTalkPrivilege/Images/People@2x.png"; sourceTree = "<group>"; };
+		75C29AF01FB9ADA50012C934 /* People@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "People@3x.png"; path = "FoodTalkPrivilege/Images/People@3x.png"; sourceTree = "<group>"; };
+		75C29AF11FB9ADA50012C934 /* ticket@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ticket@2x.png"; path = "FoodTalkPrivilege/Images/ticket@2x.png"; sourceTree = "<group>"; };
+		75C29AF21FB9ADA50012C934 /* ticket@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ticket@3x.png"; path = "FoodTalkPrivilege/Images/ticket@3x.png"; sourceTree = "<group>"; };
+		75C29AF81FBAED420012C934 /* ticketBlack@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ticketBlack@2x.png"; path = "FoodTalkPrivilege/Images/ticketBlack@2x.png"; sourceTree = "<group>"; };
+		75C29AF91FBAED420012C934 /* ticketBlack@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ticketBlack@3x.png"; path = "FoodTalkPrivilege/Images/ticketBlack@3x.png"; sourceTree = "<group>"; };
+		75C29AFA1FBAED420012C934 /* wine@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "wine@2x.png"; path = "FoodTalkPrivilege/Images/wine@2x.png"; sourceTree = "<group>"; };
+		75C29AFB1FBAED420012C934 /* wine@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "wine@3x.png"; path = "FoodTalkPrivilege/Images/wine@3x.png"; sourceTree = "<group>"; };
 		75D674AC1F84D92C00368B97 /* Help&SupportViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Help&SupportViewController.swift"; sourceTree = "<group>"; };
 		75D72B0F1EE97070005A7830 /* favBlack@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "favBlack@2x.png"; path = "FoodTalkPrivilege/Images/favBlack@2x.png"; sourceTree = "<group>"; };
 		75D72B101EE97070005A7830 /* favBlack@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "favBlack@3x.png"; path = "FoodTalkPrivilege/Images/favBlack@3x.png"; sourceTree = "<group>"; };
 		75D72B1A1EE97406005A7830 /* filter3@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "filter3@2x.png"; path = "FoodTalkPrivilege/Images/filter3@2x.png"; sourceTree = "<group>"; };
 		75D72B1B1EE97406005A7830 /* filter3@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "filter3@3x.png"; path = "FoodTalkPrivilege/Images/filter3@3x.png"; sourceTree = "<group>"; };
+		75E005D41FB2FDD2001C4360 /* TicketsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TicketsViewController.swift; sourceTree = "<group>"; };
+		75E005DD1FB302A5001C4360 /* TicketsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TicketsTableViewCell.swift; sourceTree = "<group>"; };
+		75E005DE1FB302A5001C4360 /* TicketsTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TicketsTableViewCell.xib; sourceTree = "<group>"; };
+		75E1730A1FC43E8F008586ED /* placeholder.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = placeholder.jpg; path = FoodTalkPrivilege/Images/placeholder.jpg; sourceTree = "<group>"; };
 		75E2B40F1FAC518C00B25092 /* InvoiceViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InvoiceViewController.swift; sourceTree = "<group>"; };
 		75E2B4181FAC542200B25092 /* InvoiceTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InvoiceTableViewCell.swift; sourceTree = "<group>"; };
 		75E2B4191FAC542200B25092 /* InvoiceTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InvoiceTableViewCell.xib; sourceTree = "<group>"; };
 		75E845501F7CF31F0031DFA0 /* UserProfileTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfileTableViewCell.swift; sourceTree = "<group>"; };
 		75E845511F7CF31F0031DFA0 /* UserProfileTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserProfileTableViewCell.xib; sourceTree = "<group>"; };
+		75EA25CE1FD520FB001AF49A /* FloatRatingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatRatingView.swift; sourceTree = "<group>"; };
+		75EA25D71FD523F4001AF49A /* stars-01@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "stars-01@2x.png"; path = "FoodTalkPrivilege/Images/stars-01@2x.png"; sourceTree = "<group>"; };
+		75EA25D81FD523F4001AF49A /* stars-02@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "stars-02@2x.png"; path = "FoodTalkPrivilege/Images/stars-02@2x.png"; sourceTree = "<group>"; };
+		75EE86B11FB6F7B40043796C /* TopUpCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopUpCollectionViewCell.swift; sourceTree = "<group>"; };
+		75EE86B21FB6F7B40043796C /* TopUpCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TopUpCollectionViewCell.xib; sourceTree = "<group>"; };
 		75F170EC1EADCBF600012CA7 /* SelectOutletViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectOutletViewController.swift; sourceTree = "<group>"; };
 		75F170F21EAE116C00012CA7 /* SelectOfferViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectOfferViewController.swift; sourceTree = "<group>"; };
 		75F170F41EAE1A9800012CA7 /* SelectOfferTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectOfferTableViewCell.swift; sourceTree = "<group>"; };
@@ -612,6 +646,17 @@
 		753F667C1EA89AA3009B68A9 = {
 			isa = PBXGroup;
 			children = (
+				75EA25D71FD523F4001AF49A /* stars-01@2x.png */,
+				75EA25D81FD523F4001AF49A /* stars-02@2x.png */,
+				75E1730A1FC43E8F008586ED /* placeholder.jpg */,
+				75C29AF81FBAED420012C934 /* ticketBlack@2x.png */,
+				75C29AF91FBAED420012C934 /* ticketBlack@3x.png */,
+				75C29AFA1FBAED420012C934 /* wine@2x.png */,
+				75C29AFB1FBAED420012C934 /* wine@3x.png */,
+				75C29AEF1FB9ADA50012C934 /* People@2x.png */,
+				75C29AF01FB9ADA50012C934 /* People@3x.png */,
+				75C29AF11FB9ADA50012C934 /* ticket@2x.png */,
+				75C29AF21FB9ADA50012C934 /* ticket@3x.png */,
 				7587871D1FA0846B00303190 /* clock@2x.png */,
 				7587871E1FA0846B00303190 /* clock@3x.png */,
 				7587871F1FA0846B00303190 /* Rupee@2x.png */,
@@ -748,6 +793,7 @@
 		753F66871EA89AA3009B68A9 /* FoodTalkPrivilege */ = {
 			isa = PBXGroup;
 			children = (
+				75EA25CE1FD520FB001AF49A /* FloatRatingView.swift */,
 				7526FADB1EF014FB0052DD09 /* FoodTalkPrivilege.entitlements */,
 				75AC1C141EE6BEAD00B41FDF /* DotActivityIndicatorParms.h */,
 				75AC1C151EE6BEAD00B41FDF /* DotActivityIndicatorParms.m */,
@@ -782,6 +828,8 @@
 				758F26FC1F3B178900D0A31E /* SavingCollectionViewCell.swift */,
 				758F26FD1F3B178900D0A31E /* SavingCollectionViewCell.xib */,
 				753F66C11EA8B96C009B68A9 /* HomeViewController.swift */,
+				75EE86B11FB6F7B40043796C /* TopUpCollectionViewCell.swift */,
+				75EE86B21FB6F7B40043796C /* TopUpCollectionViewCell.xib */,
 				758787261FA1DAA100303190 /* ExperienceDetailsViewController.swift */,
 				75E2B40F1FAC518C00B25092 /* InvoiceViewController.swift */,
 				75E2B4181FAC542200B25092 /* InvoiceTableViewCell.swift */,
@@ -796,6 +844,9 @@
 				75895AC91EC3077E00B82CF6 /* SearchViewController.swift */,
 				7526FAF61EF282880052DD09 /* StoreDetailsViewController.swift */,
 				75F170F21EAE116C00012CA7 /* SelectOfferViewController.swift */,
+				75E005D41FB2FDD2001C4360 /* TicketsViewController.swift */,
+				75E005DD1FB302A5001C4360 /* TicketsTableViewCell.swift */,
+				75E005DE1FB302A5001C4360 /* TicketsTableViewCell.xib */,
 				75F170F41EAE1A9800012CA7 /* SelectOfferTableViewCell.swift */,
 				75F170F51EAE1A9800012CA7 /* SelectOfferTableViewCell.xib */,
 				7540DCC61ECD6BA200102692 /* FullImageViewController.swift */,
@@ -1096,6 +1147,7 @@
 				758F270A1F3B18A600D0A31E /* piggy-bank@3x.png in Resources */,
 				75F171071EAE24A300012CA7 /* map@3x.png in Resources */,
 				75A3CA7D1EAA085C002DBA57 /* fill301@2x.png in Resources */,
+				75C29AF51FB9ADA50012C934 /* ticket@2x.png in Resources */,
 				753DE8B91F69366F0008961F /* india-gates@2x.png in Resources */,
 				75A3CA631EA9E4B4002DBA57 /* fill41@2x.png in Resources */,
 				75AC1B881EE5861200B41FDF /* wrong@3x.png in Resources */,
@@ -1104,9 +1156,11 @@
 				756B07171EAF53F400E682F3 /* AddressCussineTableViewCell.xib in Resources */,
 				753F66931EA89AA4009B68A9 /* LaunchScreen.storyboard in Resources */,
 				7526FB031EF3BA160052DD09 /* confirm@3x.png in Resources */,
+				75C29AF41FB9ADA50012C934 /* People@3x.png in Resources */,
 				75AC1B851EE5861200B41FDF /* paySuccess@2x.png in Resources */,
 				75A3CA671EA9E4B4002DBA57 /* fill76@3x.png in Resources */,
 				75D72B121EE97070005A7830 /* favBlack@3x.png in Resources */,
+				75C29AFF1FBAED420012C934 /* wine@3x.png in Resources */,
 				756B07271EAF646400E682F3 /* FoodTalkSuggestTableViewCell.xib in Resources */,
 				75A3CA611EA9E4B4002DBA57 /* fill7@3x.png in Resources */,
 				753F66D41EA8DE88009B68A9 /* search@3x.png in Resources */,
@@ -1117,10 +1171,12 @@
 				758F27091F3B18A600D0A31E /* piggy-bank@2x.png in Resources */,
 				753F66BF1EA8B11E009B68A9 /* crown@2x.png in Resources */,
 				75F171051EAE24A300012CA7 /* call@3x.png in Resources */,
+				75C29AF31FB9ADA50012C934 /* People@2x.png in Resources */,
 				75F171081EAE24A300012CA7 /* mask@2x.png in Resources */,
 				75895AC71EBC5A0F00B82CF6 /* HistoryCellTableViewCell.xib in Resources */,
 				758F26241F2B578300D0A31E /* screen2.png in Resources */,
 				753F66901EA89AA4009B68A9 /* Assets.xcassets in Resources */,
+				75C29AFD1FBAED420012C934 /* ticketBlack@3x.png in Resources */,
 				75F171041EAE24A300012CA7 /* call@2x.png in Resources */,
 				75895AF21EC490FA00B82CF6 /* FavTableViewCell.xib in Resources */,
 				75895ADD1EC3390800B82CF6 /* FilterCousinTableViewCell.xib in Resources */,
@@ -1138,7 +1194,9 @@
 				75A3CA901EAA238D002DBA57 /* fav@2x.png in Resources */,
 				75AC9F771ED8694E009DDCF9 /* payment@3x.png in Resources */,
 				7526FB021EF3BA160052DD09 /* confirm@2x.png in Resources */,
+				75EA25D91FD523F4001AF49A /* stars-01@2x.png in Resources */,
 				75A3CA8B1EAA238D002DBA57 /* about@3x.png in Resources */,
+				75C29AF61FB9ADA50012C934 /* ticket@3x.png in Resources */,
 				75D72B1C1EE97406005A7830 /* filter3@2x.png in Resources */,
 				75AC1B861EE5861200B41FDF /* paySuccess@3x.png in Resources */,
 				753DE8B51F69366F0008961F /* goi@2x.png in Resources */,
@@ -1154,10 +1212,12 @@
 				75E2B41B1FAC542200B25092 /* InvoiceTableViewCell.xib in Resources */,
 				758F26271F2B578300D0A31E /* screen5.png in Resources */,
 				7540DCDE1ECF1A0000102692 /* cancelMaterial@3x.png in Resources */,
+				75C29AFE1FBAED420012C934 /* wine@2x.png in Resources */,
 				758F26E61F348F3000D0A31E /* FacebookSDKStrings.bundle in Resources */,
 				75AC1B871EE5861200B41FDF /* wrong@2x.png in Resources */,
 				75D72B1D1EE97406005A7830 /* filter3@3x.png in Resources */,
 				758787141FA0841000303190 /* mapE@2x.png in Resources */,
+				75EE86B41FB6F7B40043796C /* TopUpCollectionViewCell.xib in Resources */,
 				758787151FA0841100303190 /* mapE@3x.png in Resources */,
 				7562F31F1F14CB78009F71AD /* OfferTypeTableViewCell.xib in Resources */,
 				75A3CA8C1EAA238D002DBA57 /* fill9@3x.png in Resources */,
@@ -1165,6 +1225,7 @@
 				75A3CA911EAA238D002DBA57 /* fav@3x.png in Resources */,
 				75F170F71EAE1A9800012CA7 /* SelectOfferTableViewCell.xib in Resources */,
 				756B071F1EAF5B6B00E682F3 /* ImagesTableViewCell.xib in Resources */,
+				75C29AFC1FBAED420012C934 /* ticketBlack@2x.png in Resources */,
 				75D72B111EE97070005A7830 /* favBlack@2x.png in Resources */,
 				7540DCEB1ED2C61E00102692 /* wireless3@2x.png in Resources */,
 				758787091F9F5ED100303190 /* ExperienceTableViewCell.xib in Resources */,
@@ -1178,6 +1239,7 @@
 				758787211FA0846B00303190 /* clock@2x.png in Resources */,
 				758787321FA207D800303190 /* ExperienceDetailsImageTableViewCell.xib in Resources */,
 				75A3CA971EAA2836002DBA57 /* fill444@2x.png in Resources */,
+				75E1730B1FC43E8F008586ED /* placeholder.jpg in Resources */,
 				757F5E801F05247A00D9C1EF /* GoogleService-Info.plist in Resources */,
 				756B071B1EAF569600E682F3 /* DescriptionTableViewCell.xib in Resources */,
 				75AC9F701ED8694E009DDCF9 /* Dine@2x.png in Resources */,
@@ -1185,6 +1247,8 @@
 				7526FAF51EF281CB0052DD09 /* spalsh6@3x.jpg in Resources */,
 				753DE8B71F69366F0008961F /* india-gate@2x.png in Resources */,
 				758F26251F2B578300D0A31E /* screen3.png in Resources */,
+				75EA25DA1FD523F4001AF49A /* stars-02@2x.png in Resources */,
+				75E005E01FB302A5001C4360 /* TicketsTableViewCell.xib in Resources */,
 				753DE8BD1F6941230008961F /* location_on@2x.png in Resources */,
 				756C9E671F27575C00C25220 /* exp@2x.png in Resources */,
 				753DE8BE1F6941230008961F /* location_on@3x.png in Resources */,
@@ -1324,6 +1388,7 @@
 				75895ABC1EBC56A400B82CF6 /* HistoryViewController.swift in Sources */,
 				75A3CA721EA9E7D8002DBA57 /* LoginViewController.swift in Sources */,
 				758F26FE1F3B178900D0A31E /* SavingCollectionViewCell.swift in Sources */,
+				75E005DF1FB302A5001C4360 /* TicketsTableViewCell.swift in Sources */,
 				7563FDA31F7284C900EF2756 /* ComingSoonCityViewController.swift in Sources */,
 				758787081F9F5ED100303190 /* ExperienceTableViewCell.swift in Sources */,
 				753F66B71EA89C50009B68A9 /* General.swift in Sources */,
@@ -1335,6 +1400,7 @@
 				7540DCD01ECDBB6C00102692 /* Toast.swift in Sources */,
 				75895ACA1EC3077E00B82CF6 /* SearchViewController.swift in Sources */,
 				75895ADC1EC3390800B82CF6 /* FilterCousinTableViewCell.swift in Sources */,
+				75EE86B31FB6F7B40043796C /* TopUpCollectionViewCell.swift in Sources */,
 				75895A0F1EB7037200B82CF6 /* WebServices.swift in Sources */,
 				753F668B1EA89AA3009B68A9 /* ViewController.swift in Sources */,
 				75895AD81EC3330C00B82CF6 /* FilterCostTableViewCell.swift in Sources */,
@@ -1365,6 +1431,7 @@
 				753222111EDD507000190C01 /* WebViewController.swift in Sources */,
 				75F170ED1EADCBF600012CA7 /* SelectOutletViewController.swift in Sources */,
 				756B07231EAF5C4900E682F3 /* iCarousel.m in Sources */,
+				75E005D51FB2FDD3001C4360 /* TicketsViewController.swift in Sources */,
 				75A081461EB0C33800FC2244 /* SuccessViewController.swift in Sources */,
 				75AC1C181EE6BEAD00B41FDF /* DotActivityIndicatorParms.m in Sources */,
 				75895A581EB7212300B82CF6 /* UIButton+AlamofireImage.swift in Sources */,
@@ -1373,6 +1440,7 @@
 				75A081441EB0764800FC2244 /* RestaurantPinViewController.swift in Sources */,
 				756B071A1EAF569600E682F3 /* DescriptionTableViewCell.swift in Sources */,
 				758787311FA207D800303190 /* ExperienceDetailsImageTableViewCell.swift in Sources */,
+				75EA25CF1FD520FB001AF49A /* FloatRatingView.swift in Sources */,
 				753F66C21EA8B96C009B68A9 /* HomeViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

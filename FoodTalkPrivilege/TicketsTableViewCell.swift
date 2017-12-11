@@ -1,23 +1,21 @@
 //
-//  ExperienceTableViewCell.swift
+//  TicketsTableViewCell.swift
 //  FoodTalkPrivilege
 //
-//  Created by Ashish on 24/10/17.
+//  Created by Ashish on 08/11/17.
 //  Copyright © 2017 FoodTalkIndia. All rights reserved.
 //
 
 import UIKit
 
-class ExperienceTableViewCell: UITableViewCell {
+class TicketsTableViewCell: UITableViewCell {
     
-    @IBOutlet var imgView : UIImageView?
-    @IBOutlet var lblEventName : UILabel?
-    @IBOutlet var lblTime : UILabel?
+    @IBOutlet var lblTitle : UILabel?
+    @IBOutlet var lblDate : UILabel?
     @IBOutlet var lblAddress : UILabel?
-    @IBOutlet var lblPrice : UILabel?
-    @IBOutlet var btnWorkshop : UIButton?
-    @IBOutlet var btnDetails : UIButton?
-    @IBOutlet var viewBack : UIView?
+    @IBOutlet var lblNumberTickets : UILabel?
+    @IBOutlet var lblTransactionId : UILabel?
+    @IBOutlet var btnEvent : UIButton?
 
     override func awakeFromNib() {
         super.awakeFromNib()

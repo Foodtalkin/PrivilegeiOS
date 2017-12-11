@@ -10,8 +10,8 @@ import Foundation
 import UIKit
 import SystemConfiguration
 
-//var baseUrl = "http://api.foodtalk.in/"
-var baseUrl = "http://stg-api.foodtalk.in/"
+var baseUrl = "http://api.foodtalk.in/"
+//var baseUrl = "http://stg-api.foodtalk.in/"
 
 var colorBattleShipGray = UIColor(red: 116/255, green: 117/255, blue: 118/255, alpha: 1.0)
 var colorBrightSkyBlue = UIColor(red: 31/255, green: 182/255, blue: 255/255, alpha: 1.0)
@@ -23,6 +23,7 @@ var colorBtnDown = UIColor(red: 168/255, green: 104/255, blue: 0/255, alpha: 1.0
 
 var fontAbril = "BodoniSvtyTwoITCTT-Bold"
 var fontFuturaBold = "Futura-bold"
+var fontFuture = "Futura"
 
 var indicatorView = DotActivityIndicatorView()
 

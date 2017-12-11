@@ -15,14 +15,14 @@
             <rect key="frame" x="0.0" y="0.0" width="359" height="153"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="359" height="152.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="359" height="153"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Images" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0zJ-Ra-x1T">
-                        <rect key="frame" x="18" y="15" width="80" height="21"/>
+                        <rect key="frame" x="18" y="15" width="321" height="29"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="80" id="NyL-0s-1a0"/>
-                            <constraint firstAttribute="height" constant="21" id="saY-qk-y1i"/>
+                            <constraint firstAttribute="width" constant="321" id="NyL-0s-1a0"/>
+                            <constraint firstAttribute="height" constant="29" id="saY-qk-y1i"/>
                         </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <color key="textColor" red="0.54901960780000003" green="0.54901960780000003" blue="0.54901960780000003" alpha="1" colorSpace="calibratedRGB"/>

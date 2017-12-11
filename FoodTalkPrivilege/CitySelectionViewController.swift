@@ -52,6 +52,7 @@ class CitySelectionViewController: UIViewController, UIGestureRecognizerDelegate
                 viewSelectNCR?.isHidden = true
                 viewSelectBombay?.isHidden = false
             }
+            
         }
         
         webServiceCallingCity()
@@ -66,7 +67,7 @@ class CitySelectionViewController: UIViewController, UIGestureRecognizerDelegate
     //MARK:- WebService Calling Method
     
     func webServiceCallingCity(){
-        showActivityIndicator(view: self.view)
+     //   showActivityIndicator(view: self.view)
         if (isConnectedToNetwork() == true){
             let url = String(format: "%@%@", baseUrl, "cities")
             webServiceGet(url)
@@ -79,7 +80,7 @@ class CitySelectionViewController: UIViewController, UIGestureRecognizerDelegate
     }
     
     func webServiceCallingCityUpdate(){
-        showActivityIndicator(view: self.view)
+      //  showActivityIndicator(view: self.view)
         if (isConnectedToNetwork() == true){
             let dictSessionId = UserDefaults.standard.object(forKey: "session") as! NSDictionary
             let session = dictSessionId.object(forKey: "session_id") as! String
@@ -108,14 +109,13 @@ class CitySelectionViewController: UIViewController, UIGestureRecognizerDelegate
     
     @IBAction func saveClicked(_ sender : UIButton){
         city_id = selectedCityId
-        if(loginAs == "user" || loginAs == "trail"){
+        if(loginAs == "user" || loginAs == "trail" || loginAs == "UnPaid"){
             let currentInstallation1 = PFInstallation.current()
             currentInstallation1.setObject(city_id, forKey: "city_id")
             currentInstallation1.saveInBackground()
            webServiceCallingCityUpdate()
         }
         else{
-            
             self.navigationController?.popViewController(animated: true)
         }
       
@@ -127,8 +127,10 @@ class CitySelectionViewController: UIViewController, UIGestureRecognizerDelegate
         if(gesture.view == viewNCR){
             viewSelectNCR?.isHidden = false
             viewSelectBombay?.isHidden = true
+            if(dictInfo.count > 0){
             selectedCityId = ((dictInfo.object(forKey: "result") as! NSArray).object(at: 0) as! NSDictionary).object(forKey: "id") as! String
             selectedCityId = ((dictInfo.object(forKey: "result") as! NSArray).object(at: 0) as! NSDictionary).object(forKey: "id") as! String
+            }
         }
 //        else if(gesture.view == viewBombay){
 //            viewSelectNCR?.isHidden = true
@@ -147,11 +149,12 @@ class CitySelectionViewController: UIViewController, UIGestureRecognizerDelegate
             if(dict.object(forKey: "status") as! String == "OK"){
                 
               let city_id1 = (dict.object(forKey: "result") as! NSDictionary).object(forKey: "city_id") as! String
-            if(loginAs == "user" || loginAs == "trail"){
+            if(loginAs == "user" || loginAs == "trail" || loginAs == "UnPaid"){
               UserDefaults.standard.set(city_id1, forKey: "city_id")
                 
             }
               city_id = city_id1
+                
               self.navigationController?.popViewController(animated: true)
             }
         }

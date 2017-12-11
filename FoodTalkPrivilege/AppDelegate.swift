@@ -30,6 +30,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         })
         Parse.initialize(with: configuration)
         UIApplication.shared.applicationIconBadgeNumber = 0
+        
+        
+        if let remoteNotification = launchOptions?[UIApplicationLaunchOptionsKey.remoteNotification] as? NSDictionary {
+            self.application(application, didReceiveRemoteNotification: remoteNotification as NSDictionary as [NSObject : AnyObject])
+        }
+        else{
         if(UserDefaults.standard.object(forKey: "session") == nil){
            
         }
@@ -48,8 +54,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             nav.visibleViewController!.navigationController!.pushViewController(openPost, animated:true);
         }
         
-        
-        
         let notificationType: UIUserNotificationType = [.alert, .sound]
         let settings: UIUserNotificationSettings = UIUserNotificationSettings(types: notificationType, categories: nil)
         UIApplication.shared.registerUserNotificationSettings(settings)
@@ -66,7 +70,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         FBSDKAppEvents.activateApp()
         
         Fabric.with([Crashlytics.self])
-        
+        }
 
         return true
     }
@@ -89,6 +93,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any]) {
         
+        let dict = (userInfo as NSDictionary)
+        if(dict.object(forKey: "screen") as? String == "experiences"){
+           openPushView = "exp"
+        }
+        else if(dict.object(forKey: "screen") as? String == "experiences details"){
+            idExperience = dict.object(forKey: "id") as! String
+            self.perform(#selector(AppDelegate.openWithDelay), with: nil, afterDelay: 1.5)
+        }
+    }
+    
+    func openWithDelay(){
+        let storyBoard = self.window!.rootViewController!.storyboard;
+        let nav = self.window!.rootViewController as! UINavigationController;
+        let openPost = storyBoard!.instantiateViewController(withIdentifier: "ExperienceDetails") as! ExperienceDetailsViewController;
+        nav.visibleViewController!.navigationController!.pushViewController(openPost, animated:true);
     }
     
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {

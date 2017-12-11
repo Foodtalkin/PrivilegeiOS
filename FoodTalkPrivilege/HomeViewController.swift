@@ -18,8 +18,10 @@ var selectedWebType = ""
 var strOneLiner = ""
 var restaurantName = ""
 var idExperience = ""
+var todayDate = ""
+var openPushView = ""
 
-class HomeViewController: UIViewController,UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UITableViewDataSource, UITableViewDelegate, WebServiceCallingDelegate, MFMailComposeViewControllerDelegate, UIScrollViewDelegate, CLLocationManagerDelegate, UIGestureRecognizerDelegate {
+class HomeViewController: UIViewController,UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UITableViewDataSource, UITableViewDelegate, WebServiceCallingDelegate, MFMailComposeViewControllerDelegate, UIScrollViewDelegate, CLLocationManagerDelegate, UIGestureRecognizerDelegate, FloatRatingViewDelegate {
     
     fileprivate let barSize : CGFloat = 44.0
     fileprivate let kCellReuse : String = "PackCell"
@@ -54,13 +56,24 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
     
     var lblMenuCity = UILabel()
     
-    var todayDate = String()
-    
     var arrExperience = NSMutableArray()
     @IBOutlet var viewChoice : UIView?
     @IBOutlet var btnOffer : UIButton?
     @IBOutlet var btnExperience : UIButton?
     @IBOutlet var viewMarker : UIView?
+    
+    @IBOutlet var floatRatingView: FloatRatingView!
+    var selectedRating = "0.0"
+    var dictRating = NSDictionary()
+    @IBOutlet var ratingView : UIView?
+    @IBOutlet var lblRestaurantName : UILabel?
+    @IBOutlet var lblRate : UILabel?
+    @IBOutlet var lblHowText : UILabel?
+    @IBOutlet var btnSubmit : UIButton?
+    
+    var viewEmpty = UIView()
+    var selectedType = "Home"
+    var nextTableUrl = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -71,13 +84,12 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
         
         let swipeRight = UISwipeGestureRecognizer(target: self, action: #selector(self.respondToSwipeGesture))
         swipeRight.direction = UISwipeGestureRecognizerDirection.right
-        self.view.addGestureRecognizer(swipeRight)
+        self.viewBase?.addGestureRecognizer(swipeRight)
         
         let swipeDown = UISwipeGestureRecognizer(target: self, action: #selector(self.respondToSwipeGesture))
         swipeDown.direction = UISwipeGestureRecognizerDirection.left
-        self.view.addGestureRecognizer(swipeDown)
+        self.viewBase?.addGestureRecognizer(swipeDown)
         
-        viewChoiceCreate()
       //  Analytics.setScreenName("Home", screenClass: "Home")
         FBSDKAppEvents.logEvent("First_Enter")
 
@@ -87,6 +99,19 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
 
         self.collectionView.decelerationRate = UIScrollViewDecelerationRateNormal;
         
+        let nipName2=UINib(nibName: "TopUpCollectionViewCell", bundle:nil)
+        
+        collectionView.register(nipName2, forCellWithReuseIdentifier: "TopUpCollectionViewCell")
+        viewBase?.frame = CGRect(x: 0, y: 114, width: self.view.frame.size.width, height: self.view.frame.size.height - 115)
+        
+        createRatingView()
+        setCollectionView()
+        setExperienceTable()
+        createMenuView()
+        setEmptyCredentials()
+        viewChoiceCreate()
+       
+        self.perform(#selector(HomeViewController.webServiceForExperience), with: nil, afterDelay: 2)
     }
     
     func respondToSwipeGesture(gesture: UIGestureRecognizer) {
@@ -140,37 +165,27 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
     
     override func viewWillAppear(_ animated: Bool) {
         stopAnimation(view: self.view)
+     //   showActivityIndicator(view: self.view)
         if(loginAs == "guest"){
             viewBase?.frame = CGRect(x: 0, y: 114, width: self.view.frame.size.width, height: self.view.frame.size.height - 115)
-       //     createBuyView()
             if(city_id == ""){
                 let openPost = self.storyboard!.instantiateViewController(withIdentifier: "CitySelection") as! CitySelectionViewController;
                 self.navigationController!.visibleViewController!.navigationController!.pushViewController(openPost, animated:true);
             }
-            
-            setCollectionView()
-            setExperienceTable()
-            createMenuView()
             tblMenu.reloadData()
-            collectionView.isHidden = false
-            tblExperience.isHidden = true
+       
         }
         else if(loginAs == "trail"){
             webServiceForProfile()
             viewBase?.frame = CGRect(x: 0, y: 114, width: self.view.frame.size.width, height: self.view.frame.size.height - 115)
-        //    createBuyView()
             
         }
         else{
             webServiceForProfile()
-         //   viewBuy.isHidden = true
             viewBase?.frame = CGRect(x: 0, y: 114, width: self.view.frame.size.width, height: self.view.frame.size.height - 115)
             
         }
         
-//        setCollectionView()
-//        createMenuView()
-//        tblMenu.reloadData()
         self.navigationController?.isNavigationBarHidden = true
         
         createBottomView()
@@ -179,17 +194,21 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
         }
         isMoreTapped = false
         isLocationCalled = false
-    //    arrCards.removeAllObjects()
+    
+        
         DispatchQueue.main.async{
         self.findLocationService()
         }
         
         if(city_id == "1"){
             lblCity?.text = "DELHI NCR"
+            lblMenuCity.text = "DELHI NCR"
         }
         else if(city_id == "2"){
             lblCity?.text = "MUMBAI"
+            lblMenuCity.text = "MUMBAI"
         }
+        
         lblCity?.isUserInteractionEnabled = true
         let tap1 = UITapGestureRecognizer(target: self, action: #selector(HomeViewController.handleTap(_:)))
         tap1.delegate = self
@@ -199,10 +218,50 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
         tap2.delegate = self
         lblTitle?.addGestureRecognizer(tap2)
         
-        DispatchQueue.main.async{
-            self.webServiceForExperience()
+        let tap3 = UITapGestureRecognizer(target: self, action: #selector(HomeViewController.handleTap3(_:)))
+        tap3.delegate = self
+        if(arrExperience.count == 0){
+          tblExperience.addGestureRecognizer(tap3)
         }
-
+        else if(arrExperience.count == 1){
+           let viewEx = UIView()
+            viewEx.frame = CGRect(x: 0, y: 390, width: self.view.frame.size.width, height: self.view.frame.size.height - 390)
+            tblExperience.addSubview(viewEx)
+            tblExperience.addGestureRecognizer(tap3)
+        }
+     //   tblExperience.addGestureRecognizer(tap3)
+        
+        viewChoice?.frame = CGRect(x: 0, y: (viewNavigate?.frame.size.height)!, width: self.view.frame.size.width, height: 52)
+        viewBase?.backgroundColor = UIColor(red: 242/255, green: 250/255, blue: 252/255, alpha: 1.0)
+        self.floatRatingView.rating = 0
+        
+        if((UserDefaults.standard.object(forKey: "session")) != nil){
+        viewBase?.isUserInteractionEnabled = false
+        btnOffer?.isEnabled = false
+        btnExperience?.isEnabled = false
+        btnMore?.isEnabled = false
+        btnSearch?.isEnabled = false
+        }
+        
+        if((UserDefaults.standard.object(forKey: "session")) != nil){
+            self.perform(#selector(HomeViewController.webServiceForRating), with: nil, afterDelay: 3)
+        }
+    }
+    
+    func setEmptyCredentials(){
+        viewEmpty.frame = CGRect(x: 0, y: self.view.frame.size.height/2 - 40, width: self.view.frame.size.width, height: 80)
+        viewEmpty.isUserInteractionEnabled = true
+        let img = UIImageView(frame : CGRect(x: viewEmpty.frame.size.width/2 - 12, y: 5, width: 23, height: 53))
+        img.image = UIImage(named: "wine.png")
+        viewEmpty.addSubview(img)
+        let lblText = UILabel(frame: CGRect(x: 0,y: 68, width: viewEmpty.frame.size.width, height: 17))
+        lblText.textAlignment = .center
+        lblText.text = "New experiences coming soon"
+        lblText.font = UIFont(name : fontFuturaBold, size : 14)
+        viewEmpty.addSubview(lblText)
+        
+        self.view.addSubview(viewEmpty)
+        viewEmpty.isHidden = true
     }
     
     func handleTap(_ gesture : UIGestureRecognizer){
@@ -210,6 +269,16 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
             let openPost = self.storyboard!.instantiateViewController(withIdentifier: "CitySelection") as! CitySelectionViewController;
             self.navigationController!.visibleViewController!.navigationController!.pushViewController(openPost, animated:true);
         }
+    }
+    
+    func handleTap3(_ gesture : UIGestureRecognizer){
+        
+            if(selectedType == "exp"){
+                if(isMoreTapped == true){
+                let btn = UIButton()
+                openMenu(btn)
+                }
+            }
     }
     
     func viewChoiceCreate(){
@@ -226,33 +295,34 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
     }
     
     @IBAction func offerChoice(_ sender : UIButton){
+        selectedType = "Home"
         viewMarker?.frame = CGRect(x: 7, y: (viewChoice?.frame.size.height)! - 7, width: self.view.frame.size.width/2 - 14, height: 7)
         UIView.animate(withDuration: 0.50, delay: 0.0, options: [], animations: {
             if(UIScreen.main.bounds.size.height > 670){
-                self.collectionView.frame = CGRect(x: 20, y: 25, width: self.view.frame.size.width - 40,height: (self.viewBase?.frame.size.height)!)
+                self.collectionView.frame = CGRect(x: 20, y: 5, width: self.view.frame.size.width - 40,height: (self.viewBase?.frame.size.height)! - 6)
             }
             else if(UIScreen.main.bounds.size.height < 500){
                 if(loginAs == "guest"){
-                    self.collectionView.frame = CGRect(x: 10, y: 5, width: self.view.frame.size.width - 20,height: (self.viewBase?.frame.size.height)!)
+                    self.collectionView.frame = CGRect(x: 10, y: 5, width: self.view.frame.size.width - 20,height: (self.viewBase?.frame.size.height)! - 6)
                 }
                 else{
-                    self.collectionView.frame = CGRect(x: 10, y: 5, width: self.view.frame.size.width - 20,height: (self.viewBase?.frame.size.height)!)
+                    self.collectionView.frame = CGRect(x: 10, y: 5, width: self.view.frame.size.width - 20,height: (self.viewBase?.frame.size.height)! - 6)
                 }
             }
             else if(UIScreen.main.bounds.size.height < 570){
                 if(loginAs == "guest"){
-                    self.collectionView.frame = CGRect(x: 10, y: 5, width: self.view.frame.size.width - 20,height: (self.viewBase?.frame.size.height)!)
+                    self.collectionView.frame = CGRect(x: 10, y: 5, width: self.view.frame.size.width - 20,height: (self.viewBase?.frame.size.height)! - 6)
                 }
                 else{
-                    self.collectionView.frame = CGRect(x: 10, y: 5, width: self.view.frame.size.width - 20,height: (self.viewBase?.frame.size.height)!)
+                    self.collectionView.frame = CGRect(x: 10, y: 5, width: self.view.frame.size.width - 20,height: (self.viewBase?.frame.size.height)! - 6)
                 }
             }
             else{
                 if(loginAs == "guest"){
-                    self.collectionView.frame = CGRect(x: 20, y: 15, width: self.view.frame.size.width - 40,height: (self.viewBase?.frame.size.height)!)
+                    self.collectionView.frame = CGRect(x: 20, y: 15, width: self.view.frame.size.width - 40,height: (self.viewBase?.frame.size.height)! - 16)
                 }
                 else{
-                    self.collectionView.frame = CGRect(x: 20, y: 15, width: self.view.frame.size.width - 40,height: (self.viewBase?.frame.size.height)!)
+                    self.collectionView.frame = CGRect(x: 20, y: 15, width: self.view.frame.size.width - 40,height: (self.viewBase?.frame.size.height)! - 16)
                 }
             }
             self.tblExperience.frame.origin.x = self.view.frame.size.width
@@ -263,44 +333,51 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
         btnOffer?.setTitleColor(colorLightGold, for: .normal)
         btnExperience?.setTitleColor(.white, for: .normal)
         collectionView.isHidden = false
-        
+        viewEmpty.isHidden = true
         collectionView.reloadData()
     }
     
     @IBAction func experienceChoice(_ sender : UIButton){
+        selectedType = "exp"
         viewMarker?.frame = CGRect(x: self.view.frame.size.width/2 + 7, y: (viewChoice?.frame.size.height)! - 7, width: self.view.frame.size.width/2 - 14, height: 7)
         UIView.animate(withDuration: 0.50, delay: 0.0, options: [], animations: {
             if(UIScreen.main.bounds.size.height > 670){
-                self.tblExperience.frame = CGRect(x: 20, y: 2, width: self.view.frame.size.width - 40,height: (self.viewBase?.frame.size.height)! - 5)
+                self.tblExperience.frame = CGRect(x: 20, y: 2, width: self.view.frame.size.width - 40,height: (self.viewBase?.frame.size.height)! - 3)
             }
             else if(UIScreen.main.bounds.size.height < 500){
                 if(loginAs == "guest"){
-                    self.tblExperience.frame = CGRect(x: 10, y: 2, width: self.view.frame.size.width - 20,height: (self.viewBase?.frame.size.height)! - 5)
+                    self.tblExperience.frame = CGRect(x: 10, y: 2, width: self.view.frame.size.width - 20,height: (self.viewBase?.frame.size.height)! - 3)
                 }
                 else{
-                    self.tblExperience.frame = CGRect(x: 10, y: 2, width: self.view.frame.size.width - 20,height: (self.viewBase?.frame.size.height)! - 5)
+                    self.tblExperience.frame = CGRect(x: 10, y: 2, width: self.view.frame.size.width - 20,height: (self.viewBase?.frame.size.height)! - 3)
                 }
             }
             else if(UIScreen.main.bounds.size.height < 570){
                 if(loginAs == "guest"){
-                    self.tblExperience.frame = CGRect(x: 10, y: 2, width: self.view.frame.size.width - 20,height: (self.viewBase?.frame.size.height)! - 40)
+                    self.tblExperience.frame = CGRect(x: 10, y: 2, width: self.view.frame.size.width - 20,height: (self.viewBase?.frame.size.height)! - 3)
                 }
                 else{
-                    self.tblExperience.frame = CGRect(x: 10, y: 2, width: self.view.frame.size.width - 20,height: (self.viewBase?.frame.size.height)! - 5)
+                    self.tblExperience.frame = CGRect(x: 10, y: 2, width: self.view.frame.size.width - 20,height: (self.viewBase?.frame.size.height)! - 3)
                 }
             }
             else{
                 if(loginAs == "guest"){
-                    self.tblExperience.frame = CGRect(x: 20, y: 10, width: self.view.frame.size.width - 40,height: (self.viewBase?.frame.size.height)! - 15)
+                    self.tblExperience.frame = CGRect(x: 20, y: 2, width: self.view.frame.size.width - 40,height: (self.viewBase?.frame.size.height)! - 3)
                 }
                 else{
-                    self.tblExperience.frame = CGRect(x: 20, y: 10, width: self.view.frame.size.width - 40,height: (self.viewBase?.frame.size.height)! - 15)
+                    self.tblExperience.frame = CGRect(x: 20, y: 2, width: self.view.frame.size.width - 40,height: (self.viewBase?.frame.size.height)! - 3)
                 }
             }
             self.collectionView.frame.origin.x = -(self.view.frame.size.width)
         }, completion: { (finished: Bool) in
             
             self.collectionView.isHidden = true
+            if(self.arrExperience.count > 0){
+                self.viewEmpty.isHidden = true
+            }
+            else{
+                self.viewEmpty.isHidden = false
+            }
         })
 
         btnExperience?.setTitleColor(colorLightGold, for: .normal)
@@ -342,11 +419,11 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
     func closeLocation(_ sender : UIButton){
         isLocationKill = true
         viewBottom.isHidden = true
-        viewBase?.frame.size.height = (viewBase?.frame.size.height)! + 60
+  //      viewBase?.frame.size.height = (viewBase?.frame.size.height)! + 60
     }
     
     func selectLocation(_ sender : UIButton){
-    //    locationManager.startUpdatingLocation()
+    
     }
     
     func enableLocation(_ sender : UIButton){
@@ -413,7 +490,6 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
                 }
                 }
             }
-       // }
     }
     
     //MARK:- location Delegates
@@ -442,12 +518,11 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
         }
                     viewBottom.isHidden = true
             if(loginAs == "user"){
-                viewBase?.frame.size.height = (viewBase?.frame.size.height)! + 50
-            //    collectionView.frame.size.height = (viewBase?.frame.size.height)!
+          //      viewBase?.frame.size.height = (viewBase?.frame.size.height)! + 50
             }
             else{
-                viewBase?.frame.size.height = (viewBase?.frame.size.height)! + 50
-           //     collectionView.frame.size.height = (viewBase?.frame.size.height)!
+         //       viewBase?.frame.size.height = (viewBase?.frame.size.height)! + 50
+           
             }
             
             locationManager.startUpdatingLocation()
@@ -485,9 +560,10 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
                 else{
                 viewBottom.isHidden = true
                 }
-                DispatchQueue.main.async{
-                    self.callWebServiceForHome()
-                }
+//                DispatchQueue.main.async{
+//                    self.callWebServiceForHome()
+//                }
+                self.perform(#selector(HomeViewController.callWebServiceForHome), with: nil, afterDelay: 1.0)
             case .authorizedAlways, .authorizedWhenInUse:
                 viewBottom.isHidden = true
                 
@@ -496,9 +572,10 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
             }
         } else {
             print("Location services are not enabled")
-            DispatchQueue.main.async{
-                self.callWebServiceForHome()
-            }
+//            DispatchQueue.main.async{
+//                self.callWebServiceForHome()
+//            }
+            self.perform(#selector(HomeViewController.callWebServiceForHome), with: nil, afterDelay: 1.0)
         }
     }
     
@@ -569,19 +646,32 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
         viewBuy.addSubview(btnBuy)
     }
     
+    func findExpireDate(){
+        
+    }
+    
     func buyClicked(_ sender : UIButton){
         
         viewMenu.removeFromSuperview()
     //    viewBuy.removeFromSuperview()
         tblMenu.removeFromSuperview()
         if(loginAs == "guest"){
-            loginAs = "trail"
+            loginAs = "UnPaid"
         let openPost = self.storyboard!.instantiateViewController(withIdentifier: "SignUp") as! SignUpViewController;
         self.navigationController!.visibleViewController!.navigationController!.pushViewController(openPost, animated:true);
         }
         else if(loginAs == "trail"){
         let openPost = self.storyboard!.instantiateViewController(withIdentifier: "BuySignup") as! BuySignupViewController;
         self.navigationController!.visibleViewController!.navigationController!.pushViewController(openPost, animated:true);
+        }
+        else if(loginAs == "UnPaid"){
+            if(sender.titleLabel?.text == "START TRIAL"){
+               webCallStartTrial()
+            }
+            else{
+            let openPost = self.storyboard!.instantiateViewController(withIdentifier: "BuySignup") as! BuySignupViewController;
+            self.navigationController!.visibleViewController!.navigationController!.pushViewController(openPost, animated:true);
+            }
         }
     }
     
@@ -699,6 +789,13 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
     }
     
     func handleTap1(_ sender: UITapGestureRecognizer) {
+        if(isMoreTapped == false){
+            
+        }
+        else{
+            let btn = UIButton()
+            openMenu(btn)
+        }
         let openPost = self.storyboard!.instantiateViewController(withIdentifier: "CitySelection") as! CitySelectionViewController;
         self.navigationController!.visibleViewController!.navigationController!.pushViewController(openPost, animated:true);
     }
@@ -706,30 +803,30 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
     func setCollectionView(){
         
         if(UIScreen.main.bounds.size.height > 670){
-            self.collectionView.frame = CGRect(x: 20, y: 25, width: self.view.frame.size.width - 40,height: (viewBase?.frame.size.height)!)
+            self.collectionView.frame = CGRect(x: 20, y: 2, width: self.view.frame.size.width - 40,height: (viewBase?.frame.size.height)! - 3)
         }
         else if(UIScreen.main.bounds.size.height < 500){
             if(loginAs == "guest"){
-            self.collectionView.frame = CGRect(x: 10, y: 5, width: self.view.frame.size.width - 20,height: (viewBase?.frame.size.height)!)
+            self.collectionView.frame = CGRect(x: 10, y: 5, width: self.view.frame.size.width - 20,height: (viewBase?.frame.size.height)! - 6)
             }
             else{
-              self.collectionView.frame = CGRect(x: 10, y: 5, width: self.view.frame.size.width - 20,height: (viewBase?.frame.size.height)!)
+              self.collectionView.frame = CGRect(x: 10, y: 5, width: self.view.frame.size.width - 20,height: (viewBase?.frame.size.height)! - 6)
             }
         }
         else if(UIScreen.main.bounds.size.height < 570){
             if(loginAs == "guest"){
-                self.collectionView.frame = CGRect(x: 10, y: 5, width: self.view.frame.size.width - 20,height: (viewBase?.frame.size.height)!)
+                self.collectionView.frame = CGRect(x: 10, y: 5, width: self.view.frame.size.width - 20,height: (viewBase?.frame.size.height)! - 6)
             }
             else{
-                self.collectionView.frame = CGRect(x: 10, y: 5, width: self.view.frame.size.width - 20,height: (viewBase?.frame.size.height)!)
+                self.collectionView.frame = CGRect(x: 10, y: 5, width: self.view.frame.size.width - 20,height: (viewBase?.frame.size.height)! - 6)
             }
         }
         else{
             if(loginAs == "guest"){
-            self.collectionView.frame = CGRect(x: 20, y: 15, width: self.view.frame.size.width - 40,height: (viewBase?.frame.size.height)!)
+            self.collectionView.frame = CGRect(x: 20, y: 5, width: self.view.frame.size.width - 40,height: (viewBase?.frame.size.height)! - 6)
             }
             else{
-              self.collectionView.frame = CGRect(x: 20, y: 15, width: self.view.frame.size.width - 40,height: (viewBase?.frame.size.height)!)
+              self.collectionView.frame = CGRect(x: 20, y: 5, width: self.view.frame.size.width - 40,height: (viewBase?.frame.size.height)! - 6)
             }
         }
         
@@ -750,6 +847,10 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
         let nipName1=UINib(nibName: "SavingCollectionViewCell", bundle:nil)
         
         collectionView.register(nipName1, forCellWithReuseIdentifier: "SavingCell")
+        
+        let nipName2=UINib(nibName: "TopUpCollectionViewCell", bundle:nil)
+        
+        collectionView.register(nipName2, forCellWithReuseIdentifier: "TopUpCollectionViewCell")
         // UICollectionReusableView
         
         viewBase?.addSubview(self.collectionView)
@@ -779,14 +880,15 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
         }
         else{
             if(loginAs == "guest"){
-                self.tblExperience.frame = CGRect(x: self.view.frame.size.width, y: 15, width: self.view.frame.size.width - 40,height: (viewBase?.frame.size.height)! - 15)
+                self.tblExperience.frame = CGRect(x: self.view.frame.size.width, y: 5, width: self.view.frame.size.width - 40,height: (viewBase?.frame.size.height)! - 6)
             }
             else{
-                self.tblExperience.frame = CGRect(x: self.view.frame.size.width, y: 15, width: self.view.frame.size.width - 40,height: (viewBase?.frame.size.height)! - 15)
+                self.tblExperience.frame = CGRect(x: self.view.frame.size.width, y: 5, width: self.view.frame.size.width - 40,height: (viewBase?.frame.size.height)! - 6)
             }
         }
         self.tblExperience.register(UINib(nibName: "ExperienceTableViewCell", bundle: nil), forCellReuseIdentifier: "ExperienceTableViewCell")
         self.tblExperience.showsVerticalScrollIndicator = false
+        self.tblExperience.tableFooterView = UIView()
         self.tblExperience.delegate = self
         self.tblExperience.dataSource = self
         self.tblExperience.backgroundColor = UIColor.clear
@@ -800,21 +902,130 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        if(loginAs == "user" || loginAs == "trail"){
-            if(savingValue == "0"){
+        if(loginAs == "user" || loginAs == "trail" || loginAs == "UnPaid"){
+            if(indexPath.row == 0){
+                if(loginAs == "user"){
+                let cell : SavingCollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: kCellSavingReuse, for: indexPath) as! SavingCollectionViewCell
+                cell.backgroundColor = colorDarkGray
+                cell.lblSavingAmount?.text = String(format : "You have saved \u{20B9} %@", savingValue)
+                return cell
+                }
+                else if(loginAs == "trail"){
+                    let cell : TopUpCollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: "TopUpCollectionViewCell", for: indexPath) as! TopUpCollectionViewCell
+                    cell.backgroundColor = colorDarkGray
+                    
+                    cell.btnAction?.frame = CGRect(x: cell.frame.size.width - 84, y: cell.frame.size.height/2 - 15, width: 74, height: 30)
+                    cell.lblText?.frame = CGRect(x: 10, y: 0, width: cell.frame.size.width - 100, height: cell.frame.size.height)
+                    
+                    setDownLine(cell.btnAction!)
+                    if(arrCards.count > 0){
+                    let expiryDate = UserDefaults.standard.object(forKey: "expiry") as! String
+                    let fullNameArr = expiryDate.components(separatedBy: " ")
+                    
+                    let date1    = fullNameArr[0]
+                    
+                    let dateFormatter = DateFormatter()
+                    dateFormatter.dateFormat = "yyyy-MM-dd"
+                    let s = dateFormatter.date(from:date1)
+                    
+                    let calendar = NSCalendar.current as NSCalendar
+                    
+                    let fullNameArr1 = todayDate.components(separatedBy: " ")
+                    
+                    let date2    = fullNameArr1[0]
+                    
+                    let s1 = dateFormatter.date(from: date2)
+                    let flags = NSCalendar.Unit.day
+                    let components = calendar.components(flags, from: s1!, to: s!, options: [])
+                    let daysNumber = components.day
+                
+                    if(daysNumber! > 0){
+                        if(Int(savingValue)! > 0){
+                            var strVal = String(format : "You saved \u{20B9} %@ with your privilege trial. You have %d days of trial remaining.", savingValue, daysNumber! + 1)
+                            
+                            let myMutableString = NSMutableAttributedString(string: strVal, attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 15)])
+                            myMutableString.addAttribute(NSForegroundColorAttributeName, value: UIColor.white, range: NSRange(location:10,length:savingValue.characters.count + 2))
+                            myMutableString.addAttribute(NSForegroundColorAttributeName, value: colorLightGold, range: NSRange(location:21,length:21))
+                            
+                            // set label Attribute
+                            cell.lblText?.attributedText = myMutableString
+                            
+                            cell.btnAction?.setTitle("BUY NOW", for: .normal)
+                            
+                        }
+                        else{
+                            let strVal = String(format : "Your trial will expire in %d days. Start redeeming now",daysNumber! + 1)
+                            let myMutableString = NSMutableAttributedString(string: strVal, attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 15)])
+                            myMutableString.addAttribute(NSForegroundColorAttributeName, value:colorLightGold, range: NSRange(location:26,length: 6))
+                            
+                            // set label Attribute
+                            cell.lblText?.attributedText = myMutableString
+                            cell.btnAction?.setTitle("BUY NOW", for: .normal)
+                        }
+                        
+                    }
+                    else{
+                        if(arrCards.count > 0){
+                        if(savingValue.characters.count > 0){
+                            if(Int(savingValue)! > 0){
+                            let strVal = String(format : "Your 7 days trial has expired, you saved \u{20B9} %@, Buy now to continue.", savingValue)
+                            
+                            let myMutableString = NSMutableAttributedString(string: strVal, attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 15)])
+                            myMutableString.addAttribute(NSForegroundColorAttributeName, value:UIColor.white, range: NSRange(location:45,length: savingValue.characters.count))
+                            
+                            // set label Attribute
+                            cell.lblText?.attributedText = myMutableString
+                            
+                            cell.btnAction?.setTitle("BUY NOW", for: .normal)
+                            }
+                            else{
+                                cell.lblText?.text = "Your 7 day trial has expired. Buy now to continue"
+                                cell.btnAction?.setTitle("BUY NOW", for: .normal)
+                            }
+                        }
+                        else{
+                            cell.lblText?.text = "Your 7 day trial has expired. Buy now to continue"
+                            cell.btnAction?.setTitle("BUY NOW", for: .normal)
+                        }
+                        }
+                    }
+                    }
+                    cell.btnAction?.addTarget(self, action: #selector(HomeViewController.buyClicked(_:)), for: .touchUpInside)
+                    return cell
+                }
+                else{
+                    let cell : TopUpCollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: "TopUpCollectionViewCell", for: indexPath) as! TopUpCollectionViewCell
+                    cell.backgroundColor = colorDarkGray
+                    cell.btnAction?.frame = CGRect(x: cell.frame.size.width - 84, y: cell.frame.size.height/2 - 15, width: 74, height: 30)
+                    cell.lblText?.frame = CGRect(x: 10, y: 0, width: cell.frame.size.width - 100, height: cell.frame.size.height)
+                    setDownLine(cell.btnAction!)
+                    var strVal = "Unlock all your offers for 7 days at no cost. Start your trial"
+                    
+                    let myMutableString = NSMutableAttributedString(string: strVal, attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 15)])
+                    myMutableString.addAttribute(NSForegroundColorAttributeName, value: colorLightGold, range: NSRange(location:40,length: 17))
+                    
+                    // set label Attribute
+                    cell.lblText?.attributedText = myMutableString
+                    
+                    cell.btnAction?.setTitle("START TRIAL", for: .normal)
+                    cell.btnAction?.addTarget(self, action: #selector(HomeViewController.buyClicked(_:)), for: .touchUpInside)
+                    return cell
+                }
+            }
+            else{
                 let cell : PackCollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: kCellReuse, for: indexPath) as! PackCollectionViewCell
                 cell.backgroundColor = .white
                 
                 if(arrCards.count > 0){
-                cell.lblMoney?.text = String(format : "\u{20B9} %@", (arrCards.object(at: indexPath.row) as! NSDictionary).object(forKey: "cost") as! String)
-                let imgCell = (arrCards.object(at: indexPath.row) as! NSDictionary).object(forKey: "card_image") as! String
+                cell.lblMoney?.text = String(format : "\u{20B9} %@", (arrCards.object(at: indexPath.row - 1) as! NSDictionary).object(forKey: "cost") as! String)
+                let imgCell = (arrCards.object(at: indexPath.row - 1) as! NSDictionary).object(forKey: "card_image") as! String
                 cell.lblDistance?.layer.cornerRadius = 9.5
                 cell.lblDistance?.layer.masksToBounds = false
                 dropShadow(color: .darkGray, opacity: 1.0, offSet: CGSize(width: -1, height: 1), radius: 1, scale: true, lbl: cell.lblDistance!)
                 
-                if(((arrCards.object(at: indexPath.row) as! NSDictionary).object(forKey: "distance")) != nil){
+                if(((arrCards.object(at: indexPath.row - 1) as! NSDictionary).object(forKey: "distance")) != nil){
                     cell.lblDistance?.isHidden = false
-                    var distance = ((arrCards.object(at: indexPath.row) as! NSDictionary).object(forKey: "distance") as! NSString).doubleValue
+                    var distance = ((arrCards.object(at: indexPath.row - 1) as! NSDictionary).object(forKey: "distance") as! NSString).doubleValue
                     distance = distance / 1000
                     if(distance > 100){
                        cell.lblDistance?.isHidden = true
@@ -835,14 +1046,14 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
                     
                 }
                 
-                cell.lblRestaurant?.text = (arrCards.object(at: indexPath.row) as! NSDictionary).object(forKey: "name") as? String
+                cell.lblRestaurant?.text = (arrCards.object(at: indexPath.row - 1) as! NSDictionary).object(forKey: "name") as? String
                 
-                let outletCount = (arrCards.object(at: indexPath.row) as! NSDictionary).object(forKey: "primary_cuisine") as? String
+                let outletCount = (arrCards.object(at: indexPath.row - 1) as! NSDictionary).object(forKey: "primary_cuisine") as? String
                 
                 
                 cell.lblLocation?.text = outletCount
                 
-                let amount = ((arrCards.object(at: indexPath.row) as! NSDictionary).object(forKey: "cost") as! NSString).intValue
+                let amount = ((arrCards.object(at: indexPath.row - 1) as! NSDictionary).object(forKey: "cost") as! NSString).intValue
                 if(amount < 500){
                     cell.lblMoney?.text = String(format : "%@", "\u{20B9}")
                 }
@@ -862,26 +1073,45 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
                 
                 return cell
             }
-            else{
-        if(indexPath.row == 0){
-            let cell : SavingCollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: kCellSavingReuse, for: indexPath) as! SavingCollectionViewCell
-            cell.backgroundColor = colorDarkGray
-            cell.lblSavingAmount?.text = String(format : "You have saved \u{20B9} %@", savingValue)
-            return cell
         }
         else{
-        let cell : PackCollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: kCellReuse, for: indexPath) as! PackCollectionViewCell
-        cell.backgroundColor = .white
+            
+            if(indexPath.row == 0){
+                let cell : TopUpCollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: "TopUpCollectionViewCell", for: indexPath) as! TopUpCollectionViewCell
+                cell.btnAction?.frame = CGRect(x: cell.frame.size.width - 84, y: cell.frame.size.height/2 - 15, width: 74, height: 30)
+                cell.lblText?.frame = CGRect(x: 10, y: 0, width: cell.frame.size.width - 100, height: cell.frame.size.height)
+                
+                setDownLine(cell.btnAction!)
+                cell.backgroundColor = colorDarkGray
+                let strVal = "Unlock all your offers for 7 days at no cost. Start your trial."
+                
+                let myMutableString = NSMutableAttributedString(string: strVal, attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 15)])
+                myMutableString.addAttribute(NSForegroundColorAttributeName, value: colorLightGold, range: NSRange(location:40,length:17))
+                
+                // set label Attribute
+                cell.lblText?.attributedText = myMutableString
+                
+                cell.btnAction?.setTitle("START TRIAL", for: .normal)
+                cell.btnAction?.addTarget(self, action: #selector(HomeViewController.buyClicked(_:)), for: .touchUpInside)
+                return cell
+            }
+            else{
+            let cell : PackCollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: kCellReuse, for: indexPath) as! PackCollectionViewCell
+            cell.backgroundColor = .white
             if(arrCards.count > 0){
-        cell.lblMoney?.text = String(format : "\u{20B9} %@", (arrCards.object(at: indexPath.row - 1) as! NSDictionary).object(forKey: "cost") as! String)
-        cell.lblDistance?.layer.cornerRadius = 9.5
+            cell.lblMoney?.text = String(format : "\u{20B9} %@", (arrCards.object(at: indexPath.row - 1) as! NSDictionary).object(forKey: "cost") as! String)
+            
+            let imgCell = (arrCards.object(at: indexPath.row - 1) as! NSDictionary).object(forKey: "card_image") as! String
+           
+            DispatchQueue.main.async{
+                setImageWithUrl(imgCell, imgView: cell.packCellImage!)
+            }
+                
+            cell.lblDistance?.layer.cornerRadius = 9.5
             cell.lblDistance?.layer.masksToBounds = false
             dropShadow(color: .darkGray, opacity: 1.0, offSet: CGSize(width: -1, height: 1), radius: 1, scale: true, lbl: cell.lblDistance!)
-        let imgCell = (arrCards.object(at: indexPath.row - 1) as! NSDictionary).object(forKey: "card_image") as! String
-            
             if(((arrCards.object(at: indexPath.row - 1) as! NSDictionary).object(forKey: "distance")) != nil){
                 cell.lblDistance?.isHidden = false
-                
                 var distance = ((arrCards.object(at: indexPath.row - 1) as! NSDictionary).object(forKey: "distance") as! NSString).doubleValue
                 distance = distance / 1000
                 if(distance > 100){
@@ -896,81 +1126,14 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
                 cell.lblDistance?.isHidden = true
             }
             
-        cell.packCellImage?.image = nil
-        DispatchQueue.main.async{
-       
-            setImageWithUrl(imgCell, imgView: cell.packCellImage!)
-        
-        }
-        
-        cell.lblRestaurant?.text = (arrCards.object(at: indexPath.row - 1) as! NSDictionary).object(forKey: "name") as? String
-        
-        let outletCount = (arrCards.object(at: indexPath.row - 1) as! NSDictionary).object(forKey: "primary_cuisine") as? String
-        
-     
-            cell.lblLocation?.text = outletCount
-
-        let amount = ((arrCards.object(at: indexPath.row - 1) as! NSDictionary).object(forKey: "cost") as! NSString).intValue
-        if(amount < 500){
-            cell.lblMoney?.text = String(format : "%@", "\u{20B9}")
-        }
-        else if(amount < 999){
-            cell.lblMoney?.text = String(format : "%@%@", "\u{20B9}", "\u{20B9}")
-        }
-        else{
-            cell.lblMoney?.text = String(format : "%@%@%@", "\u{20B9}", "\u{20B9}", "\u{20B9}")
-        }
-            }
-        
-        cell.layer.shadowColor = colorDarkGray.cgColor
-        cell.layer.shadowOpacity = 0.2
-        cell.layer.opacity = 1
-        cell.layer.shadowOffset = CGSize(width: 0, height: 2)
-        cell.layer.shadowRadius = 1
-        
-        return cell
-        }
-            }
-        }
-        else{
-            let cell : PackCollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: kCellReuse, for: indexPath) as! PackCollectionViewCell
-            cell.backgroundColor = .white
-            if(arrCards.count > 0){
-            cell.lblMoney?.text = String(format : "\u{20B9} %@", (arrCards.object(at: indexPath.row) as! NSDictionary).object(forKey: "cost") as! String)
+            cell.lblRestaurant?.text = (arrCards.object(at: indexPath.row - 1) as! NSDictionary).object(forKey: "name") as? String
             
-            let imgCell = (arrCards.object(at: indexPath.row) as! NSDictionary).object(forKey: "card_image") as! String
-           
-            DispatchQueue.main.async{
-                setImageWithUrl(imgCell, imgView: cell.packCellImage!)
-            }
-                
-            cell.lblDistance?.layer.cornerRadius = 9.5
-            cell.lblDistance?.layer.masksToBounds = false
-            dropShadow(color: .darkGray, opacity: 1.0, offSet: CGSize(width: -1, height: 1), radius: 1, scale: true, lbl: cell.lblDistance!)
-            if(((arrCards.object(at: indexPath.row) as! NSDictionary).object(forKey: "distance")) != nil){
-                cell.lblDistance?.isHidden = false
-                var distance = ((arrCards.object(at: indexPath.row) as! NSDictionary).object(forKey: "distance") as! NSString).doubleValue
-                distance = distance / 1000
-                if(distance > 100){
-                    cell.lblDistance?.isHidden = true
-                }
-                else{
-                    cell.lblDistance?.isHidden = false
-                    cell.lblDistance?.text = String(format : "%.1f KM", distance)
-                }
-            }
-            else{
-                cell.lblDistance?.isHidden = true
-            }
-            
-            cell.lblRestaurant?.text = (arrCards.object(at: indexPath.row) as! NSDictionary).object(forKey: "name") as? String
-            
-            let outletCount = (arrCards.object(at: indexPath.row) as! NSDictionary).object(forKey: "primary_cuisine") as? String
+            let outletCount = (arrCards.object(at: indexPath.row - 1) as! NSDictionary).object(forKey: "primary_cuisine") as? String
             
             
             cell.lblLocation?.text = outletCount
             
-            let amount = ((arrCards.object(at: indexPath.row) as! NSDictionary).object(forKey: "cost") as! NSString).intValue
+            let amount = ((arrCards.object(at: indexPath.row - 1) as! NSDictionary).object(forKey: "cost") as! NSString).intValue
             if(amount < 500){
                 cell.lblMoney?.text = String(format : "%@", "\u{20B9}")
             }
@@ -988,6 +1151,7 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
             cell.layer.shadowRadius = 1
             
             return cell
+            }
         }
     }
     
@@ -997,10 +1161,10 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if(loginAs == "guest"){
-           return arrCards.count
+           return arrCards.count + 1
         }
-        if(savingValue == "0"){
-           return arrCards.count
+        if(loginAs == "user" || loginAs == "trail" || loginAs == "UnPaid"){
+           return arrCards.count + 1
         }
         return arrCards.count + 1
     }
@@ -1017,44 +1181,48 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
             layout.sectionInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         }
         if(UIScreen.main.bounds.size.height > 670){
-            if(loginAs == "user" || loginAs == "trail"){
+            if(loginAs == "user" || loginAs == "trail" || loginAs == "UnPaid"){
                 if(indexPath.row == 0){
-                    if(savingValue == "0"){
-                        return CGSize(width: 170, height: 220);
-                    }
-                    return CGSize(width: self.view.frame.size.width - 20, height: 80);
+                    return CGSize(width: self.collectionView.frame.size.width, height: 80);
                 }
                 else{
                     return CGSize(width: 170, height: 220);
                 }
             }
+            if(indexPath.row == 0){
+                return CGSize(width: collectionView.frame.size.width, height: 80);
+            }
             return CGSize(width: 170, height: 220)
         }
         else if(UIScreen.main.bounds.size.height < 570){
-            if(loginAs == "user" || loginAs == "trail"){
+            if(loginAs == "user" || loginAs == "trail" || loginAs == "UnPaid"){
                 if(indexPath.row == 0){
-                    if(savingValue == "0"){
-                        return CGSize(width: 140, height: 190);
-                    }
-                    return CGSize(width: self.view.frame.size.width - 20, height: 80);
+                    return CGSize(width: self.collectionView.frame.size.width, height: 80);
                 }
                 else{
+                    
                     return CGSize(width: 140, height: 190);
                 }
+            }
+            if(indexPath.row == 0){
+                
+                return CGSize(width: self.collectionView.frame.size.width, height: 80);
             }
             return CGSize(width: 140, height: 190);
         }
         else{
-            if(loginAs == "user" || loginAs == "trail"){
+            if(loginAs == "user" || loginAs == "trail" || loginAs == "UnPaid"){
                 if(indexPath.row == 0){
-                    if(savingValue == "0"){
-                      return CGSize(width: 160, height: 210);  
-                    }
-                  return CGSize(width: self.view.frame.size.width - 20, height: 80);
+
+                  return CGSize(width: self.collectionView.frame.size.width, height: 80);
                 }
                 else{
                    return CGSize(width: 160, height: 210);
                 }
+            }
+            if(indexPath.row == 0){
+                
+                return CGSize(width: self.collectionView.frame.size.width, height: 80);
             }
             return CGSize(width: 160, height: 210);
         }
@@ -1085,20 +1253,20 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
+        if(indexPath.row != 0){
         if(isMoreTapped == false){
             
             var outletCount : Int = 0
             var offerCount : Int = 0
-            if(loginAs == "user" || loginAs == "trail"){
-                if(savingValue == "0"){
-                    restaurantDetails = arrCards.object(at: indexPath.row) as! NSDictionary
-                    restaurantId = ((arrCards.object(at: indexPath.row) as! NSDictionary).object(forKey: "rid") as? String)!
-                    strOneLiner = ((arrCards.object(at: indexPath.row) as! NSDictionary).object(forKey: "one_liner") as? String)!
-                    restaurantName = ((arrCards.object(at: indexPath.row) as! NSDictionary).object(forKey: "name") as? String)!
-                    outletCount =  Int(Int32((((arrCards.object(at: indexPath.row) as! NSDictionary).object(forKey: "outlet_count") as? NSString)?.intValue)!))
+            if(loginAs == "user" || loginAs == "trail" || loginAs == "UnPaid"){
+               // if(savingValue == "0"){
+                    restaurantDetails = arrCards.object(at: indexPath.row - 1) as! NSDictionary
+                    restaurantId = ((arrCards.object(at: indexPath.row - 1) as! NSDictionary).object(forKey: "rid") as? String)!
+                    strOneLiner = ((arrCards.object(at: indexPath.row - 1) as! NSDictionary).object(forKey: "one_liner") as? String)!
+                    restaurantName = ((arrCards.object(at: indexPath.row - 1) as! NSDictionary).object(forKey: "name") as? String)!
+                    outletCount =  Int(Int32((((arrCards.object(at: indexPath.row - 1) as! NSDictionary).object(forKey: "outlet_count") as? NSString)?.intValue)!))
                     
-                    offerCount = Int(Int32((((arrCards.object(at: indexPath.row) as! NSDictionary).object(forKey: "offer_count") as? NSString)?.intValue)!))
+                    offerCount = Int(Int32((((arrCards.object(at: indexPath.row - 1) as! NSDictionary).object(forKey: "offer_count") as? NSString)?.intValue)!))
                     
                     if(outletCount > 1){
                         let openPost = self.storyboard!.instantiateViewController(withIdentifier: "SelectOutlet") as! SelectOutletViewController;
@@ -1106,56 +1274,25 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
                     }
                     else if(offerCount > 1){
                         strAddress = ""
-                        outletId = ((arrCards.object(at: indexPath.row) as! NSDictionary).object(forKey: "outlet_ids") as? String)!
+                        outletId = ((arrCards.object(at: indexPath.row - 1) as! NSDictionary).object(forKey: "outlet_ids") as? String)!
                         let openPost = self.storyboard!.instantiateViewController(withIdentifier: "SelectOffer") as! SelectOfferViewController;
                         self.navigationController!.visibleViewController!.navigationController!.pushViewController(openPost, animated:true);
                     }
                     else{
-                        outletId = ((arrCards.object(at: indexPath.row) as! NSDictionary).object(forKey: "outlet_ids") as? String)!
-                        offerIds = ((arrCards.object(at: indexPath.row) as! NSDictionary).object(forKey: "offer_ids") as? String)!
+                        outletId = ((arrCards.object(at: indexPath.row - 1) as! NSDictionary).object(forKey: "outlet_ids") as? String)!
+                        offerIds = ((arrCards.object(at: indexPath.row - 1) as! NSDictionary).object(forKey: "offer_ids") as? String)!
                         let openPost = self.storyboard!.instantiateViewController(withIdentifier: "StoreDetails") as! StoreDetailsViewController;
                         self.navigationController!.visibleViewController!.navigationController!.pushViewController(openPost, animated:true);
                     }
-                }
-                else{
-                    if(indexPath.row != 0){
-                        if(arrCards.count > 0){
-                    restaurantDetails = arrCards.object(at: indexPath.row-1) as! NSDictionary
-                    restaurantId = ((arrCards.object(at: indexPath.row-1) as! NSDictionary).object(forKey: "rid") as? String)!
-                    strOneLiner = ((arrCards.object(at: indexPath.row-1) as! NSDictionary).object(forKey: "one_liner") as? String)!
-                    restaurantName = ((arrCards.object(at: indexPath.row-1) as! NSDictionary).object(forKey: "name") as? String)!
-                    outletCount =  Int(Int32((((arrCards.object(at: indexPath.row-1) as! NSDictionary).object(forKey: "outlet_count") as? NSString)?.intValue)!))
-                    
-                    offerCount = Int(Int32((((arrCards.object(at: indexPath.row-1) as! NSDictionary).object(forKey: "offer_count") as? NSString)?.intValue)!))
-                        
-                        if(outletCount > 1){
-                            let openPost = self.storyboard!.instantiateViewController(withIdentifier: "SelectOutlet") as! SelectOutletViewController;
-                            self.navigationController!.visibleViewController!.navigationController!.pushViewController(openPost, animated:true);
-                        }
-                        else if(offerCount > 1){
-                            strAddress = ""
-                            outletId = ((arrCards.object(at: indexPath.row - 1) as! NSDictionary).object(forKey: "outlet_ids") as? String)!
-                            let openPost = self.storyboard!.instantiateViewController(withIdentifier: "SelectOffer") as! SelectOfferViewController;
-                            self.navigationController!.visibleViewController!.navigationController!.pushViewController(openPost, animated:true);
-                        }
-                        else{
-                            outletId = ((arrCards.object(at: indexPath.row-1) as! NSDictionary).object(forKey: "outlet_ids") as? String)!
-                            offerIds = ((arrCards.object(at: indexPath.row-1) as! NSDictionary).object(forKey: "offer_ids") as? String)!
-                            let openPost = self.storyboard!.instantiateViewController(withIdentifier: "StoreDetails") as! StoreDetailsViewController;
-                            self.navigationController!.visibleViewController!.navigationController!.pushViewController(openPost, animated:true);
-                        }
-                        }
-                    }
-                }
             }
             else{
-        restaurantDetails = arrCards.object(at: indexPath.row) as! NSDictionary
-        restaurantId = ((arrCards.object(at: indexPath.row) as! NSDictionary).object(forKey: "rid") as? String)!
-        strOneLiner = ((arrCards.object(at: indexPath.row) as! NSDictionary).object(forKey: "one_liner") as? String)!
-        restaurantName = ((arrCards.object(at: indexPath.row) as! NSDictionary).object(forKey: "name") as? String)!
-                outletCount =  Int(Int32((((arrCards.object(at: indexPath.row) as! NSDictionary).object(forKey: "outlet_count") as? NSString)?.intValue)!))
+        restaurantDetails = arrCards.object(at: indexPath.row - 1) as! NSDictionary
+        restaurantId = ((arrCards.object(at: indexPath.row - 1) as! NSDictionary).object(forKey: "rid") as? String)!
+        strOneLiner = ((arrCards.object(at: indexPath.row - 1) as! NSDictionary).object(forKey: "one_liner") as? String)!
+        restaurantName = ((arrCards.object(at: indexPath.row - 1) as! NSDictionary).object(forKey: "name") as? String)!
+                outletCount =  Int(Int32((((arrCards.object(at: indexPath.row - 1) as! NSDictionary).object(forKey: "outlet_count") as? NSString)?.intValue)!))
                 
-                offerCount = Int(Int32((((arrCards.object(at: indexPath.row) as! NSDictionary).object(forKey: "offer_count") as? NSString)?.intValue)!))
+                offerCount = Int(Int32((((arrCards.object(at: indexPath.row - 1) as! NSDictionary).object(forKey: "offer_count") as? NSString)?.intValue)!))
                 
                 if(outletCount > 1){
                     let openPost = self.storyboard!.instantiateViewController(withIdentifier: "SelectOutlet") as! SelectOutletViewController;
@@ -1163,12 +1300,12 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
                 }
                 else if(offerCount > 1){
                     strAddress = ""
-                    outletId = ((arrCards.object(at: indexPath.row) as! NSDictionary).object(forKey: "outlet_ids") as? String)!
+                    outletId = ((arrCards.object(at: indexPath.row - 1) as! NSDictionary).object(forKey: "outlet_ids") as? String)!
                     let openPost = self.storyboard!.instantiateViewController(withIdentifier: "SelectOffer") as! SelectOfferViewController;
                     self.navigationController!.visibleViewController!.navigationController!.pushViewController(openPost, animated:true);
                 }
                 else{
-                    outletId = ((arrCards.object(at: indexPath.row) as! NSDictionary).object(forKey: "outlet_ids") as? String)!
+                    outletId = ((arrCards.object(at: indexPath.row - 1) as! NSDictionary).object(forKey: "outlet_ids") as? String)!
                     offerIds = ((arrCards.object(at: indexPath.row) as! NSDictionary).object(forKey: "offer_ids") as? String)!
                     let openPost = self.storyboard!.instantiateViewController(withIdentifier: "StoreDetails") as! StoreDetailsViewController;
                     self.navigationController!.visibleViewController!.navigationController!.pushViewController(openPost, animated:true);
@@ -1179,7 +1316,7 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
             let btn = UIButton()
             openMenu(btn)
         }
-        
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
@@ -1229,7 +1366,7 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
         }
         else{
         if(loginAs == "guest"){
-            return 9
+            return 7
         }
         else{
             return 7
@@ -1246,7 +1383,7 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
         cell.selectionStyle = .none
         cell.backgroundColor = .clear
         if(loginAs == "guest"){
-           if((indexPath.row == 1) || (indexPath.row == 3) || (indexPath.row == 5) || (indexPath.row == 7)){
+           if((indexPath.row == 1) || (indexPath.row == 3) || (indexPath.row == 5)){
             
            }
            else{
@@ -1267,22 +1404,60 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
            let cell = tableView.dequeueReusableCell(withIdentifier: "ExperienceTableViewCell", for: indexPath) as! ExperienceTableViewCell
             cell.btnDetails?.addTarget(self, action: #selector(HomeViewController.detailsExp(_:)), for: .touchUpInside)
             cell.lblEventName?.text = (arrExperience.object(at: indexPath.row) as! NSDictionary).object(forKey: "title") as? String
-            cell.lblTime?.text = (arrExperience.object(at: indexPath.row) as! NSDictionary).object(forKey: "start_time") as? String
-            cell.lblPrice?.text = String(format : "Starting at %@/Person", ((arrExperience.object(at: indexPath.row) as! NSDictionary).object(forKey: "cost") as? String)!)
-            setImageWithUrl(((arrExperience.object(at: indexPath.row) as! NSDictionary).object(forKey: "card_image") as? String)!, imgView: cell.imgView!)
+        //    cell.lblTime?.text = (arrExperience.object(at: indexPath.row) as! NSDictionary).object(forKey: "display_time") as? String
+            
+            let str = (arrExperience.object(at: indexPath.row) as! NSDictionary).object(forKey: "display_time") as? String
+            
+            if let range = str?.range(of: "\n") {
+                let startPos = str?.distance(from: (str?.startIndex)!, to: range.lowerBound)
+                let myMutableString = NSMutableAttributedString(string: str!, attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 12)])
+                myMutableString.addAttribute(NSForegroundColorAttributeName, value: UIColor.gray, range: NSRange(location:startPos!,length: (str?.characters.count)! - startPos!))
+                
+                myMutableString.addAttribute(NSFontAttributeName, value : UIFont.systemFont(ofSize: 10), range: NSRange(location:startPos!,length: (str?.characters.count)! - startPos!))
+                
+                cell.lblTime?.attributedText = myMutableString
+            }
+            else {
+                cell.lblTime?.text = (arrExperience.object(at: indexPath.row) as! NSDictionary).object(forKey: "display_time") as? String
+            }
+            
+            cell.backgroundColor = .white
+            
+            let available_seats = (arrExperience.object(at: indexPath.row) as! NSDictionary).object(forKey: "avilable_seats") as! String
+            if(available_seats == "0"){
+                cell.btnDetails?.backgroundColor = UIColor(red: 350/255, green: 75/255, blue: 100/255, alpha: 1.0)
+                cell.btnDetails?.setTitle("SOLD OUT", for: .normal)
+            }
+            else{
+                cell.btnDetails?.backgroundColor = UIColor(red: 54/255, green: 200/255, blue: 69/255, alpha: 1.0)
+                cell.btnDetails?.setTitle("VIEW DETAILS", for: .normal)
+            }
+            cell.lblAddress?.text = (arrExperience.object(at: indexPath.row) as! NSDictionary).object(forKey: "address") as? String
+            cell.lblPrice?.text = String(format : "%@ / Person", ((arrExperience.object(at: indexPath.row) as! NSDictionary).object(forKey: "cost") as? String)!)
+            cell.btnWorkshop?.setTitle((arrExperience.object(at: indexPath.row) as! NSDictionary).object(forKey: "tag") as? String, for: .normal)
+            setImageWithUrl(((arrExperience.object(at: indexPath.row) as! NSDictionary).object(forKey: "cover_image") as? String)!, imgView: cell.imgView!)
+         //   cell.imgView?.backgroundColor = UIColor(red: 240/255, green: 250/255, blue: 252/255, alpha: 1.0)
             cell.btnDetails?.tag = indexPath.row
-            setDownLine(cell.btnDetails!)
+            
+            cell.viewBack?.layer.shadowColor = UIColor.black.cgColor
+            cell.viewBack?.layer.shadowOffset = CGSize(width:2.0,height: 2.0);
+            cell.viewBack?.layer.shadowRadius = 5.0;
+            cell.viewBack?.layer.shadowOpacity = 1.0;
+            cell.viewBack?.layer.masksToBounds = false
             cell.selectionStyle = .none
+            let shadowRect: CGRect = (cell.viewBack?.bounds.insetBy(dx: 4, dy: 4))!
+            cell.viewBack?.layer.shadowPath = UIBezierPath(rect: shadowRect).cgPath
+            
             return cell
         }
     }
+
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if(tableView == tblMenu){
         if(loginAs == "guest"){
             if(indexPath.row == 0){
-                viewMenu.removeFromSuperview()
-                tblMenu.removeFromSuperview()
+                
                 let openPost = self.storyboard!.instantiateViewController(withIdentifier: "LoginNumber") as! LoginNumberViewController;
                 self.navigationController!.visibleViewController!.navigationController!.pushViewController(openPost, animated:true);
             }
@@ -1290,17 +1465,15 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
                 let openPost = self.storyboard!.instantiateViewController(withIdentifier: "BuySignup") as! BuySignupViewController;
                 self.navigationController!.pushViewController(openPost, animated: true)
             }
+            
             else if(indexPath.row == 4){
-                let openPost = self.storyboard!.instantiateViewController(withIdentifier: "BuySignup") as! BuySignupViewController;
-                self.navigationController!.pushViewController(openPost, animated: true)
-            }
-            else if(indexPath.row == 6){
                 let openPost = self.storyboard!.instantiateViewController(withIdentifier: "Help&Support") as! Help_SupportViewController;
                 self.navigationController!.visibleViewController!.navigationController!.pushViewController(openPost, animated:true);
             }
-            else if(indexPath.row == 8){
+            else if(indexPath.row == 6){
                 contactUs()
             }
+            self.viewChoice?.frame = CGRect(x: 0, y: (self.viewNavigate?.frame.size.height)!, width: self.view.frame.size.width, height: 52)
         }
         else{
             
@@ -1308,45 +1481,80 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
                 let openPost = self.storyboard!.instantiateViewController(withIdentifier: "Account") as! AccountViewController;
                 self.navigationController!.visibleViewController!.navigationController!.pushViewController(openPost, animated:true);
             }
-            else if(indexPath.row == 2){
-                selectedWebType = "exp"
-                if(city_id == "1"){
-                let openPost = self.storyboard!.instantiateViewController(withIdentifier: "Web") as! WebViewController;
-                self.navigationController!.visibleViewController!.navigationController!.pushViewController(openPost, animated:true);
-                }
-                else if(city_id == "2"){
-                    let openPost = self.storyboard!.instantiateViewController(withIdentifier: "ComingSoonCity") as! ComingSoonCityViewController;
-                    self.navigationController!.visibleViewController!.navigationController!.pushViewController(openPost, animated:true);
-                }
-            }
+            
             else if(indexPath.row == 4){
                 let openPost = self.storyboard!.instantiateViewController(withIdentifier: "Help&Support") as! Help_SupportViewController;
+                self.navigationController!.visibleViewController!.navigationController!.pushViewController(openPost, animated:true);
+            }
+            else if(indexPath.row == 2){
+                let openPost = self.storyboard!.instantiateViewController(withIdentifier: "Tickets") as! TicketsViewController;
                 self.navigationController!.visibleViewController!.navigationController!.pushViewController(openPost, animated:true);
             }
             else if(indexPath.row == 6){
                 FBSDKAppEvents.logEvent("contact_us_view")
                 contactUs()
             }
-            
+            self.viewChoice?.frame = CGRect(x: 0, y: (self.viewNavigate?.frame.size.height)!, width: self.view.frame.size.width, height: 52)
         }
+            if(isMoreTapped == false){
+                
+            }
+            else{
+                let btn = UIButton()
+                openMenu(btn)
+            }
+        }
+        else{
+            if(isMoreTapped == false){
+                
+            }
+            else{
+                let btn = UIButton()
+                openMenu(btn)
+            }
         }
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if(tableView == tblMenu){
-        if(indexPath.row == 1){
+        if(indexPath.row == 3){
             return 25
+        }
+        else if(indexPath.row == 5){
+            return 15
+        }
+        else if(indexPath.row == 1){
+            return 10
         }
         return 45
         }
         else{
             if(self.view.frame.size.height < 570){
-            return 520
+            return 327
             }
             else if(self.view.frame.size.height < 670){
-             return 540
+             return 330
             }
-            return 580
+            return 340
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if(tableView == tblExperience){
+          let lastElement = arrExperience.count - 1
+            if indexPath.row == lastElement {
+                loadMoreTableMethod()
+            }
+        }
+    }
+    
+    func loadMoreTableMethod(){
+        if(isMoreTapped == false){
+            if(nextTableUrl.characters.count > 0){
+                DispatchQueue.main.async{
+                    self.callWebTableNextUrl()
+                }
+            }
         }
     }
     
@@ -1379,7 +1587,6 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
         let cancelAction = UIAlertAction(title: "No", style: UIAlertActionStyle.cancel) {
             UIAlertAction in
         }
-        
         // Add the actions
         alertController.addAction(okAction)
         alertController.addAction(cancelAction)
@@ -1415,25 +1622,17 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
             lblValue.textColor = .white
             lblValue.font = UIFont.boldSystemFont(ofSize: 17)
         }
+
         else if(indexPath.row == 4){
-            imgViewIcon.frame = CGRect(x: 46, y: 45/2 - 11, width: 22.8, height : 22)
-            imgViewIcon.image = UIImage(named : "exp.png")
-            
-            lblValue.frame = CGRect(x: 94, y: imgViewIcon.frame.origin.y, width: 170, height: 22)
-            lblValue.text = "EXPERIENCES"
-            lblValue.textColor = .white
-            lblValue.font = UIFont.boldSystemFont(ofSize: 17)
-        }
-        else if(indexPath.row == 6){
             imgViewIcon.frame = CGRect(x: 46, y: 45/2 - 11, width: 17.7, height : 22)
             imgViewIcon.image = UIImage(named : "fill86.png")
             
             lblValue.frame = CGRect(x: 94, y: imgViewIcon.frame.origin.y, width: 170, height: 22)
-            lblValue.text = "HELP & SUPPORT"
+            lblValue.text = "SUPPORT"
             lblValue.textColor = .white
             lblValue.font = UIFont.boldSystemFont(ofSize: 17)
         }
-        else if(indexPath.row == 8){
+        else if(indexPath.row == 6){
             imgViewIcon.frame = CGRect(x: 46, y: 45/2 - 11, width: 21.6, height : 22)
             imgViewIcon.image = UIImage(named : "fill76.png")
             
@@ -1454,20 +1653,21 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
                 lblValue.font = UIFont.boldSystemFont(ofSize: 17)
             }
             else if(indexPath.row == 2){
-                imgViewIcon.frame = CGRect(x: 46, y: 45/2 - 11, width: 16.1, height : 22)
-                imgViewIcon.image = UIImage(named : "exp.png")
+                imgViewIcon.frame = CGRect(x: 46, y: 45/2, width: 23, height : 21)
+                imgViewIcon.image = UIImage(named : "ticket.png")
                 
                 lblValue.frame = CGRect(x: 94, y: imgViewIcon.frame.origin.y, width: 170, height: 22)
-                lblValue.text = "EXPERIENCES"
+                lblValue.text = "TICKETS"
                 lblValue.textColor = .white
                 lblValue.font = UIFont.boldSystemFont(ofSize: 17)
             }
+            
             else if(indexPath.row == 4){
                 imgViewIcon.frame = CGRect(x: 46, y: 45/2 - 11, width: 17.7, height : 22)
                 imgViewIcon.image = UIImage(named : "fill86.png")
                 
                 lblValue.frame = CGRect(x: 94, y: imgViewIcon.frame.origin.y, width: 170, height: 22)
-                lblValue.text = "HELP & SUPPORT"
+                lblValue.text = "SUPPORT"
                 lblValue.textColor = .white
                 lblValue.font = UIFont.boldSystemFont(ofSize: 17)
             }
@@ -1545,6 +1745,7 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
     //MARK:- WebServiceCalling
     
     func callWebServiceForHome(){
+        
         showActivityIndicator(view: self.view)
         if (isConnectedToNetwork() == true){
             let url = String(format: "%@%@city_id=%@", baseUrl,"offers?",city_id)
@@ -1575,10 +1776,39 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
  
     }
     
+    func webCallStartTrial(){
+        if (isConnectedToNetwork() == true){
+            let dictSessionId = UserDefaults.standard.object(forKey: "session") as! NSDictionary
+            let session = dictSessionId.object(forKey: "session_id") as! String
+            let url = String(format: "%@%@sessionid=%@", baseUrl,"trial?",session)
+            
+            webServiceGet(url)
+            delegate = self
+        }
+        else{
+            stopAnimation(view: self.view)
+            openAlertScreen(self.view)
+            alerButton.addTarget(self, action: #selector(HomeViewController.alertTap), for: .touchUpInside)
+        }
+    }
+    
     func callWebNextUrl(){
      //   showActivityIndicator(view: self.view)
         if (isConnectedToNetwork() == true){
             let url = String(format: "%@&city_id=%@", nextPageUrl, city_id)
+            
+            webServiceGet(url)
+            delegate = self
+        }
+        else{
+            openAlertScreen(self.view)
+            alerButton.addTarget(self, action: #selector(HomeViewController.alertTap), for: .touchUpInside)
+        }
+    }
+    
+    func callWebTableNextUrl(){
+        if (isConnectedToNetwork() == true){
+            let url = String(format: "%@", nextTableUrl)
             
             webServiceGet(url)
             delegate = self
@@ -1624,9 +1854,12 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
     }
     
     func webServiceForExperience(){
-        
+        stopAnimation(view: self.view)
             if (isConnectedToNetwork() == true){
-                let url = String(format: "%@%@", baseUrl,"experiences")
+                if(city_id == ""){
+                   city_id = "1"
+                }
+                let url = String(format: "%@%@?city_id=%@", baseUrl,"experiences", city_id)
                 webServiceGet(url)
                 delegate = self
             }
@@ -1637,9 +1870,41 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
             }
     }
     
+    func webServiceForRating(){
+        if (isConnectedToNetwork() == true){
+            let dictSessionId = UserDefaults.standard.object(forKey: "session") as! NSDictionary
+            let session = dictSessionId.object(forKey: "session_id") as! String
+            let url = String(format: "%@%@sessionid=%@", baseUrl,"unreviewed?", session)
+            webServiceGet(url)
+            delegate = self
+        }
+        else{
+            stopAnimation(view: self.view)
+            openAlertScreen(self.view)
+            alerButton.addTarget(self, action: #selector(HomeViewController.alertTap), for: .touchUpInside)
+        }
+    }
+    
+    func webserviceForRatingSubmit(){
+        if (isConnectedToNetwork() == true){
+            let dictSessionId = UserDefaults.standard.object(forKey: "session") as! NSDictionary
+            let session = dictSessionId.object(forKey: "session_id") as! String
+            let order_id = dictRating.object(forKey: "id") as! String
+            let url = String(format: "%@%@%@%@?sessionid=%@", baseUrl,"offer/","review/", order_id,session)
+            let dict = NSMutableDictionary()
+            dict.setObject(selectedRating, forKey: "rating" as NSCopying)
+            webServiceCallingPost(url, parameters: dict)
+            delegate = self
+        }
+        else{
+            stopAnimation(view: self.view)
+            openAlertScreen(self.view)
+            alerButton.addTarget(self, action: #selector(HomeViewController.alertTap), for: .touchUpInside)
+        }
+    }
     
     func getDataFromWebService(_ dict: NSMutableDictionary) {
-        
+    
         stopAnimation(view: self.view)
         if((dict.object(forKey: "api") as! String).contains("profile")){
             todayDate = dict.object(forKey: "date_time") as! String
@@ -1660,11 +1925,14 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
                     loginAs = "user"
                 }
             }
+            else{
+                loginAs = "UnPaid"
+            }
             if(city_id1 == ""){
                 self.perform(#selector(HomeViewController.callwithdelay), with: nil, afterDelay: 1.0)
             }
             else{
-                if(loginAs == "user" || loginAs == "trail"){
+                if(loginAs == "user" || loginAs == "trail" || loginAs == "UnPaid"){
                 
                  UserDefaults.standard.set(city_id1, forKey: "city_id")
                 }
@@ -1678,30 +1946,137 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
                 lblCity?.text = "MUMBAI"
                 lblMenuCity.text = "MUMBAI"
             }
-            setCollectionView()
-            setExperienceTable()
-            collectionView.isHidden = false
-            tblExperience.isHidden = true
             createMenuView()
             tblMenu.reloadData()
         }
+            
+        else if((dict.object(forKey: "api") as! String).contains("trial")){
+            
+            if(dict.object(forKey: "status") as! String == "OK"){
+                todayDate = dict.object(forKey: "date_time") as! String
+                let arrSubscribe = (dict.object(forKey: "result") as! NSDictionary).object(forKey: "subscription") as! NSArray
+                if(arrSubscribe.count > 0){
+                    
+                    loginAs = "trail"
+                    let newInfo = NSMutableDictionary()
+                    newInfo.setObject(dictUserDetails.object(forKey: "name") as! String, forKey: "name" as NSCopying)
+                    newInfo.setObject(dictUserDetails.object(forKey: "phone") as! String, forKey: "phone" as NSCopying)
+                    newInfo.setObject(dictUserDetails.object(forKey: "dob") as! String, forKey: "dob" as NSCopying)
+                    newInfo.setObject(dictUserDetails.object(forKey: "email") as! String, forKey: "email" as NSCopying)
+                    newInfo.setObject(dictUserDetails.object(forKey: "gender") as! String, forKey: "gender" as NSCopying)
+                    newInfo.setObject(dictUserDetails.object(forKey: "preference") as! String, forKey: "preference" as NSCopying)
+                    
+                    let expiry = (arrSubscribe.object(at: 0) as! NSDictionary).object(forKey: "expiry") as? String
+                    let dateFormatter = DateFormatter()
+                    dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+                    let s = dateFormatter.date(from:expiry!)
+                    
+                    let subscribeType = (arrSubscribe.object(at: 0) as! NSDictionary).object(forKey: "subscription_type_id") as? String
+                    
+                    let currentInstallation = PFInstallation.current()
+                    currentInstallation.setObject(s!, forKey: "expiry")
+                    currentInstallation.setObject(subscribeType!, forKey: "subscription_type_id")
+                    currentInstallation.saveInBackground()
+                    
+                    let token = dictSessionInfo.object(forKey: "refresh_token") as! String
+                    let userId = dictSessionInfo.object(forKey: "user_id") as! String
+                    let currentInstallation1 = PFInstallation.current()
+                    currentInstallation1.setObject(userId, forKey: "userId")
+                    currentInstallation1.saveInBackground()
+                    UserDefaults.standard.setValue(expiry, forKey: "expiry")
+                    UserDefaults.standard.setValue(newInfo, forKey: "userDetails")
+                    UserDefaults.standard.setValue(dictSessionInfo, forKey: "session")
+                    UserDefaults.standard.setValue(token, forKey: "token")
+                    
+                    let alert = UIAlertController(title: "SUCCESS", message: "Your 7 days free trial has started.", preferredStyle: UIAlertControllerStyle.alert)
+                    alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+                    self.present(alert, animated: true, completion: nil)
+                }
+            }
+        }
+            
         else if((dict.object(forKey: "api") as! String).contains("offers")){
+            stopAnimation(view: self.view)
         if(dict.object(forKey: "status") as! String == "OK"){
+            todayDate = dict.object(forKey: "date_time") as! String
             let arr = ((dict.object(forKey: "result") as! NSDictionary).object(forKey: "data") as! NSArray).mutableCopy() as! NSMutableArray
             for index in 0..<arr.count{
                 arrCards.add(arr.object(at: index) as! NSDictionary)
             }
             nextPageUrl = (dict.object(forKey: "result") as! NSDictionary).object(forKey: "next_page_url") as! String
         }
+            collectionView.reloadData()
+        }
+        else if((dict.object(forKey: "api") as! String).contains("offer/review")){
+           if(dict.object(forKey: "status") as! String == "OK"){
+            UIView.animate(withDuration: 0.3, delay: 0.0, options: .curveEaseOut, animations: {
+                self.ratingView?.frame = CGRect(x: 0, y: self.view.frame.size.height, width: self.view.frame.size.width, height: 295)
+            })
+            viewBase?.isUserInteractionEnabled = true
+            btnOffer?.isEnabled = true
+            btnExperience?.isEnabled = true
+            btnMore?.isEnabled = true
+            btnSearch?.isEnabled = true
+            }
         }
         else if((dict.object(forKey: "api") as! String).contains("experiences")){
+            
+            stopAnimation(view: self.view)
             if(dict.object(forKey: "status") as! String == "OK"){
-               arrExperience = ((dict.object(forKey: "result") as! NSDictionary).object(forKey: "data") as! NSArray).mutableCopy() as! NSMutableArray
+                todayDate = dict.object(forKey: "date_time") as! String
+                
+                let dict1 = dict.object(forKey: "result") as! NSDictionary
+                if(dict1.count > 0){
+                let arr = ((dict.object(forKey: "result") as! NSDictionary).object(forKey: "data") as! NSArray).mutableCopy() as! NSMutableArray
+                for index in 0..<arr.count{
+                    arrExperience.add(arr.object(at: index) as! NSDictionary)
+                }
+               nextTableUrl = (dict.object(forKey: "result") as! NSDictionary).object(forKey: "next_page_url") as! String
+                }
+            }
+            if(arrExperience.count > 0){
+                viewEmpty.isHidden = true
+            }
+            else{
+                viewEmpty.isHidden = false
             }
             tblExperience.reloadData()
+            
+            if(openPushView == "exp"){
+              let btn = UIButton()
+                self.perform(#selector(HomeViewController.experienceChoice(_:)), with: btn, afterDelay: 1.5)
+            }
+        }
+        else if((dict.object(forKey: "api") as! String).contains("unreviewed")){
+            
+            stopAnimation(view: self.view)
+            if(dict.object(forKey: "status") as! String == "OK"){
+               let dic = dict.object(forKey: "result") as! NSDictionary
+               let arr = dic.object(forKey: "offers") as! NSArray
+                if(arr.count > 0){
+                    dictRating = arr.object(at : 0) as! NSDictionary
+                    lblRestaurantName?.text = dictRating.object(forKey: "name") as? String
+                    UIView.animate(withDuration: 0.1, delay: 0.0, options: .curveEaseOut, animations: {
+                       self.ratingView?.frame = CGRect(x: 0, y: self.view.frame.size.height - 295, width: self.view.frame.size.width, height: 295)
+                    })
+                    viewBase?.isUserInteractionEnabled = false
+                    btnOffer?.isEnabled = false
+                    btnExperience?.isEnabled = false
+                    btnMore?.isEnabled = false
+                    btnSearch?.isEnabled = false
+                }
+                else{
+                    viewBase?.isUserInteractionEnabled = true
+                    btnOffer?.isEnabled = true
+                    btnExperience?.isEnabled = true
+                    btnMore?.isEnabled = true
+                    btnSearch?.isEnabled = true
+                }
+            }
         }
         UIView.performWithoutAnimation {
             self.collectionView.reloadSections(NSIndexSet(index: 0) as IndexSet)
+          //  self.collectionView.reloadData()
         }
     }
     
@@ -1762,6 +2137,35 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
         self.dismiss(animated: true, completion: nil)
     }
     
+    //MARK:- createRatingView
+    
+    func createRatingView(){
+        ratingView?.frame = CGRect(x: 0, y: self.view.frame.size.height, width: self.view.frame.size.width, height: 295)
+        lblRate?.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 51)
+        lblHowText?.frame = CGRect(x: 0, y: 68, width: self.view.frame.size.width, height: 21)
+        lblRestaurantName?.frame = CGRect(x: 0, y: 98, width: self.view.frame.size.width, height: 21)
+        floatRatingView?.frame = CGRect(x: 45, y: 138, width: self.view.frame.size.width - 90, height: 55)
+        btnSubmit?.frame = CGRect(x: 0, y: (ratingView?.frame.size.height)! - 57, width: self.view.frame.size.width, height: 57)
+        
+        self.floatRatingView.emptyImage = UIImage(named: "stars-02.png")
+        self.floatRatingView.fullImage = UIImage(named: "stars-01.png")
+        // Optional params
+        self.floatRatingView.delegate = self
+        self.floatRatingView.contentMode = UIViewContentMode.scaleAspectFit
+        self.floatRatingView.maxRating = 5
+        self.floatRatingView.minRating = 0
+        self.floatRatingView.rating = 0
+        self.floatRatingView.editable = true
+        self.floatRatingView.halfRatings = false
+        self.floatRatingView.floatRatings = false
+    }
+    
+    @IBAction func submitRating(_ sender : UIButton){
+        if(selectedRating != "0.0"){
+        webserviceForRatingSubmit()
+        }
+    }
+    
     //MARK:- Shadow
     
     func dropShadow(color: UIColor, opacity: Float = 0.5, offSet: CGSize, radius: CGFloat = 1, scale: Bool = true, lbl : UILabel) {
@@ -1774,6 +2178,18 @@ class HomeViewController: UIViewController,UICollectionViewDataSource, UICollect
         lbl.layer.shadowPath = UIBezierPath(rect: lbl.bounds).cgPath
         lbl.layer.shouldRasterize = true
         lbl.layer.rasterizationScale = scale ? UIScreen.main.scale : 1
+    }
+    
+    // MARK: FloatRatingViewDelegate
+    
+    func floatRatingView(_ ratingView: FloatRatingView, isUpdating rating:Float) {
+        //   self.liveLabel.text = NSString(format: "%.2f", self.floatRatingView.rating) as String
+    }
+    
+    func floatRatingView(_ ratingView: FloatRatingView, didUpdate rating: Float) {
+        //   self.updatedLabel.text = NSString(format: "%.2f", self.floatRatingView.rating) as String
+        
+        selectedRating = String(format: "%.1f", self.floatRatingView.rating)
     }
 
     override func didReceiveMemoryWarning() {

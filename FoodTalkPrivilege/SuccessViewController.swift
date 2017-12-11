@@ -146,6 +146,7 @@ class SuccessViewController: UIViewController, UIGestureRecognizerDelegate, MFMa
             
         }
         else{
+            if(comingSuccessFrom == "Payment"){
            if(transactionResult == "success"){
             loginAs = "user"
             UserDefaults.standard.setValue(dictUserDetails, forKey: "userDetails")
@@ -170,6 +171,16 @@ class SuccessViewController: UIViewController, UIGestureRecognizerDelegate, MFMa
            else{
             self.navigationController?.popViewController(animated: true)
            }
+            }
+            else if(comingSuccessFrom == "Event"){
+                if(transactionResult == "success"){
+                let openPost = self.storyboard!.instantiateViewController(withIdentifier: "Tickets") as! TicketsViewController;
+                self.navigationController!.visibleViewController!.navigationController!.pushViewController(openPost, animated:true);
+                }
+                else{
+                    self.navigationController?.popViewController(animated: true)
+                }
+            }
         }
     }
     

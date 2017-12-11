@@ -221,7 +221,7 @@ class RestaurantPinViewController: UIViewController, WebServiceCallingDelegate {
     }
     
     func getDataFromWebService(_ dict: NSMutableDictionary) {
-        print(dict)
+        
         stopAnimation(view: self.view)
         
         if(dict.object(forKey: "status") as! String == "OK"){

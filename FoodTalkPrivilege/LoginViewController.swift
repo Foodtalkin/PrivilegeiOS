@@ -284,6 +284,7 @@ class LoginViewController: UIViewController, WebServiceCallingDelegate {
     }
     
     func getDataFromWebService(_ dict: NSMutableDictionary) {
+        
         stopAnimation(view: self.view)
         
         if((dict.object(forKey: "api") as! String).contains("userlogin")){
@@ -328,8 +329,6 @@ class LoginViewController: UIViewController, WebServiceCallingDelegate {
                 UserDefaults.standard.setValue(newInfo, forKey: "userDetails")
                 UserDefaults.standard.setValue(dictSessionInfo, forKey: "session")
                 UserDefaults.standard.setValue(token, forKey: "token")
-           
-                
                 
                 
                 if(subscribeType == "3"){
@@ -345,57 +344,69 @@ class LoginViewController: UIViewController, WebServiceCallingDelegate {
                 if(loginAs == "trail"){
                     let token = dictSessionInfo.object(forKey: "refresh_token") as! String
                     UserDefaults.standard.setValue(dictSessionInfo, forKey: "session")
+                    UserDefaults.standard.setValue(newInfo, forKey: "userDetails")
                     UserDefaults.standard.setValue(token, forKey: "token")
                     webServiceTrail()
                 }
                 else{
                 if(otpFrom == "login"){
-                let msg = "Profile is already registered, would you like to proceed to Payment?"
-                
-                let alertController = UIAlertController(title: "", message: msg, preferredStyle: .alert)
-                
-                // Create the actions
-                let okAction = UIAlertAction(title: "PAY NOW", style: UIAlertActionStyle.default) {
-                    UIAlertAction in
-                    loginAs = "user"
-                    UserDefaults.standard.setValue(nil, forKey: "userDetails")
-                    UserDefaults.standard.setValue(nil, forKey: "session")
-                    let openPost = self.storyboard!.instantiateViewController(withIdentifier: "BuySignup") as! BuySignupViewController;
-                    self.navigationController!.visibleViewController!.navigationController!.pushViewController(openPost, animated:true);
-                }
-                    let trialAction = UIAlertAction(title: "START TRIAL", style: UIAlertActionStyle.default) {
-                        UIAlertAction in
-                        loginAs = "trail"
+//                let msg = "Profile is already registered, would you like to proceed to Payment?"
+//                
+//                let alertController = UIAlertController(title: "", message: msg, preferredStyle: .alert)
+//                
+//                // Create the actions
+//                let okAction = UIAlertAction(title: "PAY NOW", style: UIAlertActionStyle.default) {
+//                    UIAlertAction in
+//                    loginAs = "user"
+//                    UserDefaults.standard.setValue(nil, forKey: "userDetails")
+//                    UserDefaults.standard.setValue(nil, forKey: "session")
+//
+//
+//                }
+//                    let trialAction = UIAlertAction(title: "START TRIAL", style: UIAlertActionStyle.default) {
+//                        UIAlertAction in
+//                        loginAs = "trail"
                         let token = dictSessionInfo.object(forKey: "refresh_token") as! String
                         UserDefaults.standard.setValue(dictSessionInfo, forKey: "session")
                         UserDefaults.standard.setValue(token, forKey: "token")
-                        self.webServiceTrail()
-                    }
-                let cancelAction = UIAlertAction(title: "LOGOUT", style: UIAlertActionStyle.cancel) {
-                    UIAlertAction in
-                 //   loginAs = "guest"
-                    UserDefaults.standard.setValue(nil, forKey: "userDetails")
-                    UserDefaults.standard.setValue(nil, forKey: "session")
-                    self.navigationController?.popToRootViewController(animated: true)
-                }
-                
-                // Add the actions
-                alertController.addAction(okAction)
-                alertController.addAction(trialAction)
-                alertController.addAction(cancelAction)
-                
-                // Present the controller
-                self.present(alertController, animated: true, completion: nil)
+                    UserDefaults.standard.setValue(newInfo, forKey: "userDetails")
+                    loginAs = "UnPaid"
+                    let openPost = self.storyboard!.instantiateViewController(withIdentifier: "Home") as! HomeViewController;
+                    self.navigationController!.visibleViewController!.navigationController!.pushViewController(openPost, animated:true);
+//                        self.webServiceTrail()
+//                    }
+//                let cancelAction = UIAlertAction(title: "LOGOUT", style: UIAlertActionStyle.cancel) {
+//                    UIAlertAction in
+//                 //   loginAs = "guest"
+//                    UserDefaults.standard.setValue(nil, forKey: "userDetails")
+//                    UserDefaults.standard.setValue(nil, forKey: "session")
+//                    self.navigationController?.popToRootViewController(animated: true)
+//                }
+//                
+//                // Add the actions
+//                alertController.addAction(okAction)
+//                alertController.addAction(trialAction)
+//                alertController.addAction(cancelAction)
+//                
+//                // Present the controller
+//                self.present(alertController, animated: true, completion: nil)
                 }
                 else{
-                    loginAs = "user"
+                   // loginAs = "user"
                     Answers.logSignUp(withMethod: "SignUp",
                                                 success: true,
                                                 customAttributes: [:])
                     
-                    UserDefaults.standard.setValue(nil, forKey: "userDetails")
-                    UserDefaults.standard.setValue(nil, forKey: "session")
-                    let openPost = self.storyboard!.instantiateViewController(withIdentifier: "BuySignup") as! BuySignupViewController;
+                //    UserDefaults.standard.setValue(nil, forKey: "userDetails")
+                //    UserDefaults.standard.setValue(nil, forKey: "session")
+
+                    
+                    let token = dictSessionInfo.object(forKey: "refresh_token") as! String
+                    UserDefaults.standard.setValue(dictSessionInfo, forKey: "session")
+                    UserDefaults.standard.setValue(newInfo, forKey: "userDetails")
+                    UserDefaults.standard.setValue(token, forKey: "token")
+                    loginAs = "UnPaid"
+                    let openPost = self.storyboard!.instantiateViewController(withIdentifier: "Home") as! HomeViewController;
                     self.navigationController!.visibleViewController!.navigationController!.pushViewController(openPost, animated:true);
                 }
             }

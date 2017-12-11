@@ -297,7 +297,7 @@ class StoreDetailsViewController: UIViewController, UITableViewDataSource, UITab
             itemView.addSubview(img)
             var url = ""
             if(arrImages.count > 0){
-                url = (arrImages.object(at: index) as! NSDictionary).object(forKey: "url") as! String
+                url = ((arrImages.object(at: index) as? NSDictionary)?.object(forKey: "url") as? String)!
                 DispatchQueue.main.async {
                  setImageWithUrl(url, imgView: img)
                 }
@@ -364,6 +364,9 @@ class StoreDetailsViewController: UIViewController, UITableViewDataSource, UITab
               buyClicked()
             }
         }
+        else if(loginAs == "UnPaid"){
+            webCallStartTrial()
+        }
         else{
             buyClicked()
         }
@@ -384,8 +387,41 @@ class StoreDetailsViewController: UIViewController, UITableViewDataSource, UITab
         btnReedemOpen.addTarget(self, action: #selector(StoreDetailsViewController.redeemAction(_:)), for: .touchUpInside)
         viewDown?.addSubview(btnReedemOpen)
         
+        if((UserDefaults.standard.object(forKey: "expiry")) != nil){
+        let expiryDate = UserDefaults.standard.object(forKey: "expiry") as! String
+        let fullNameArr = expiryDate.components(separatedBy: " ")
+        
+        let date1    = fullNameArr[0]
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        let s = dateFormatter.date(from:date1)
+        
+        let calendar = NSCalendar.current as NSCalendar
+        
+        let fullNameArr1 = todayDate.components(separatedBy: " ")
+        
+        let date2    = fullNameArr1[0]
+        
+        let s1 = dateFormatter.date(from: date2)
+        let flags = NSCalendar.Unit.day
+        let components = calendar.components(flags, from: s1!, to: s!, options: [])
+        let daysNumber = components.day
+        
+        if(daysNumber! > 0){
+           isTrailExpired = false
+        }
+        else{
+            isTrailExpired = true
+        }
+        }
+        
         if(loginAs == "guest"){
             lblRedeem?.text = "BUY NOW"
+            lblCoupons?.isHidden = true
+        }
+        else if(loginAs == "UnPaid"){
+            lblRedeem?.text = "START TRIAL"
             lblCoupons?.isHidden = true
         }
         else{
@@ -551,7 +587,6 @@ class StoreDetailsViewController: UIViewController, UITableViewDataSource, UITab
     //MARK:- alertTapped
     
     func alertTap(){
-        
         viewAlert.removeFromSuperview()
         DispatchQueue.main.async{
             self.callWebServiceForDeatils()
@@ -559,6 +594,22 @@ class StoreDetailsViewController: UIViewController, UITableViewDataSource, UITab
     }
     
     //MARK:- webServiceCalling
+    
+    func webCallStartTrial(){
+        if (isConnectedToNetwork() == true){
+            let dictSessionId = UserDefaults.standard.object(forKey: "session") as! NSDictionary
+            let session = dictSessionId.object(forKey: "session_id") as! String
+            let url = String(format: "%@%@sessionid=%@", baseUrl,"trial?",session)
+            
+            webServiceGet(url)
+            delegate = self
+        }
+        else{
+            stopAnimation(view: self.view)
+            openAlertScreen(self.view)
+            alerButton.addTarget(self, action: #selector(HomeViewController.alertTap), for: .touchUpInside)
+        }
+    }
     
     func callWebServiceForFav(){
         
@@ -622,11 +673,59 @@ class StoreDetailsViewController: UIViewController, UITableViewDataSource, UITab
                 
             }
         }
+        else if((dict.object(forKey: "api") as! String).contains("trial")){
+            
+            if(dict.object(forKey: "status") as! String == "OK"){
+                todayDate = dict.object(forKey: "date_time") as! String
+                let arrSubscribe = (dict.object(forKey: "result") as! NSDictionary).object(forKey: "subscription") as! NSArray
+                if(arrSubscribe.count > 0){
+                    
+                    loginAs = "trail"
+                    let newInfo = NSMutableDictionary()
+                    newInfo.setObject(dictUserDetails.object(forKey: "name") as! String, forKey: "name" as NSCopying)
+                    newInfo.setObject(dictUserDetails.object(forKey: "phone") as! String, forKey: "phone" as NSCopying)
+                    newInfo.setObject(dictUserDetails.object(forKey: "dob") as! String, forKey: "dob" as NSCopying)
+                    newInfo.setObject(dictUserDetails.object(forKey: "email") as! String, forKey: "email" as NSCopying)
+                    newInfo.setObject(dictUserDetails.object(forKey: "gender") as! String, forKey: "gender" as NSCopying)
+                    newInfo.setObject(dictUserDetails.object(forKey: "preference") as! String, forKey: "preference" as NSCopying)
+                    
+                    let expiry = (arrSubscribe.object(at: 0) as! NSDictionary).object(forKey: "expiry") as? String
+                    let dateFormatter = DateFormatter()
+                    dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+                    let s = dateFormatter.date(from:expiry!)
+                    
+                    let subscribeType = (arrSubscribe.object(at: 0) as! NSDictionary).object(forKey: "subscription_type_id") as? String
+                    
+                    let currentInstallation = PFInstallation.current()
+                    currentInstallation.setObject(s!, forKey: "expiry")
+                    currentInstallation.setObject(subscribeType!, forKey: "subscription_type_id")
+                    currentInstallation.saveInBackground()
+                    
+                    let token = dictSessionInfo.object(forKey: "refresh_token") as! String
+                    let userId = dictSessionInfo.object(forKey: "user_id") as! String
+                    let currentInstallation1 = PFInstallation.current()
+                    currentInstallation1.setObject(userId, forKey: "userId")
+                    currentInstallation1.saveInBackground()
+                    UserDefaults.standard.setValue(expiry, forKey: "expiry")
+                    UserDefaults.standard.setValue(newInfo, forKey: "userDetails")
+                    UserDefaults.standard.setValue(dictSessionInfo, forKey: "session")
+                    UserDefaults.standard.setValue(token, forKey: "token")
+                    
+                    let alert = UIAlertController(title: "SUCCESS", message: "Your 7 days free trial has started.", preferredStyle: UIAlertControllerStyle.alert)
+                    alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+                    self.present(alert, animated: true, completion: nil)
+                    lblRedeem?.text = "REDEEM"
+                    lblCoupons?.isHidden = false
+                }
+            }
+        }
+
         else{
             
         if(dict.object(forKey: "status") as! String == "OK"){
         dictDetails = dict.object(forKey: "result") as! NSDictionary
         
+            if((dictDetails.object(forKey: "is_bookmarked")) != nil){
         isBookmark = dictDetails.object(forKey: "is_bookmarked") as! String
          
             if(isBookmark == "1"){
@@ -640,6 +739,7 @@ class StoreDetailsViewController: UIViewController, UITableViewDataSource, UITab
                 let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
                 btnFav?.setImage(tintedImage, for: .normal)
                 btnFav?.tintColor = .white
+            }
             }
         
         offer_outlet_id = dictDetails.object(forKey: "outlet_offer_id") as! String

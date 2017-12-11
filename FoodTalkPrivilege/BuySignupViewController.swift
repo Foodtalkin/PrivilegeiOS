@@ -259,11 +259,11 @@ class BuySignupViewController: UIViewController, WebServiceCallingDelegate, PGTr
     
     func callPaytm(){
         let merchantConfig = PGMerchantConfiguration.default()
-        print(dictParaPayTm)
+        
         let order: PGOrder = PGOrder(params: dictParaPayTm as! [AnyHashable : Any])
         
         let transactionController = PGTransactionViewController.init(transactionFor: order)
-        transactionController? .serverType = eServerTypeStaging
+        transactionController? .serverType = eServerTypeProduction
         transactionController? .merchant = merchantConfig
         transactionController? .delegate = self
         self.showController(transactionController!)

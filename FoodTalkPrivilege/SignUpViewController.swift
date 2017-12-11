@@ -31,6 +31,9 @@ class SignUpViewController: UIViewController, WebServiceCallingDelegate, UITextF
         else{
           lblTop?.text = "Make every meal a Privilege, for only INR 1,200 for an entire year"
         }
+        if(mobileNumber != ""){
+            txtPhone?.text = mobileNumber
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -76,7 +79,7 @@ class SignUpViewController: UIViewController, WebServiceCallingDelegate, UITextF
     
     
     func getDataFromWebService(_ dict: NSMutableDictionary) {
-        print(dict)
+        
         stopAnimation(view: self.view)
         if(dict.object(forKey: "status") as! String == "OK"){
             otpFrom = "signup"

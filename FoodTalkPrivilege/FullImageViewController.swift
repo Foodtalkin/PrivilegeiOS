@@ -49,8 +49,9 @@ class FullImageViewController: UIViewController, iCarouselDataSource, iCarouselD
             img.contentMode = .scaleAspectFit
             itemView.addSubview(img)
             var url = ""
+            
             if(arrImages.count > 0){
-                if(arrImages.contains(NSDictionary.self)){
+                if(((arrImages.object(at: index) as AnyObject).isKind(of:NSDictionary.self))){
                 url = (arrImages.object(at: index) as! NSDictionary).object(forKey: "url") as! String
                 setImageWithUrl(url, imgView: img)
                 }
@@ -69,8 +70,9 @@ class FullImageViewController: UIViewController, iCarouselDataSource, iCarouselD
             img.contentMode = .scaleAspectFit
             itemView.addSubview(img)
             var url = ""
+            
             if(arrImages.count > 0){
-                if(arrImages.contains(NSDictionary.self)){
+                if(((arrImages.object(at: index) as AnyObject).isKind(of:NSDictionary.self))){
                     url = (arrImages.object(at: index) as! NSDictionary).object(forKey: "url") as! String
                     setImageWithUrl(url, imgView: img)
                 }

@@ -65,7 +65,24 @@ class InvoiceViewController: UIViewController, UITableViewDataSource, UITableVie
             let cell = tableView.dequeueReusableCell(withIdentifier: "ExperienceDetailsImageTableViewCell", for: indexPath) as! ExperienceDetailsImageTableViewCell
             cell.lblName?.text = dictExp.object(forKey: "title") as? String
             cell.lblAddress?.text = dictExp.object(forKey: "address") as? String
-            cell.lblDate?.text = dictExp.object(forKey: "start_time") as? String
+       //     cell.lblDate?.text = dictExp.object(forKey: "display_time") as? String
+            
+            let str = dictExp.object(forKey: "display_time") as? String
+            
+            if let range = str?.range(of: "\n") {
+                let startPos = str?.distance(from: (str?.startIndex)!, to: range.lowerBound)
+                let myMutableString = NSMutableAttributedString(string: str!, attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 15)])
+                myMutableString.addAttribute(NSForegroundColorAttributeName, value: UIColor.gray, range: NSRange(location:startPos!,length: (str?.characters.count)! - startPos!))
+                
+                myMutableString.addAttribute(NSFontAttributeName, value : UIFont.systemFont(ofSize: 13), range: NSRange(location:startPos!,length: (str?.characters.count)! - startPos!))
+                
+                cell.lblDate?.attributedText = myMutableString
+            }
+            else {
+             //   print("String not present")
+                cell.lblDate?.text = dictExp.object(forKey: "display_time") as? String
+            }
+            
             
             let origImage = UIImage(named: "mapE.png")
             let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
@@ -84,6 +101,12 @@ class InvoiceViewController: UIViewController, UITableViewDataSource, UITableVie
         else{
             let cell = tableView.dequeueReusableCell(withIdentifier: "InvoiceTableViewCell", for: indexPath) as! InvoiceTableViewCell
             cell.selectionStyle = .none
+            if(non_veg_pref == "0"){
+               cell.lblVegNonVeg?.isHidden = true
+            }
+            else{
+               cell.lblVegNonVeg?.isHidden = false
+            }
             cell.lblVegNonVeg?.text = String(format : "VEG : %d | NON VEG : %@", Int(totalGuest)! - Int(nonVegNumber)!, nonVegNumber)
             cell.lblSubtottal?.text = String(format : "SUBTOTAL: %@ * %@", totalGuest, dictInvoice.object(forKey: "cost_for_one") as! String)
             cell.lblSubtotalValue?.text = String(format : "\u{20B9} %@", dictInvoice.object(forKey: "cost") as! NSNumber)
@@ -134,11 +157,11 @@ class InvoiceViewController: UIViewController, UITableViewDataSource, UITableVie
         }
         }
         else if((dict.object(forKey: "api") as! String).contains("orderstatus")){
-           if(dict.object(forKey: "message") as! String == "Success"){
-              transactionResult = "success"
+           if((dict.object(forKey: "result") as! NSDictionary).object(forKey: "payment_status") as! String == "TXN_FAILURE"){
+              transactionResult = "failure"
             }
            else{
-            transactionResult = "failure"
+            transactionResult = "success"
             }
             let openPost = self.storyboard!.instantiateViewController(withIdentifier: "Success") as! SuccessViewController;
             self.navigationController!.pushViewController(openPost, animated: true)
@@ -204,10 +227,10 @@ class InvoiceViewController: UIViewController, UITableViewDataSource, UITableVie
     
     func callPaytm(){
         let merchantConfig = PGMerchantConfiguration.default()
-        print(dictParaPayTm)
+        
         let order: PGOrder = PGOrder(params: dictParaPayTm as! [AnyHashable : Any])
         let transactionController = PGTransactionViewController.init(transactionFor: order)
-        transactionController? .serverType = eServerTypeStaging
+        transactionController? .serverType = eServerTypeProduction
         transactionController? .merchant = merchantConfig
         transactionController? .delegate = self
         self.showController(transactionController!)
